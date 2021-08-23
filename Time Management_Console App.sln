@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Time Management_Console App", "Time Management_Console App.csproj", "{C12963F9-12C3-4A6F-BCD3-1E860FADFE1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C12963F9-12C3-4A6F-BCD3-1E860FADFE1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C12963F9-12C3-4A6F-BCD3-1E860FADFE1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C12963F9-12C3-4A6F-BCD3-1E860FADFE1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C12963F9-12C3-4A6F-BCD3-1E860FADFE1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3646786D-A6F7-48AD-9D9D-89E4D593AD13}
+	EndGlobalSection
+EndGlobal
