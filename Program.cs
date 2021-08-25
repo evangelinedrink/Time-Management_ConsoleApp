@@ -9,11 +9,33 @@ namespace Time_Management_Console_App
             
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
             todaysTemp();
+
+            //Running the Schedule Planner Component
+            //schedulePlanner();
         }
 
-        //Pre-conditions: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
-        //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
+        //Method for the Schedule Planner Component
+        public static void schedulePlanner()
+        {
+            //Defining an array that can have variable size (dynamic sized array)
+            //This array will contain the events that the user will schedule in the planner
+            string[] eventHolderArray = new string[] { };
 
+            //Creating a calendar that will appear in the Console.
+            //This calendar will help the user see the days of the week based on the month and year they provide
+
+            
+
+            //Asking the user what year they would like to view
+            Console.WriteLine("Enter the year that you would like to schedule the event. Make sure to type it in numbers, like 2022.");
+            //Letting the user type in the date (using Console.ReadLine()) and setting that date as an integer (originally a string) using Convert.ToInt32. It will equal the variable named year.
+            int year = Convert.ToInt32(Console.ReadLine());
+
+            
+        }
+
+        //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
+        //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
         public static void todaysTemp()
         {
             //Ask the user what the year is (user input will be determined by the Console.ReadLine())
