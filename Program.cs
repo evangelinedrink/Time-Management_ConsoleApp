@@ -8,10 +8,10 @@ namespace Time_Management_Console_App
         {
             
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
-            todaysTemp();
+            //todaysTemp();
 
             //Running the Schedule Planner Component
-            //schedulePlanner();
+            schedulePlanner();
         }
 
         //Method for the Schedule Planner Component
@@ -31,7 +31,39 @@ namespace Time_Management_Console_App
             //Letting the user type in the date (using Console.ReadLine()) and setting that date as an integer (originally a string) using Convert.ToInt32. It will equal the variable named year.
             int year = Convert.ToInt32(Console.ReadLine());
 
-            
+            //Asking the user the month using Console.WriteLine
+            Console.WriteLine("Enter the month (make sure to place the number, so the month of May is 5).");
+            int month = Convert.ToInt32(Console.ReadLine());
+
+            //Setting the date with DateTime() method.
+            //Inside of the parameter is: year, month and day (starting with day 1 to show the entire month)
+            DateTime date= new DateTime(year, month, 1);
+
+            //Displaying the month and year in the Consolue using the string.Format() method
+            //String.Format Method takes the values of objects and converts them to strings and inserts these strings into the format indicated by the user.
+            //In the example below, {0} corresponds to the Month and {1} corresponds to the year
+            //date.Month will give the month's number, but not its actual name. This is why date.ToString("MMMM") is used to get the full name of the month
+            string monthYear = string.Format("{0} {1}", date.ToString("MMMM"), date.Year);
+
+            //Displaying the month and year in the calendar
+            Console.WriteLine(monthYear);
+
+            //Creating the days of the week in the calendar
+            Console.WriteLine("Mon Tues Wed Thurs Fri Sat Sun");
+
+
+            //Displaying the correct number of days in the calendar
+            //DaysInMonth static method returns the number of days in a month
+            int days = DateTime.DaysInMonth(year, month);
+
+            //Setting the first day of the month to one
+            int firstDay = 1;
+
+            //DayOfWeek property will display the name of the day of the week
+            //Using DayOfWeek will return a string, which is why we are converting it to an integer using Convert.ToInt32
+            int dayOfWeek = Convert.ToInt32(date.DayOfWeek);
+
+
         }
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
