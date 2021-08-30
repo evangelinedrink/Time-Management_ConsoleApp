@@ -24,7 +24,9 @@ namespace Time_Management_Console_App
             //Creating a calendar that will appear in the Console.
             //This calendar will help the user see the days of the week based on the month and year they provide
 
-            
+            //Displaying the days of the week in the calendar
+            //I think the calendar gives sizes to the array
+             int[,] calendar = new int[6, 7];
 
             //Asking the user what year they would like to view
             Console.WriteLine("Enter the year that you would like to schedule the event. Make sure to type it in numbers, like 2022.");
@@ -37,7 +39,9 @@ namespace Time_Management_Console_App
 
             //Setting the date with DateTime() method.
             //Inside of the parameter is: year, month and day (starting with day 1 to show the entire month)
-            DateTime date= new DateTime(year, month, 1);
+            //Displaying the first day of the month with the DateTime structure
+            DateTime date = new DateTime(year, month, 1);
+            Console.WriteLine(date);
 
             //Displaying the month and year in the Consolue using the string.Format() method
             //String.Format Method takes the values of objects and converts them to strings and inserts these strings into the format indicated by the user.
@@ -51,10 +55,10 @@ namespace Time_Management_Console_App
             //Creating the days of the week in the calendar
             Console.WriteLine("Mon Tues Wed Thurs Fri Sat Sun");
 
-
             //Displaying the correct number of days in the calendar
             //DaysInMonth static method returns the number of days in a month
             int days = DateTime.DaysInMonth(year, month);
+            //Console.WriteLine(days);
 
             //Setting the first day of the month to one
             int firstDay = 1;
@@ -63,6 +67,43 @@ namespace Time_Management_Console_App
             //Using DayOfWeek will return a string, which is why we are converting it to an integer using Convert.ToInt32
             int dayOfWeek = Convert.ToInt32(date.DayOfWeek);
 
+            //Filling the calendar with values
+            for (int i=0; i<calendar.GetLength(0); i++)
+            {
+                for (int j=0; (j< calendar.GetLength(1)) && (firstDay - dayOfWeek +1 <= days); j++)
+                {
+                    if (i==0 && month >j)
+                    {
+                        calendar[i, j] = 0;
+                    } else
+                    {
+                        calendar[i, j] = firstDay - dayOfWeek + 1;
+                        firstDay++;
+                    }
+                }
+            }
+
+            //Drawing the calendar in the Console
+            for (int i=0; i< calendar.GetLength(0); i++)
+            {
+                for (int j=0; j<calendar.GetLength(1); j++)
+                {
+                    if (calendar[i,j] > 0)
+                    {
+                        if (calendar[i,j] <10)
+                        {
+                            Console.Write("  " + calendar[i, j] + "  ");
+                        } else
+                        {
+                            Console.Write(calendar[i, j] + " ");
+                        }
+                    } else
+                    {
+                        Console.Write("   ");
+                    }
+                }
+                Console.WriteLine("");
+            }
 
         }
 
