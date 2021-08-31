@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace Time_Management_Console_App
 {
     class Program
@@ -26,7 +27,8 @@ namespace Time_Management_Console_App
 
             //Displaying the days of the week in the calendar
             //I think the calendar gives sizes to the array
-             int[,] calendar = new int[6, 7];
+            int[,] calendar = new int[6, 7];
+      
 
             //Asking the user what year they would like to view
             Console.WriteLine("Enter the year that you would like to schedule the event. Make sure to type it in numbers, like 2022.");
@@ -37,54 +39,165 @@ namespace Time_Management_Console_App
             Console.WriteLine("Enter the month (make sure to place the number, so the month of May is 5).");
             int month = Convert.ToInt32(Console.ReadLine());
 
+
+
+            //1. Create the data table to insert the days of the week. The columns will be the days of the week: https://www.youtube.com/watch?v=xD3HrIKluv8 
+            //2. Determine how many days there are in a month and determine the day that the first day of the month falls in (like May 1 and what day it starts at).
+            //Use an If/Else statement to determine where it will be placed in the data table (based on which day it falls in)
+            //Good website to get information from: https://stackoverflow.com/questions/52416114/creating-calendar-with-array-and-loops-using-c-sharp
+            //The number of days in a month will determine how many rows that you have in the data table
+
+
             //Setting the date with DateTime() method.
             //Inside of the parameter is: year, month and day (starting with day 1 to show the entire month)
             //Displaying the first day of the month with the DateTime structure
-            DateTime date = new DateTime(year, month, 1);
-            Console.WriteLine(date);
+            //firstDayOfMonth will display the date for the first day of the month indicated by the user
+            DateTime firstDayOfMonth = new DateTime(year, month, 1);
+            Console.WriteLine(firstDayOfMonth);
+
+
+            //DayOfWeek property will display the number that corresponds to the day of the week (0 corresponds to Sunday and Saturday corresponds to the number 6)
+            //Using DayOfWeek will return a string, which is why we are converting it to an integer using Convert.ToInt32
+            int dayOfWeekFirstDay = Convert.ToInt32(firstDayOfMonth.DayOfWeek);
+            Console.WriteLine(dayOfWeekFirstDay);
 
             //Displaying the month and year in the Consolue using the string.Format() method
             //String.Format Method takes the values of objects and converts them to strings and inserts these strings into the format indicated by the user.
             //In the example below, {0} corresponds to the Month and {1} corresponds to the year
             //date.Month will give the month's number, but not its actual name. This is why date.ToString("MMMM") is used to get the full name of the month
-            string monthYear = string.Format("{0} {1}", date.ToString("MMMM"), date.Year);
+            string monthYear = string.Format("{0} {1}", firstDayOfMonth.ToString("MMMM"), firstDayOfMonth.Year);
 
             //Displaying the month and year in the calendar
             Console.WriteLine(monthYear);
 
             //Creating the days of the week in the calendar
-            Console.WriteLine("Mon Tues Wed Thurs Fri Sat Sun");
+            Console.WriteLine("Sun Mon Tue Wed Thu Fri Sat");
 
-            //Displaying the correct number of days in the calendar
+            //Displaying the correct number of days in the calendar for that month
             //DaysInMonth static method returns the number of days in a month
-            int days = DateTime.DaysInMonth(year, month);
-            //Console.WriteLine(days);
+            //lastDayOfMonth will display the last day of the month specified by the user
+            int lastDayOfMonth = DateTime.DaysInMonth(year, month);
+            Console.WriteLine(lastDayOfMonth);
+
+
+            //Positioning the days of the week in the calendar that will be shown in the Console.
+            //To do this, need to determine which day of the week (like Sunday or Monday) does the first day of the month is on
+            //Use a For loop and a day counter to fill to determine the numbers in the calendar following the first day of the month.
+            //Let the day counter stop at the last day of the month.
+
+            //Day Counter that will increase every time the For loop iterates (it is the number that will be filling in the calendar in the Console).
+            int dayCounter = 1;
+
+            //Determining where to place the first day of the month in the calendar that will be displayed in the Console.
+            //To do this, If/Else If statements will be used to determine the location of the first day of the month in the calendar
+            if (dayOfWeekFirstDay == 0) //This corresponds to the first day of the month being on Sunday
+            {
+                Console.Write(dayCounter); //This will display a 1 in the line right below "Sun" (this corresponds to the first day of the month).
+                dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
+            } else if (dayOfWeekFirstDay==1) //This corresponds to the first day of the month being on Monday
+            {
+                Console.Write("   " + dayCounter); //This will display a 1 in the line right below "Mon". The "   " corresponds to the spacing below Sun
+                dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
+            } else if (dayOfWeekFirstDay == 2) //This corresponds to the first day of the month being on Tuesday
+            {
+                Console.Write("   " + "   " + dayCounter); //This will display a 1 in the line right below "Tue". The "   " corresponds to the spacing below Sun and Mon
+                dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
+            } else if (dayOfWeekFirstDay == 3) //This corresponds to the first day of the month being on Wednesday
+            {
+                Console.Write("   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Wed".
+                dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
+            } else if (dayOfWeekFirstDay == 4) //This corresponds to the first day of the month being on Thursday
+            {
+                Console.Write("   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Thu".
+                dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
+            } else if (dayOfWeekFirstDay == 5) //This corresponds to the first day of the month being on Friday
+            {
+                Console.Write("   " + "   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Fri".
+                dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
+            } else //This will correspobd when dayOfWeekFirstDay==6 (which coressponds to Saturday)
+            {
+                Console.Write("   " + "   " + "   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Sat".
+                dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
+            }
+
+            //Counter that will determine the day of the week that the corresponding days will fall under (if Day 1 falls on Sunday (number 0), the second day will be on Monday (position 1)).
+            int dayPosition = dayOfWeekFirstDay;
+
+            //When the computer has determined where to place the first day of the month in the calendar, all the following days will follow after the number 1
+            //The For loop will continue to run until after it has placed the last day of the month in the calendar.
+            for (int i=0; i<=lastDayOfMonth; i++)
+            {
+                
+                dayPosition += 1; //The following days after the first day of the month will be increasing by increments of 1 (so if day 2 is on Monday, day 3 will be on Tuesday).
+
+                //Determining where to place the days of the month in the calendar that will be displayed in the Console.
+                //To do this, If/Else If statements will be used to determine the location of the first day of the month in the calendar
+                if (dayPosition == 0) //This corresponds to the day of the month being on Sunday
+                {
+                    Console.Write(dayCounter); //This will display the number in the line right below "Sun" (this corresponds to the first day of the month).
+                    dayCounter += 1; //This will increase the dayCounter to the next day of the month.
+                }
+                else if (dayPosition == 1) //This corresponds to the day of the month being on Monday
+                {
+                    Console.Write("   " + dayCounter); //This will display the number in the line right below "Mon". The "   " corresponds to the spacing below Sun
+                    dayCounter += 1; //This will increase the dayCounter to the next day of the month.
+                }
+                else if (dayPosition == 2) //This corresponds to the day of the month being on Tuesday
+                {
+                    Console.Write("   " + "   " + dayCounter); //This will display the number the line right below "Tue". The "   " corresponds to the spacing below Sun and Mon
+                    dayCounter += 1; 
+                }
+                else if (dayPosition == 3) //This corresponds to the day of the month being on Wednesday
+                {
+                    Console.Write("   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Wed".
+                    dayCounter += 1; 
+                }
+                else if (dayPosition == 4) //This corresponds to the day of the month being on Thursday
+                {
+                    Console.Write("   " + "   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Thu".
+                    dayCounter += 1; 
+                }
+                else if (dayPosition == 5) //This corresponds to the day of the month being on Friday
+                {
+                    Console.Write("   " + "   " + "   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Fri".
+                    dayCounter += 1; 
+                }
+                else //This will correspobd when dayOfWeekFirstDay==6 (which coressponds to Saturday)
+                {
+                    Console.Write("   " + "   " + "   " + "   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Sat".
+                    dayCounter += 1;
+                    //This will create a new line (a new row) to display the other numbers in the month by using Console.WriteLine("");
+                    Console.WriteLine("");
+                }
+
+            }
 
             //Setting the first day of the month to one
-            int firstDay = 1;
+            //int firstDay = 1;
 
             //DayOfWeek property will display the name of the day of the week
             //Using DayOfWeek will return a string, which is why we are converting it to an integer using Convert.ToInt32
-            int dayOfWeek = Convert.ToInt32(date.DayOfWeek);
+            //int dayOfWeek = Convert.ToInt32(date.DayOfWeek);
 
             //Filling the calendar with values
-            for (int i=0; i<calendar.GetLength(0); i++)
+            /*for (int i=0; i<calendar.GetLength(0); i++)
             {
                 for (int j=0; (j< calendar.GetLength(1)) && (firstDay - dayOfWeek +1 <= days); j++)
                 {
-                    if (i==0 && month >j)
+                    if (i==0 && month > j)
                     {
-                        calendar[i, j] = 0;
+                        
+                        calendar[i, j] = firstDay;
                     } else
                     {
                         calendar[i, j] = firstDay - dayOfWeek + 1;
                         firstDay++;
                     }
                 }
-            }
+            }*/
 
             //Drawing the calendar in the Console
-            for (int i=0; i< calendar.GetLength(0); i++)
+            /*for (int i=0; i< calendar.GetLength(0); i++)
             {
                 for (int j=0; j<calendar.GetLength(1); j++)
                 {
@@ -92,18 +205,19 @@ namespace Time_Management_Console_App
                     {
                         if (calendar[i,j] <10)
                         {
-                            Console.Write("  " + calendar[i, j] + "  ");
+                            Console.Write(" " + calendar[i, j] + " ");
                         } else
                         {
                             Console.Write(calendar[i, j] + " ");
                         }
                     } else
                     {
+                        //Console.Write(firstDay);
                         Console.Write("   ");
                     }
                 }
                 Console.WriteLine("");
-            }
+            }*/
 
         }
 
