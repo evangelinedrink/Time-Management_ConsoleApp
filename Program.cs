@@ -77,7 +77,7 @@ namespace Time_Management_Console_App
             //DaysInMonth static method returns the number of days in a month
             //lastDayOfMonth will display the last day of the month specified by the user
             int lastDayOfMonth = DateTime.DaysInMonth(year, month);
-            Console.WriteLine(lastDayOfMonth);
+            //Console.WriteLine(lastDayOfMonth);
 
 
             //Positioning the days of the week in the calendar that will be shown in the Console.
@@ -125,10 +125,17 @@ namespace Time_Management_Console_App
 
             //When the computer has determined where to place the first day of the month in the calendar, all the following days will follow after the number 1
             //The For loop will continue to run until after it has placed the last day of the month in the calendar.
-            for (int i=0; i<=lastDayOfMonth; i++)
+            for (int i=0; i<lastDayOfMonth -1; i++)
             {
+                //Ensuring that the dayPosition is less than or equal to 6 (6 corresponds to Saturday, which is the last day in our calendar's row) by using an If Statement
+                if (dayPosition <=6)
+                {
+                    dayPosition += 1; //The following days after the first day of the month will be increasing by increments of 1 (so if day 2 is on Monday, day 3 will be on Tuesday).
+                } else if (dayPosition ==7) //Once the dayPosition is equal to 7, the number of the day will go to the next row in the calendar and be below Sunday's column
+                {
+                    dayPosition = 0;
+                }
                 
-                dayPosition += 1; //The following days after the first day of the month will be increasing by increments of 1 (so if day 2 is on Monday, day 3 will be on Tuesday).
 
                 //Determining where to place the days of the month in the calendar that will be displayed in the Console.
                 //To do this, If/Else If statements will be used to determine the location of the first day of the month in the calendar
