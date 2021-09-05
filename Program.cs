@@ -96,27 +96,27 @@ namespace Time_Management_Console_App
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else if (dayOfWeekFirstDay==1) //This corresponds to the first day of the month being on Monday
             {
-                Console.Write("   " + dayCounter); //This will display a 1 in the line right below "Mon". The "   " corresponds to the spacing below Sun
+                Console.Write("   " + " " + dayCounter); //This will display a 1 in the line right below "Mon". The "   " corresponds to the spacing below Sun
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else if (dayOfWeekFirstDay == 2) //This corresponds to the first day of the month being on Tuesday
             {
-                Console.Write("   " + "   " + dayCounter); //This will display a 1 in the line right below "Tue". The "   " corresponds to the spacing below Sun and Mon
+                Console.Write("   " + " " +  dayCounter); //This will display a 1 in the line right below "Tue". The "   " corresponds to the spacing below Sun and Mon
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else if (dayOfWeekFirstDay == 3) //This corresponds to the first day of the month being on Wednesday
             {
-                Console.Write("   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Wed".
+                Console.Write("   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Wed".
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else if (dayOfWeekFirstDay == 4) //This corresponds to the first day of the month being on Thursday
             {
-                Console.Write("   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Thu".
+                Console.Write("   " + "   " + "   " + "   " + "    " + dayCounter); //This will display a 1 in the line right below "Thu".
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else if (dayOfWeekFirstDay == 5) //This corresponds to the first day of the month being on Friday
             {
-                Console.Write("   " + "   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Fri".
+                Console.Write("   " + "   " + "   " + "   " + "   " + "   " + "  " + dayCounter); //This will display a 1 in the line right below "Fri".
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else //This will correspobd when dayOfWeekFirstDay==6 (which coressponds to Saturday)
             {
-                Console.Write("   " + "   " + "   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Sat".
+                Console.Write("   " + "   " + "   " + "   " + "   " + "   " + "   " + "   " + dayCounter); //This will display a 1 in the line right below "Sat".
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             }
 
@@ -128,7 +128,7 @@ namespace Time_Management_Console_App
             for (int i=0; i<lastDayOfMonth -1; i++)
             {
 
-                //Update the comments for lines 133-142
+                //Update the comments for lines 133-142. dayOfWeekDayCounter should be dayCounterPosition. Line 124 an be deleted since it is no longer used.
 
                 //Inside of the parameter is: year, month and day (starting with day 1 to show the entire month)
                 //Displaying the first day of the month with the DateTime structure
@@ -147,41 +147,96 @@ namespace Time_Management_Console_App
                 //To do this, If/Else If statements will be used to determine the location of the first day of the month in the calendar
                 if (dayOfWeekDayCounter == 0) //This corresponds to the day of the month being on Sunday
                 {
+                    if (dayCounter==2)
+                    {
+                        Console.WriteLine(""); //Creates a new line/row to place the second day of the month
+                    }
                     Console.Write(dayCounter); //This will display the number in the line right below "Sun" (this corresponds to the first day of the month).
                     dayCounter += 1; //This will increase the dayCounter to the next day of the month.
                 }
                 else if (dayOfWeekDayCounter == 1) //This corresponds to the day of the month being on Monday
                 {
-                    Console.Write("   " + dayCounter); //This will display the number in the line right below "Mon". The "   " corresponds to the spacing below Sun
+                    if(dayCounter<=10)
+                    {
+                        Console.Write("   " + dayCounter);
+                    } else
+                    {
+                        Console.Write("  " + dayCounter); //This will display the number in the line right below "Mon". 
+                    }
                     dayCounter += 1; //This will increase the dayCounter to the next day of the month.
                 }
                 else if (dayOfWeekDayCounter == 2) //This corresponds to the day of the month being on Tuesday
                 {
-                    Console.Write("   " + dayCounter);
+
+                    if (dayCounter <= 10)
+                    {
+                        Console.Write("   " + dayCounter);
+                    } 
+                    else
+                    {
+                        Console.Write("  " + dayCounter); //This will display the number in the line right below "Mon". 
+                    }
+
                     //Console.Write("   " + "   " + dayCounter); //This will display the number the line right below "Tue". The "   " corresponds to the spacing below Sun and Mon
                     dayCounter += 1;
                 }
                 else if (dayOfWeekDayCounter == 3) //This corresponds to the day of the month being on Wednesday
                 {
-                    Console.Write("   " + dayCounter);
+
+                    if (dayCounter <= 10)
+                    {
+                        Console.Write("   " + dayCounter);
+                    }
+                    else
+                    {
+                        Console.Write("  " + dayCounter); //This will display the number in the line right below "Mon". 
+                    }
+
                     //Console.Write("   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Wed".
                     dayCounter += 1;
                 }
                 else if (dayOfWeekDayCounter == 4) //This corresponds to the day of the month being on Thursday
                 {
-                    Console.Write("   " + dayCounter);
+                    if (dayCounter <= 10)
+                    {
+                        Console.Write("   " + dayCounter);
+                    }
+                    else
+                    {
+                        Console.Write("  " + dayCounter); //This will display the number in the line right below "Mon". 
+                    }
+
+
                     //Console.Write("   " + "   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Thu".
                     dayCounter += 1;
                 }
                 else if (dayOfWeekDayCounter == 5) //This corresponds to the day of the month being on Friday
                 {
-                    Console.Write("   " + dayCounter);
+                    if (dayCounter <= 10)
+                    {
+                        Console.Write("   " + dayCounter);
+                    }
+                    else
+                    {
+                        Console.Write("  " + dayCounter); //This will display the number in the line right below "Mon". 
+                    }
+
+                    //Console.Write("  " + dayCounter);
                     //Console.Write("   " + "   " + "   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Fri".
                     dayCounter += 1;
                 }
                 else //This will correspond when dayOfWeekFirstDay==6 (which coressponds to Saturday)
                 {
-                    Console.Write("   " + dayCounter);
+                    if (dayCounter <= 10)
+                    {
+                        Console.Write("   " + dayCounter);
+                    }
+                    else
+                    {
+                        Console.Write("  " + dayCounter); //This will display the number in the line right below "Mon". 
+                    }
+
+                    //Console.Write("  " + dayCounter);
                     //Console.Write("   " + "   " + "   " + "   " + "   " + "   " + dayCounter); //This will display the number in the line right below "Sat".
                     dayCounter += 1;
                     //This will create a new line (a new row) to display the other numbers in the month by using Console.WriteLine("");
