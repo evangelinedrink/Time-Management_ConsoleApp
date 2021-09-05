@@ -100,7 +100,7 @@ namespace Time_Management_Console_App
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else if (dayOfWeekFirstDay == 2) //This corresponds to the first day of the month being on Tuesday
             {
-                Console.Write("   " + " " +  dayCounter); //This will display a 1 in the line right below "Tue". The "   " corresponds to the spacing below Sun and Mon
+                Console.Write("   " + "   " + "  " +  dayCounter); //This will display a 1 in the line right below "Tue". The "   " corresponds to the spacing below Sun and Mon
                 dayCounter += 1; //This will increase the dayCounter to 2 (which is the day after the first day of the month).
             } else if (dayOfWeekFirstDay == 3) //This corresponds to the first day of the month being on Wednesday
             {
