@@ -18,12 +18,9 @@ namespace Time_Management_Console_App
         //Method for the Schedule Planner Component
         public static void schedulePlanner()
         {
-            //Defining an array that can have variable size (dynamic sized array)
-            //This array will contain the events that the user will schedule in the planner
-            string[] eventHolderArray = new string[] { };
-
-            //Creating a calendar that will appear in the Console.
-            //This calendar will help the user see the days of the week based on the month and year they provide
+            
+            /*Creating a calendar that will appear in the Console.
+            This calendar will help the user see the days of the week based on the month and year they provide*/
      
             //Asking the user what year they would like to view
             Console.WriteLine("Enter the year that you would like to schedule the event. Make sure to type it in numbers, like 2022.");
@@ -228,8 +225,37 @@ namespace Time_Management_Console_App
                     dayCounter += 1;
                     //This will create a new line (a new row) to display the other numbers in the month by using Console.WriteLine("");
                     Console.WriteLine(" ");
-                }
+                }      
             }
+
+            //Defining an array that can have variable size (dynamic sized array)
+            //This array will contain the events that the user will schedule in the planner
+            string[] eventsHolderArray = new string[] { };
+
+            //Asking the user what date they would like to create an event
+            //Creating two new rows between the calendar and the question below using "\n\n" and concatenation.
+            Console.WriteLine("\n\n"+ "What date would you like to create an event for? Make sure to type the year, month and date in numbers. " +
+                "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
+            //Getting the user's input with Console.ReadLine(). It will be represented as a string.
+            string eventDate = Console.ReadLine();
+
+            //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
+            //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
+            string[] eventDateArray = eventDate.Split(",");
+
+            //Displaying the elements that were Split from the eventDate to the Console.
+            foreach (string thing in eventDateArray)
+                Console.WriteLine(thing);
+            
+
+            //For this section of the code, the user will type in the events they would like in their event schedule.
+            //The date (year, month and day), time (which will include a time range), and the name of the event (this will be a string) will be stored in the eventsHolderArray (probably needs to be an ArrayList since its size will be changing depending on user input).
+            //The date will be passed as a string into DateTime method to determine which day of the week the event will be at. The day of the week will be displayed in the Console with the date like this: May 27, 2022 (Friday)
+            //The events will be stored and displayed based on the date from the closest date to the farthest away date (this will probably be done comparing the years, months and then days for each event). Sorting method will need to be done on the eventsHolderArray (which is an ArrayList).
+            //The user will be able to see the events and add and delete events. Add() and Remove() methods will be used on the ArrayList. Insert() can be used to insert an element into the ArrayList at a specific position (since the events will be displayed in chonological order, this method might be used).
+            //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name/Description of the event"
+            //User will be able to delete events based on the Event Number and will be asked if they are sure they want to delete an event (before actually deleting the event).
+
         }
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
