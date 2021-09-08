@@ -13,6 +13,7 @@ namespace Time_Management_Console_App
 
             //Running the Schedule Planner Component
             schedulePlanner();
+
         }
 
         //Method for the Schedule Planner Component
@@ -241,21 +242,58 @@ namespace Time_Management_Console_App
 
             //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
             //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
+            //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
             string[] eventDateArray = eventDate.Split(",");
 
             //Displaying the elements that were Split from the eventDate to the Console.
-            foreach (string thing in eventDateArray)
-                Console.WriteLine(thing);
-            
+            //foreach (string thing in eventDateArray)
+            //    Console.WriteLine(thing);
+
+            //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
+            //Converting the year, which was originally an string data type, into an integer data type
+            int eventYear = Convert.ToInt32(eventDateArray[0]);
+            //Converting the month, which was originally an string data type, into an integer data type
+            int eventMonth = Convert.ToInt32(eventDateArray[1]);
+            //Converting the month, which was originally an string data type, into an integer data type
+            int eventDay = Convert.ToInt32(eventDateArray[2]);
+          
+
+            //Asking the user what time the event starts 
+            Console.WriteLine("What time does the event start (use the time in 24 hours (military time)? Start time: ");
+            //Creating the variables that will keep the start time of the event
+            string eventStartTime = Console.ReadLine();
+            //Splitting the time to have a section for the hour and for minutes
+            //Hour= eventStartTimeSplit[0] and Minute= eventStartTimeSplit[1]
+            string[] eventStartTimeSplit = eventStartTime.Split(":");
+            //Converting the hour and minutes into int data types to be used in the DateTime method
+            int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
+            int eventStartMin= Convert.ToInt32(eventStartTimeSplit[1]);
+
+
+            //Asking the user what time the event ends 
+            Console.WriteLine("What time does the event end (use the time in 24 hours (military time)? End time: ");
+            //Creating the variables that will keep the ending time of the event
+            string eventEndTime = Console.ReadLine();
 
             //For this section of the code, the user will type in the events they would like in their event schedule.
             //The date (year, month and day), time (which will include a time range), and the name of the event (this will be a string) will be stored in the eventsHolderArray (probably needs to be an ArrayList since its size will be changing depending on user input).
             //The date will be passed as a string into DateTime method to determine which day of the week the event will be at. The day of the week will be displayed in the Console with the date like this: May 27, 2022 (Friday)
             //The events will be stored and displayed based on the date from the closest date to the farthest away date (this will probably be done comparing the years, months and then days for each event). Sorting method will need to be done on the eventsHolderArray (which is an ArrayList).
             //The user will be able to see the events and add and delete events. Add() and Remove() methods will be used on the ArrayList. Insert() can be used to insert an element into the ArrayList at a specific position (since the events will be displayed in chonological order, this method might be used).
-            //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name/Description of the event"
+            //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name/Description of the event" "Location of the event"
             //User will be able to delete events based on the Event Number and will be asked if they are sure they want to delete an event (before actually deleting the event).
 
+            //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
+            //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
+            DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMin, 00);
+
+            //Testing to see if the DateTime() method works with the user's inputed information
+            Console.WriteLine(eventDateTime);
+
+            //For Wednesday: Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
+            //I would need to ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
+            //If the end time is on another day, then the DateTime for the end time of the event will be different.
+           
         }
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
