@@ -280,7 +280,7 @@ namespace Time_Management_Console_App
             //The date will be passed as a string into DateTime method to determine which day of the week the event will be at. The day of the week will be displayed in the Console with the date like this: May 27, 2022 (Friday)
             //The events will be stored and displayed based on the date from the closest date to the farthest away date (this will probably be done comparing the years, months and then days for each event). Sorting method will need to be done on the eventsHolderArray (which is an ArrayList).
             //The user will be able to see the events and add and delete events. Add() and Remove() methods will be used on the ArrayList. Insert() can be used to insert an element into the ArrayList at a specific position (since the events will be displayed in chonological order, this method might be used).
-            //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name/Description of the event" "Location of the event"
+            //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
             //User will be able to delete events based on the Event Number and will be asked if they are sure they want to delete an event (before actually deleting the event).
 
             //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
@@ -293,7 +293,13 @@ namespace Time_Management_Console_App
             //For Wednesday: Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
             //I would need to ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
             //If the end time is on another day, then the DateTime for the end time of the event will be different.
-           
+
+            //The template to create an event will be the same for all events: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
+            //Since all of the events have the same format, we can use classes as a blueprint for creating the event and objects for each event.  More information about classes/objects can be found here: https://www.w3schools.com/cs/cs_classes.php
+            //All of the events will be stored in a List. Lists are able to store objects that can be accessed by an index. Objects in a List can be searched, sorted and manipulated. Link for this can be found here: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1?view=net-5.0
+            //Example of how to create a Class and how to create an object from a class are found in this website (look at post by Logikal). This site also shows how to add an object into a List (same post). Website: https://stackoverflow.com/questions/26498808/javascript-object-in-c-sharp 
+            //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
+            //Information about C# classes and objects: https://www.geeksforgeeks.org/c-sharp-class-and-object/ 
         }
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
