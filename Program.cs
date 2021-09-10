@@ -14,6 +14,55 @@ namespace Time_Management_Console_App
             //Running the Schedule Planner Component
             schedulePlanner();
 
+            //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
+            eventCreator();
+
+            //Method to create an event to be placed in the list of events
+            static void eventCreator()
+            {
+                //Asking the user what date they would like to create an event
+                //Creating two new rows between the calendar and the question below using "\n\n" and concatenation.
+                Console.WriteLine("\n\n" + "What date would you like to create an event for? Make sure to type the year, month and date in numbers. " +
+                    "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
+                //Getting the user's input with Console.ReadLine(). It will be represented as a string.
+                string eventDate = Console.ReadLine();
+
+                //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
+                //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
+                //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
+                string[] eventDateArray = eventDate.Split(",");
+
+                //Displaying the elements that were Split from the eventDate to the Console.
+                //foreach (string thing in eventDateArray)
+                //    Console.WriteLine(thing);
+
+                //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
+                //Converting the year, which was originally an string data type, into an integer data type
+                int eventYear = Convert.ToInt32(eventDateArray[0]);
+                //Converting the month, which was originally an string data type, into an integer data type
+                int eventMonth = Convert.ToInt32(eventDateArray[1]);
+                //Converting the month, which was originally an string data type, into an integer data type
+                int eventDay = Convert.ToInt32(eventDateArray[2]);
+
+
+                //Asking the user what time the event starts 
+                Console.WriteLine("What time does the event start (use the time in 24 hours (military time)? Start time: ");
+                //Creating the variables that will keep the start time of the event
+                string eventStartTime = Console.ReadLine();
+                //Splitting the time to have a section for the hour and for minutes
+                //Hour= eventStartTimeSplit[0] and Minute= eventStartTimeSplit[1]
+                string[] eventStartTimeSplit = eventStartTime.Split(":");
+                //Converting the hour and minutes into int data types to be used in the DateTime method
+                int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
+                int eventStartMin = Convert.ToInt32(eventStartTimeSplit[1]);
+
+
+                //Asking the user what time the event ends 
+                Console.WriteLine("What time does the event end (use the time in 24 hours (military time)? End time: ");
+                //Creating the variables that will keep the ending time of the event
+                string eventEndTime = Console.ReadLine();
+            }
+
         }
 
         //Method for the Schedule Planner Component
@@ -300,6 +349,34 @@ namespace Time_Management_Console_App
             //Example of how to create a Class and how to create an object from a class are found in this website (look at post by Logikal). This site also shows how to add an object into a List (same post). Website: https://stackoverflow.com/questions/26498808/javascript-object-in-c-sharp 
             //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
             //Information about C# classes and objects: https://www.geeksforgeeks.org/c-sharp-class-and-object/ 
+        }
+
+        //Declaring the Events Class 
+        public class Events
+        {
+            //Instance Variables
+            public int eventNumber;
+            public string eventDateClass;
+            public string eventDateStartTime;
+            public string eventDateEndTime;
+            public string eventName;
+            public string eventLocation;
+            public string eventDescription;
+
+            //Constructor Declaration of Class with multiple parameters
+            public Events(int inputEventNumber, string inputEventDateClass, string inputEventDateStartTime, 
+                string inputEventDateEndTime, string inputEventName, string inputEventLocation,
+                string inputEventDescription)
+            {
+                eventNumber = inputEventNumber;
+                eventDateClass = inputEventDateClass;
+                eventDateStartTime = inputEventDateStartTime;
+                eventDateEndTime = inputEventDateEndTime;
+                eventName = inputEventName;
+                eventLocation = inputEventLocation;
+                eventDescription = inputEventDescription;
+            }
+
         }
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
