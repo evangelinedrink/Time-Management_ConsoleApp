@@ -355,23 +355,41 @@ namespace Time_Management_Console_App
         public class Events
         {
             //Instance Variables
-            public int eventNumber;
-            public string eventDateClass;
-            public string eventDateStartTime;
-            public string eventDateEndTime;
-            public string eventName;
-            public string eventLocation;
-            public string eventDescription;
+            //public int eventNumber;
+            public int eventYear; //Year of the event
+            public int eventMonth; //Month of the event
+            public int eventDay; //Day of the event
+            public int eventStartHour; //Starting Hour of the event
+            public int eventStartMin; //Starting Minute of the event
+
+            public int eventYearEnd; //Year of the event when it ends
+            public int eventMonthEnd; //Month of the event when it ends
+            public int eventDayEnd; //Day of the event when it ends
+            public int eventEndHour; //Hour the event ends
+            public int eventEndMin; //Minute when the event ends
+
+            public string eventName; //Name of the event
+            public string eventLocation; //Location that the event will be held at
+            public string eventDescription; //Description of the event
 
             //Constructor Declaration of Class with multiple parameters
-            public Events(int inputEventNumber, string inputEventDateClass, string inputEventDateStartTime, 
-                string inputEventDateEndTime, string inputEventName, string inputEventLocation,
-                string inputEventDescription)
+            public Events(int inputEventYear, int inputEventMonth, int inputEventDay, 
+                int inputEventStartHour, int inputEventStartMin, 
+                int inputEventYearEnd, int inputEventMonthEnd, int inputEventDayEnd, int inputEventEndHour, int inputEventEndMin,
+                string inputEventName, string inputEventLocation, string inputEventDescription)
             {
-                eventNumber = inputEventNumber;
-                eventDateClass = inputEventDateClass;
-                eventDateStartTime = inputEventDateStartTime;
-                eventDateEndTime = inputEventDateEndTime;
+                eventYear = inputEventYear;
+                eventMonth = inputEventMonth;
+                eventDay = inputEventDay;
+                eventStartHour = inputEventStartHour;
+                eventStartMin = inputEventStartMin;
+
+                eventYearEnd = inputEventYearEnd;
+                eventMonthEnd = inputEventMonthEnd;
+                eventDayEnd = inputEventDayEnd;
+                eventEndHour = inputEventEndHour;
+                eventEndMin = inputEventEndMin;
+
                 eventName = inputEventName;
                 eventLocation = inputEventLocation;
                 eventDescription = inputEventDescription;
