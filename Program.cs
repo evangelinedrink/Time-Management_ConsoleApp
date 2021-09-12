@@ -158,6 +158,26 @@ namespace Time_Management_Console_App
                 //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
                 //Information about C# classes and objects: https://www.geeksforgeeks.org/c-sharp-class-and-object/ 
 
+                //Asking the user the name of the event using Console.WriteLine
+                Console.WriteLine("What is the name of the event?");
+                //Setting the user input to a variable, eventName, by using Console.ReadLine()
+                string eventName = Console.ReadLine();
+
+
+                //Asking the user the location of the event using Console.WriteLine
+                Console.WriteLine("Where will the location of the event take place?");
+                //Setting the user input of the event's location to a variable, eventLocation, by using Console.ReadLine()
+                string eventLocation = Console.ReadLine();
+
+
+                //Asking the user the event's description (if any) or notes about the event using Console.WriteLine
+                Console.WriteLine("Any descriptions or notes that you'd like to include for this event?");
+                //Setting the user input of the event's location to a variable, eventLocation, by using Console.ReadLine()
+                string eventDescription = Console.ReadLine();
+
+                //Displaying the event and its details in the console with this layout: "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
+                //Console.WriteLine and Template Literal is used to display the information about the event. \n creates a new line (line break) for the information
+                Console.WriteLine($"Date and starting time of the event: {eventDateTime}  Ending date and time of the event: {eventEndDateTime} \n Name of the event: {eventName}  Location of the event: {eventLocation} \n Description/Notes about the event: {eventDescription}");
             }
 
         }
@@ -472,7 +492,7 @@ namespace Time_Management_Console_App
             public string eventLocation; //Location that the event will be held at
             public string eventDescription; //Description of the event
 
-            //Constructor Declaration of Class with multiple parameters
+            //Class Constructor Declaration with multiple parameters
             public Events(int inputEventYear, int inputEventMonth, int inputEventDay, 
                 int inputEventStartHour, int inputEventStartMin, 
                 int inputEventYearEnd, int inputEventMonthEnd, int inputEventDayEnd, int inputEventEndHour, int inputEventEndMin,
