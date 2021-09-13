@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections; //With this, computer is able to use the ArrayList class
+using System.Collections.Generic; //With this, computer is able to add, remove and insert an object in a List<T>
 
 
 namespace Time_Management_Console_App
@@ -12,7 +14,7 @@ namespace Time_Management_Console_App
             //todaysTemp();
 
             //Running the Schedule Planner Component
-            schedulePlanner();
+            //schedulePlanner();
 
             //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
             eventCreator();
@@ -63,6 +65,13 @@ namespace Time_Management_Console_App
                 //Converting the hour and minutes into int data types to be used in the DateTime method
                 int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
                 int eventStartMin = Convert.ToInt32(eventStartTimeSplit[1]);
+                //If the user types in 1:00 where 00 corresponds to the minutes, the value for eventStartMin is equal to one zero.
+                //We want to display the two zeroes in the Console when showing the time of the event, which is why 00 are added to eventStartMin by using the If loop.
+                if(eventStartMin==0)
+                {
+                    eventStartMin = 00;
+                }
+                Console.WriteLine($"Results of eventStartMin: {eventStartMin}");
 
                 //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
                 //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
@@ -138,6 +147,11 @@ namespace Time_Management_Console_App
                 //Converting the hour and minutes into int data types to be used in the DateTime method
                 int eventEndHour= Convert.ToInt32(eventEndTimeSplit[0]);
                 int eventEndMin = Convert.ToInt32(eventEndTimeSplit[1]);
+                if (eventEndMin == 0)
+                {
+                    eventEndMin = 00;
+                }
+                Console.WriteLine($"Results of eventEndMin: {eventEndMin}");
 
                 //Taking the end date that the user placed in the Console and using DateTime method to display the end date and time of the event.
                 //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
@@ -175,9 +189,51 @@ namespace Time_Management_Console_App
                 //Setting the user input of the event's location to a variable, eventLocation, by using Console.ReadLine()
                 string eventDescription = Console.ReadLine();
 
+                //Using the values from DateTime to display the date and times of the event
                 //Displaying the event and its details in the console with this layout: "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
                 //Console.WriteLine and Template Literal is used to display the information about the event. \n creates a new line (line break) for the information
-                Console.WriteLine($"Date and starting time of the event: {eventDateTime}  Ending date and time of the event: {eventEndDateTime} \n Name of the event: {eventName}  Location of the event: {eventLocation} \n Description/Notes about the event: {eventDescription}");
+                /*
+                Console.WriteLine($"Date and starting time of the event: {eventDateTime} \n" +
+                    $"Ending date and time of the event: {eventEndDateTime} \n" +
+                    $"Name of the event: {eventName} \n" +
+                    $"Location of the event: {eventLocation} \n" +
+                    $"Description/Notes about the event: {eventDescription}");
+                */
+
+                //Creating an ArrayList that will contain all the events placed by the user
+                //var eventsList = new ArrayList();
+
+                //How to create a List in C#: https://www.c-sharpcorner.com/UploadFile/mahesh/insert-item-into-a-C-Sharp-list/ 
+
+                /*Creating the Object for each event using the Event Class*/
+                //Creating the event object using each variable for the date, time, name, location and details of the event 
+                Events eventInformation = new Events(eventDateTime.Year, eventDateTime.Month, eventDateTime.Day, 
+                     eventDateTime.Hour, eventDateTime.Minute,
+                   eventEndDateTime.Year, eventEndDateTime.Month, eventEndDateTime.Day,
+                 eventEndDateTime.Hour, eventEndDateTime.Minute,
+                  eventName, eventLocation, eventDescription);
+
+                //Displaying the details of the event using the eventDetails method (which is located in the Events Class)
+                //Console.WriteLine(eventInformation.displayEvent());
+
+                //Creating an ArrayList that will contain all the events placed by the user
+                var eventsList = new ArrayList();
+
+                //Adding the events in the ArrayList
+                eventsList.Add(eventInformation);
+
+                //Reading the items in the List
+                //Events is the name of the Class. eventsList is the name of the ArrayList.
+                //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
+                foreach(Events items in eventsList)
+                {
+                    Console.WriteLine($"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} \n" +
+                    $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} \n" +
+                    $"Name of the event: {items.eventName} \n" +
+                    $"Location of the event: {items.eventLocation} \n" +
+                    $"Description/Notes about the event: {items.eventDescription}");
+                }
+
             }
 
         }
@@ -475,7 +531,6 @@ namespace Time_Management_Console_App
         public class Events
         {
             //Instance Variables
-            //public int eventNumber;
             public int eventYear; //Year of the event
             public int eventMonth; //Month of the event
             public int eventDay; //Day of the event
@@ -488,13 +543,15 @@ namespace Time_Management_Console_App
             public int eventEndHour; //Hour the event ends
             public int eventEndMin; //Minute when the event ends
 
+
             public string eventName; //Name of the event
             public string eventLocation; //Location that the event will be held at
             public string eventDescription; //Description of the event
 
+
             //Class Constructor Declaration with multiple parameters
-            public Events(int inputEventYear, int inputEventMonth, int inputEventDay, 
-                int inputEventStartHour, int inputEventStartMin, 
+            public Events(int inputEventYear, int inputEventMonth, int inputEventDay,
+                int inputEventStartHour, int inputEventStartMin,
                 int inputEventYearEnd, int inputEventMonthEnd, int inputEventDayEnd, int inputEventEndHour, int inputEventEndMin,
                 string inputEventName, string inputEventLocation, string inputEventDescription)
             {
@@ -514,6 +571,19 @@ namespace Time_Management_Console_App
                 eventLocation = inputEventLocation;
                 eventDescription = inputEventDescription;
             }
+
+            //Creating a Method (function) that will display the details of the event in the Console.
+            public String displayEvent()
+            {
+                return (
+                    $"Date and starting time of the event: {eventMonth}/{eventDay}/{eventYear} at {eventStartHour}:{eventStartMin} \n" +
+                    $"Ending date and time of the event: {eventMonthEnd}/{eventDayEnd}/{eventYearEnd} at {eventEndHour}:{eventEndMin} \n" +
+                    $"Name of the event: {eventName} \n" +
+                    $"Location of the event: {eventLocation} \n" +
+                    $"Description/Notes about the event: {eventDescription}"
+                    );
+            }
+          
 
         }
 
