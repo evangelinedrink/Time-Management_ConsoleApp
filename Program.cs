@@ -587,6 +587,23 @@ namespace Time_Management_Console_App
 
         }
 
+        //Method to create Notes and Memos in the Time Management App
+        //Console.WriteLine will be used to ask the user if they would like to create a new set of notes
+        //If they say "Yes", then the Console will ask them to name their notes and then register the date and time that the notes were created (using DateTime() method)
+        //The notes will be stored in a Queue (first in, first out)
+        //The Console will ask the user if they would like to view their notes. If they say "Yes", then the Console will display their notes starting from the first notes created to the latest notes.
+
+        //Method to create a Check List
+        //Console.WriteLine will ask the user if they would like to create a Check List
+        //If user answers "Yes", the computer will ask them to write the items for their Check List (the code will be in a Do/While Loop and when the user types in "End", the Console will stop asking them to write items for the Check List).
+        //The items in the Check List will be stored either in a List or in an ArrayList. Each item in the Check List will be given an item number (starting at 1, the 1 will be a part of a counter called itemNumberCounter).
+        //When refering to that item number, since index number starts at 0, for an item with item number 1, to access its index number, it will be 1 (item number) - 1.
+        //Users will be able to view their items in the Check List (computer will ask if they would like to view items in the Check List, if yes, then the items in the Check List will appear by using the foreach loop).
+        //After viewing items in the Check List, the Console will ask users if they would like to remove or add items to the list (this will be done with Console.WriteLine).
+        //Once items in the Check List are completed, the user can delete completed tasks by typing "Remove" to the question (if they would like to remove item(s) from the list).
+        //After typing in "Remove", a new Console.WriteLine will ask what items in the Check List that they would like to remove. The user will have to type in the item number for each item they would like to delete, separating each by commas (using string.Split(",") to separate each item).
+        //Remove.At(index number) will be used to delete each item from the List. Remember: First item in the Check List will have item number 1. To refer to its index number, it will be 1 (its item number) - 1
+
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
         //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
         public static void todaysTemp()
