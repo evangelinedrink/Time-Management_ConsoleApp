@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections; //With this, computer is able to use the ArrayList class
 using System.Collections.Generic; //With this, computer is able to add, remove and insert an object in a List<T>
+using System.Timers; //With this, the timer can be used
 
 
 namespace Time_Management_Console_App
@@ -603,6 +604,17 @@ namespace Time_Management_Console_App
         //Once items in the Check List are completed, the user can delete completed tasks by typing "Remove" to the question (if they would like to remove item(s) from the list).
         //After typing in "Remove", a new Console.WriteLine will ask what items in the Check List that they would like to remove. The user will have to type in the item number for each item they would like to delete, separating each by commas (using string.Split(",") to separate each item).
         //Remove.At(index number) will be used to delete each item from the List. Remember: First item in the Check List will have item number 1. To refer to its index number, it will be 1 (its item number) - 1
+
+        //Method to create a Timer
+        //Creating a timer with a certain interval (3 second interal= 3000 milliseconds)
+        //appTimer= new System.Timers.Timer(3000);
+        //Creating an elapsed event for the timer
+        //appTimer.Elapsed += OnTimedEvent;
+        //appTimer.AutoReset= true;
+        //appTimer.Enabled= true;
+        //The code below needs to be in the Main component
+        //appTimer.Stop();
+        //appTimber.Dispose();
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
         //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
