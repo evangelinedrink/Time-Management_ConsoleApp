@@ -18,7 +18,6 @@ namespace Time_Management_Console_App
             //schedulePlanner();
 
             //Creating a Do/While loop to ask if the user would like to place an event in their event's list
-
             //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
             string scheduleAnotherEvent="NO";
 
@@ -271,6 +270,9 @@ namespace Time_Management_Console_App
                 //Adding the events in the ArrayList
                 eventsList.Add(eventInformation);
 
+                //The amount of events contained inside of the eventsList (which is an ArrayList)
+                //int eventsListNumber = eventsList.Length();
+
                 //Reading the items in the List
                 //Events is the name of the Class. eventsList is the name of the ArrayList.
                 //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
@@ -282,6 +284,22 @@ namespace Time_Management_Console_App
                     $"Location of the event: {items.eventLocation} \n" +
                     $"Description/Notes about the event: {items.eventDescription} \n");
                 }
+
+                //Asking users if they would like to see the events from the Event's List
+                Console.WriteLine("Would you like to see the events in your event's list?");
+                //Obtaining the user's response to the question above. The user's response will be converted to upper case
+                string seeEventList = Console.ReadLine().ToUpper();
+                //If the user would like to see the events in the event's list, an If Statement will check this and then display the events in chronological order
+                if (seeEventList == "YES")
+                {
+                    //Telling user how many events are in their event list by using template literal
+                    //Console.WriteLine($"There are {eventsList.Length} ")
+                }
+                
+                //Displaying all the events in the ArrayList containing all the events (named eventsList) to the user in chronological order
+                //To determine which event will be displayed first, there will be a comparaison between the year, month and days of the event using If/Else If Statements
+                //If the date is the same for both events, their starting time (the hour the event starts) will be compared. If they start at the same hour, their starting time in minutes will be compared.
+                //Comparisons will be done using If/Else If Statements
 
             }
 
