@@ -10,15 +10,51 @@ namespace Time_Management_Console_App
     {
         static void Main(string[] args)
         {
-            
+
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
             //todaysTemp();
 
             //Running the Schedule Planner Component
             //schedulePlanner();
 
-            //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
-            eventCreator();
+            //Creating a Do/While loop to ask if the user would like to place an event in their event's list
+
+            //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
+            string scheduleAnotherEvent="NO";
+
+            do
+            {
+                //Asking the user if they would like to schedule an event
+                Console.WriteLine("Would you like to schedule an event in your event list?");
+                //Getting the user's response 
+                string scheduleEvent = Console.ReadLine().ToUpper();
+
+                if (scheduleEvent == "YES")
+                {
+                    //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
+                    eventCreator();
+                }
+                else if ((scheduleEvent != "YES") || (scheduleEvent != "NO"))
+                {
+                    Console.WriteLine("Please answer with a \"Yes\" or a \"No\".");
+                }
+
+                //Asking the user if they would like to schedule another event
+                Console.WriteLine("Would you like to add another event to your event's list?");
+                //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
+                scheduleAnotherEvent = Console.ReadLine().ToUpper();
+                //Ensuring that the user types "Yes" or "No" in the Console to whether they would like to schedule another event by using a While loop to check their response
+                //The code within this While loop will run when both scheduleAnotherEvent is not equal to YES or NO (True && True = True, all other combinations are equal to False). While loop only runs when conditions are True.
+                while ((scheduleAnotherEvent != "YES") && (scheduleAnotherEvent != "NO"))
+                {
+                    Console.WriteLine("Please answer the question with a \"Yes\" or a \"No\".\n Would you like to add another event to your event's list?");
+                    //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
+                    scheduleAnotherEvent = Console.ReadLine().ToUpper();
+                }
+
+            } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
+            
+
 
             //Method to create an event to be placed in the list of events
             static void eventCreator()
