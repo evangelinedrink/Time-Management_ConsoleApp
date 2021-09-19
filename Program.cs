@@ -22,14 +22,14 @@ namespace Time_Management_Console_App
             //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
             string scheduleAnotherEvent="NO";
 
+            //Asking the user if they would like to schedule an event
+            Console.WriteLine("Would you like to schedule an event in your event list?");
+            //Getting the user's response 
+            string scheduleEvent = Console.ReadLine().ToUpper();
+
             do
             {
-                //Asking the user if they would like to schedule an event
-                Console.WriteLine("Would you like to schedule an event in your event list?");
-                //Getting the user's response 
-                string scheduleEvent = Console.ReadLine().ToUpper();
-
-                if (scheduleEvent == "YES")
+                if ((scheduleEvent == "YES") || (scheduleAnotherEvent == "YES"))
                 {
                     //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
                     eventCreator();
@@ -79,44 +79,58 @@ namespace Time_Management_Console_App
                 //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
                 string[] eventDateArray = eventDate.Split(",");
 
-                //Displaying the elements that were Split from the eventDate to the Console.
-                //foreach (string thing in eventDateArray)
-                //    Console.WriteLine(thing);
-
                 //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
                 //Converting the year, which was originally a string data type, into an integer data type
                 int eventYear = Convert.ToInt32(eventDateArray[0]);
                 //Converting the month, which was originally an string data type, into an integer data type
                 int eventMonth = Convert.ToInt32(eventDateArray[1]);
-                //Converting the month, which was originally an string data type, into an integer data type
+                //Converting the day, which was originally an string data type, into an integer data type
                 int eventDay = Convert.ToInt32(eventDateArray[2]);
 
 
                 //Asking the user what time the event starts 
-                Console.WriteLine("What time does the event start (use the time in 24 hours (military time)? Start time: ");
+                Console.WriteLine("What time does the event start (make sure to type it in this format:  hour : minutes: am or pm)? Start time: ");
                 //Creating the variables that will keep the start time of the event
                 string eventStartTime = Console.ReadLine();
                 //Splitting the time to have a section for the hour and for minutes
-                //Hour= eventStartTimeSplit[0] and Minute= eventStartTimeSplit[1]
+                //Hour= eventStartTimeSplit[0], Minute= eventStartTimeSplit[1], am or pm = eventStartTimeSplit[2]
                 string[] eventStartTimeSplit = eventStartTime.Split(":");
                 //Converting the hour and minutes into int data types to be used in the DateTime method
                 int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
-                int eventStartMin = Convert.ToInt32(eventStartTimeSplit[1]);
+                int eventStartMinInt = Convert.ToInt32(eventStartTimeSplit[1]);
+                string eventStartMin = eventStartTimeSplit[1];
+
+                //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
+                //Declaring the variable eventStartAmPm to check if the time needs to be converted to military time (24 hours clock)
+                //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
+                string eventStartAmPm = eventStartTimeSplit[2].ToUpper();
+                if (eventStartAmPm=="PM")
+                {
+                    //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
+                    //To do this, 12 hours has to be added to the eventStartHour variable
+                    eventStartHour += 12;
+                }
+                
                 //If the user types in 1:00 where 00 corresponds to the minutes, the value for eventStartMin is equal to one zero.
                 //We want to display the two zeroes in the Console when showing the time of the event, which is why 00 are added to eventStartMin by using the If loop.
-                if(eventStartMin==0)
+                /*if(eventStartMin==0)
                 {
                     eventStartMin = 00;
                 }
+                */
                 Console.WriteLine($"Results of eventStartMin: {eventStartMin}");
 
                 //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
                 //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
-                DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMin, 00);
+                DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMinInt, 00);
 
                 //Testing to see if the DateTime() method works with the user's inputed information
                 Console.WriteLine(eventDateTime);
 
+
+                //Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
+                //Ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
+                //If the end time is on another day, then the DateTime for the end time of the event will be different.
                 //Creating a Do/While Loop that will ask if the event ends on the same day that it starts.
                 //If the user types something besides "Yes" or "No" to the question, the code within the Do Loop will continue to prompt them to answer the question.
 
@@ -176,38 +190,34 @@ namespace Time_Management_Console_App
                 } while (error=="True");
 
                 //Asking the user what time the event ends 
-                Console.WriteLine("What time does the event end (use the time in 24 hours (military time)? End time: ");
+                Console.WriteLine("What time does the event end (make sure to type it in this format:  hour : minutes: am or pm)? End time: ");
                 //Creating the variables that will keep the ending time of the event
                 string eventEndTime = Console.ReadLine();
                 //Splitting the time to have a section for the hour and for minutes
                 string[] eventEndTimeSplit = eventEndTime.Split(":");
                 //Converting the hour and minutes into int data types to be used in the DateTime method
                 int eventEndHour= Convert.ToInt32(eventEndTimeSplit[0]);
-                int eventEndMin = Convert.ToInt32(eventEndTimeSplit[1]);
-                if (eventEndMin == 0)
+                int eventEndMinInt = Convert.ToInt32(eventEndTimeSplit[1]);
+                string eventEndMin = eventEndTimeSplit[1];
+
+
+                //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
+                //Declaring the variable eventEndAmPm to check if the time needs to be converted to military time (24 hours clock). eventEndAmPm will either be AM or PM
+                //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
+                string eventEndAmPm = eventEndTimeSplit[2].ToUpper();
+                if (eventEndAmPm == "PM")
                 {
-                    eventEndMin = 00;
+                    //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
+                    //To do this, 12 hours has to be added to the eventEndHour variable
+                    eventEndHour += 12;
                 }
-                Console.WriteLine($"Results of eventEndMin: {eventEndMin}");
 
                 //Taking the end date that the user placed in the Console and using DateTime method to display the end date and time of the event.
                 //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
-                DateTime eventEndDateTime = new DateTime(eventYearEnd, eventMonthEnd, eventDayEnd, eventEndHour, eventEndMin, 00);
+                DateTime eventEndDateTime = new DateTime(eventYearEnd, eventMonthEnd, eventDayEnd, eventEndHour, eventEndMinInt, 00);
 
                 //Checking to see if the eventEndDateTime will be displayed in the Console
                 Console.WriteLine(eventEndDateTime);
-
-
-                //For Wednesday: Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
-                //I would need to ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
-                //If the end time is on another day, then the DateTime for the end time of the event will be different.
-
-                //The template to create an event will be the same for all events: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
-                //Since all of the events have the same format, we can use classes as a blueprint for creating the event and objects for each event.  More information about classes/objects can be found here: https://www.w3schools.com/cs/cs_classes.php
-                //All of the events will be stored in a List. Lists are able to store objects that can be accessed by an index. Objects in a List can be searched, sorted and manipulated. Link for this can be found here: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1?view=net-5.0
-                //Example of how to create a Class and how to create an object from a class are found in this website (look at post by Logikal). This site also shows how to add an object into a List (same post). Website: https://stackoverflow.com/questions/26498808/javascript-object-in-c-sharp 
-                //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
-                //Information about C# classes and objects: https://www.geeksforgeeks.org/c-sharp-class-and-object/ 
 
                 //Asking the user the name of the event using Console.WriteLine
                 Console.WriteLine("What is the name of the event?");
@@ -237,17 +247,19 @@ namespace Time_Management_Console_App
                     $"Description/Notes about the event: {eventDescription}");
                 */
 
-                //Creating an ArrayList that will contain all the events placed by the user
-                //var eventsList = new ArrayList();
 
-                //How to create a List in C#: https://www.c-sharpcorner.com/UploadFile/mahesh/insert-item-into-a-C-Sharp-list/ 
+                //The template to create an event will be the same for all events: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
+                //Since all of the events have the same format, classes can be used as a blueprint for creating the event and objects for each event.  
+                //All of the events will be stored in an ArrayList. ArrayLists are able to store objects that can be accessed by an index. Objects in an ArrayList can be searched, sorted and manipulated. 
+                //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
+
 
                 /*Creating the Object for each event using the Event Class*/
                 //Creating the event object using each variable for the date, time, name, location and details of the event 
                 Events eventInformation = new Events(eventDateTime.Year, eventDateTime.Month, eventDateTime.Day, 
-                     eventDateTime.Hour, eventDateTime.Minute,
+                     eventDateTime.Hour, eventStartMin, eventStartAmPm,
                    eventEndDateTime.Year, eventEndDateTime.Month, eventEndDateTime.Day,
-                 eventEndDateTime.Hour, eventEndDateTime.Minute,
+                 eventEndDateTime.Hour, eventEndMin, eventEndAmPm,
                   eventName, eventLocation, eventDescription);
 
                 //Displaying the details of the event using the eventDetails method (which is located in the Events Class)
@@ -264,11 +276,11 @@ namespace Time_Management_Console_App
                 //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
                 foreach(Events items in eventsList)
                 {
-                    Console.WriteLine($"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} \n" +
-                    $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} \n" +
+                    Console.WriteLine($"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
+                    $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
                     $"Name of the event: {items.eventName} \n" +
                     $"Location of the event: {items.eventLocation} \n" +
-                    $"Description/Notes about the event: {items.eventDescription}");
+                    $"Description/Notes about the event: {items.eventDescription} \n");
                 }
 
             }
@@ -487,81 +499,6 @@ namespace Time_Management_Console_App
                     Console.WriteLine(" ");
                 }      
             }
-
-            /*Old Code for creating the events
-            //Defining an array that can have variable size (dynamic sized array)
-            //This array will contain the events that the user will schedule in the planner
-            string[] eventsHolderArray = new string[] { };
-
-            //Asking the user what date they would like to create an event
-            //Creating two new rows between the calendar and the question below using "\n\n" and concatenation.
-            Console.WriteLine("\n\n"+ "What date would you like to create an event for? Make sure to type the year, month and date in numbers. " +
-                "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
-            //Getting the user's input with Console.ReadLine(). It will be represented as a string.
-            string eventDate = Console.ReadLine();
-
-            //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
-            //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
-            //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
-            string[] eventDateArray = eventDate.Split(",");
-
-            //Displaying the elements that were Split from the eventDate to the Console.
-            //foreach (string thing in eventDateArray)
-            //    Console.WriteLine(thing);
-
-            //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
-            //Converting the year, which was originally an string data type, into an integer data type
-            int eventYear = Convert.ToInt32(eventDateArray[0]);
-            //Converting the month, which was originally an string data type, into an integer data type
-            int eventMonth = Convert.ToInt32(eventDateArray[1]);
-            //Converting the month, which was originally an string data type, into an integer data type
-            int eventDay = Convert.ToInt32(eventDateArray[2]);
-          
-
-            //Asking the user what time the event starts 
-            Console.WriteLine("What time does the event start (use the time in 24 hours (military time)? Start time: ");
-            //Creating the variables that will keep the start time of the event
-            string eventStartTime = Console.ReadLine();
-            //Splitting the time to have a section for the hour and for minutes
-            //Hour= eventStartTimeSplit[0] and Minute= eventStartTimeSplit[1]
-            string[] eventStartTimeSplit = eventStartTime.Split(":");
-            //Converting the hour and minutes into int data types to be used in the DateTime method
-            int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
-            int eventStartMin= Convert.ToInt32(eventStartTimeSplit[1]);
-
-
-            //Asking the user what time the event ends 
-            Console.WriteLine("What time does the event end (use the time in 24 hours (military time)? End time: ");
-            //Creating the variables that will keep the ending time of the event
-            string eventEndTime = Console.ReadLine();
-
-            //For this section of the code, the user will type in the events they would like in their event schedule.
-            //The date (year, month and day), time (which will include a time range), and the name of the event (this will be a string) will be stored in the eventsHolderArray (probably needs to be an ArrayList since its size will be changing depending on user input).
-            //The date will be passed as a string into DateTime method to determine which day of the week the event will be at. The day of the week will be displayed in the Console with the date like this: May 27, 2022 (Friday)
-            //The events will be stored and displayed based on the date from the closest date to the farthest away date (this will probably be done comparing the years, months and then days for each event). Sorting method will need to be done on the eventsHolderArray (which is an ArrayList).
-            //The user will be able to see the events and add and delete events. Add() and Remove() methods will be used on the ArrayList. Insert() can be used to insert an element into the ArrayList at a specific position (since the events will be displayed in chonological order, this method might be used).
-            //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
-            //User will be able to delete events based on the Event Number and will be asked if they are sure they want to delete an event (before actually deleting the event).
-
-            //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
-            //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
-            DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMin, 00);
-
-            //Testing to see if the DateTime() method works with the user's inputed information
-            Console.WriteLine(eventDateTime);
-
-            //For Wednesday: Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
-            //I would need to ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
-            //If the end time is on another day, then the DateTime for the end time of the event will be different.
-
-            //The template to create an event will be the same for all events: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
-            //Since all of the events have the same format, we can use classes as a blueprint for creating the event and objects for each event.  More information about classes/objects can be found here: https://www.w3schools.com/cs/cs_classes.php
-            //All of the events will be stored in a List. Lists are able to store objects that can be accessed by an index. Objects in a List can be searched, sorted and manipulated. Link for this can be found here: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1?view=net-5.0
-            //Example of how to create a Class and how to create an object from a class are found in this website (look at post by Logikal). This site also shows how to add an object into a List (same post). Website: https://stackoverflow.com/questions/26498808/javascript-object-in-c-sharp 
-            //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
-            //Information about C# classes and objects: https://www.geeksforgeeks.org/c-sharp-class-and-object/ 
-
-            */
         }
 
         //Declaring the Events Class 
@@ -572,13 +509,15 @@ namespace Time_Management_Console_App
             public int eventMonth; //Month of the event
             public int eventDay; //Day of the event
             public int eventStartHour; //Starting Hour of the event
-            public int eventStartMin; //Starting Minute of the event
+            public string eventStartMin; //Starting Minute of the event
+            public string eventStartAmPm; //indicates if the time is in the morning (am) or after noon (pm)
 
             public int eventYearEnd; //Year of the event when it ends
             public int eventMonthEnd; //Month of the event when it ends
             public int eventDayEnd; //Day of the event when it ends
             public int eventEndHour; //Hour the event ends
-            public int eventEndMin; //Minute when the event ends
+            public string eventEndMin; //Minute when the event ends
+            public string eventEndAmPm; //indicates if the time is in the morning (am) or after noon (pm)
 
 
             public string eventName; //Name of the event
@@ -588,8 +527,8 @@ namespace Time_Management_Console_App
 
             //Class Constructor Declaration with multiple parameters
             public Events(int inputEventYear, int inputEventMonth, int inputEventDay,
-                int inputEventStartHour, int inputEventStartMin,
-                int inputEventYearEnd, int inputEventMonthEnd, int inputEventDayEnd, int inputEventEndHour, int inputEventEndMin,
+                int inputEventStartHour, string inputEventStartMin, string inputEventStartAmPm,
+                int inputEventYearEnd, int inputEventMonthEnd, int inputEventDayEnd, int inputEventEndHour, string inputEventEndMin, string inputEventEndAmPm,
                 string inputEventName, string inputEventLocation, string inputEventDescription)
             {
                 eventYear = inputEventYear;
@@ -597,24 +536,41 @@ namespace Time_Management_Console_App
                 eventDay = inputEventDay;
                 eventStartHour = inputEventStartHour;
                 eventStartMin = inputEventStartMin;
+                eventStartAmPm = inputEventStartAmPm;
+                //Converting the time in hours to standard American time (not 24 hours time displaying)
+                if (eventStartAmPm == "PM")
+                {
+                    //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted back to AM/PM time (not military time of 24 hours clock)
+                    //To do this, 12 hours has to be substracted to the eventStartHour variable
+                    eventStartHour -= 12;
+                }
 
                 eventYearEnd = inputEventYearEnd;
                 eventMonthEnd = inputEventMonthEnd;
                 eventDayEnd = inputEventDayEnd;
                 eventEndHour = inputEventEndHour;
                 eventEndMin = inputEventEndMin;
+                eventEndAmPm = inputEventEndAmPm;
+                //Converting the time in hours to standard American time (not 24 hours time displaying)
+                if (eventEndAmPm == "PM")
+                {
+                    //Since the user indicated that the time was in pm (during the afternoon or evening), the event's ending hour needs to be converted back to AM/PM time (not military time of 24 hours clock)
+                    //To do this, 12 hours has to be substracted to the eventEndHour variable
+                    eventEndHour -= 12;
+                }
 
                 eventName = inputEventName;
                 eventLocation = inputEventLocation;
                 eventDescription = inputEventDescription;
+
             }
 
             //Creating a Method (function) that will display the details of the event in the Console.
             public String displayEvent()
             {
                 return (
-                    $"Date and starting time of the event: {eventMonth}/{eventDay}/{eventYear} at {eventStartHour}:{eventStartMin} \n" +
-                    $"Ending date and time of the event: {eventMonthEnd}/{eventDayEnd}/{eventYearEnd} at {eventEndHour}:{eventEndMin} \n" +
+                    $"Date and starting time of the event: {eventMonth}/{eventDay}/{eventYear} at {eventStartHour}:{eventStartMin} {eventStartAmPm}\n" +
+                    $"Ending date and time of the event: {eventMonthEnd}/{eventDayEnd}/{eventYearEnd} at {eventEndHour}:{eventEndMin} {eventEndAmPm}\n" +
                     $"Name of the event: {eventName} \n" +
                     $"Location of the event: {eventLocation} \n" +
                     $"Description/Notes about the event: {eventDescription}"
