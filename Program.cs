@@ -25,13 +25,14 @@ namespace Time_Management_Console_App
             Console.WriteLine("Would you like to schedule an event in your event list?");
             //Getting the user's response 
             string scheduleEvent = Console.ReadLine().ToUpper();
-
+            //Creating an ArrayList that will contain all the events placed by the user
+            var eventsList = new ArrayList();
             do
             {
                 if ((scheduleEvent == "YES") || (scheduleAnotherEvent == "YES"))
                 {
                     //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
-                    eventCreator();
+                    eventCreator(eventsList);
                 }
                 else if ((scheduleEvent != "YES") || (scheduleEvent != "NO"))
                 {
@@ -56,7 +57,7 @@ namespace Time_Management_Console_App
 
 
             //Method to create an event to be placed in the list of events
-            static void eventCreator()
+            static void eventCreator(ArrayList eventsList)
             {
                 //For this section of the code, the user will type in the events they would like in their event schedule.
                 //The date (year, month and day), time (which will include a time range), and the name of the event (this will be a string) will be stored in the eventsHolderArray (probably needs to be an ArrayList since its size will be changing depending on user input).
@@ -103,28 +104,19 @@ namespace Time_Management_Console_App
                 //Declaring the variable eventStartAmPm to check if the time needs to be converted to military time (24 hours clock)
                 //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
                 string eventStartAmPm = eventStartTimeSplit[2].ToUpper();
-                if (eventStartAmPm=="PM")
+                if ((eventStartAmPm=="PM") && (eventStartHour !=12))  //If the eventStartHour is equal to 12, there is no need to add 12 to it since 12:00 pm is equal to 12:00 in the 24 hours time.
                 {
                     //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
                     //To do this, 12 hours has to be added to the eventStartHour variable
                     eventStartHour += 12;
                 }
-                
-                //If the user types in 1:00 where 00 corresponds to the minutes, the value for eventStartMin is equal to one zero.
-                //We want to display the two zeroes in the Console when showing the time of the event, which is why 00 are added to eventStartMin by using the If loop.
-                /*if(eventStartMin==0)
-                {
-                    eventStartMin = 00;
-                }
-                */
-                Console.WriteLine($"Results of eventStartMin: {eventStartMin}");
 
                 //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
                 //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
                 DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMinInt, 00);
 
                 //Testing to see if the DateTime() method works with the user's inputed information
-                Console.WriteLine(eventDateTime);
+                //Console.WriteLine(eventDateTime);
 
 
                 //Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
@@ -204,7 +196,7 @@ namespace Time_Management_Console_App
                 //Declaring the variable eventEndAmPm to check if the time needs to be converted to military time (24 hours clock). eventEndAmPm will either be AM or PM
                 //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
                 string eventEndAmPm = eventEndTimeSplit[2].ToUpper();
-                if (eventEndAmPm == "PM")
+                if ((eventEndAmPm == "PM") && (eventEndHour != 12))
                 {
                     //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
                     //To do this, 12 hours has to be added to the eventEndHour variable
@@ -216,7 +208,7 @@ namespace Time_Management_Console_App
                 DateTime eventEndDateTime = new DateTime(eventYearEnd, eventMonthEnd, eventDayEnd, eventEndHour, eventEndMinInt, 00);
 
                 //Checking to see if the eventEndDateTime will be displayed in the Console
-                Console.WriteLine(eventEndDateTime);
+                //Console.WriteLine(eventEndDateTime);
 
                 //Asking the user the name of the event using Console.WriteLine
                 Console.WriteLine("What is the name of the event?");
@@ -264,43 +256,85 @@ namespace Time_Management_Console_App
                 //Displaying the details of the event using the eventDetails method (which is located in the Events Class)
                 //Console.WriteLine(eventInformation.displayEvent());
 
-                //Creating an ArrayList that will contain all the events placed by the user
-                var eventsList = new ArrayList();
-
-                //Adding the events in the ArrayList
+                //Adding the events in the ArrayList titled eventsList. The eventsList ArrayList was passed in as a parameter to be used for the createEvent() method
                 eventsList.Add(eventInformation);
 
-                //The amount of events contained inside of the eventsList (which is an ArrayList)
-                //int eventsListNumber = eventsList.Length();
-
-                //Reading the items in the List
-                //Events is the name of the Class. eventsList is the name of the ArrayList.
-                //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
-                foreach(Events items in eventsList)
-                {
-                    Console.WriteLine($"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
-                    $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
-                    $"Name of the event: {items.eventName} \n" +
-                    $"Location of the event: {items.eventLocation} \n" +
-                    $"Description/Notes about the event: {items.eventDescription} \n");
-                }
-
                 //Asking users if they would like to see the events from the Event's List
-                Console.WriteLine("Would you like to see the events in your event's list?");
+                Console.WriteLine("Would you like to see the events in your event list?");
                 //Obtaining the user's response to the question above. The user's response will be converted to upper case
                 string seeEventList = Console.ReadLine().ToUpper();
                 //If the user would like to see the events in the event's list, an If Statement will check this and then display the events in chronological order
                 if (seeEventList == "YES")
                 {
                     //Telling user how many events are in their event list by using template literal
-                    //Console.WriteLine($"There are {eventsList.Length} ")
+                    Console.WriteLine($"There are {eventsList.Count} event(s) in your event list. Here are the event(s) in your list: ");
+
+                    //Using a For loop to display the number of the events
+                    for(int i=1; i<= eventsList.Count; i++)
+                    {                       
+                        //The first item in an ArrayList starts with index 0, which is why k is equal to zero for the first event on the list
+                        int k = i - 1;
+
+                        //One event should be displayed on the Console per iteration of the For loop
+                        //foreach loop is used to display items in an ArrayList. Since the eventsList ArrayList has multiple items in it and we want one event and its description to be shown per iteration
+                        //each event has to be in its own ArrayList to display only that event's description.
+                        //This is why the oneEvent ArrayList was created to display its content for only one event per For loop iteration.
+                        //If the onEvent ArrayList was not created, all of the events and their details will show up per iteration of the For loop.
+                        ArrayList oneEvent= new ArrayList() { eventsList[k] };
+
+                        //Displaying the information about the event
+                        //Reading the items in the ArrayList
+                        //Events is the name of the Class. eventsList is the name of the ArrayList.
+                        //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
+                        foreach (Events items in oneEvent)
+                        {
+                            Console.WriteLine($"Event #{i} \n" + //Displaying the number of the event on the list
+                            $"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
+                            $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
+                            $"Name of the event: {items.eventName} \n" +
+                            $"Location of the event: {items.eventLocation} \n" +
+                            $"Description/Notes about the event: {items.eventDescription} \n");
+                        }
+                    }
                 }
-                
+
                 //Displaying all the events in the ArrayList containing all the events (named eventsList) to the user in chronological order
                 //To determine which event will be displayed first, there will be a comparaison between the year, month and days of the event using If/Else If Statements
                 //If the date is the same for both events, their starting time (the hour the event starts) will be compared. If they start at the same hour, their starting time in minutes will be compared.
                 //Comparisons will be done using If/Else If Statements
 
+
+                /*Trying to place the events in a List
+                //Placing the events in a List (this List will be named eventsList).
+                //This line, List<Events>, will add the objects of the Events class to this list.
+                List<Events> eventsList = new List<Events>
+                {
+                    //new Events {eventInformation }, //All the information for the event's object will be added to the eventsList
+
+                
+                    new Events
+                    {
+                        eventYear=  eventDateTime.Year,
+                        eventMonth= eventDateTime.Month,
+                        eventDay= eventDateTime.Day,
+                        eventStartHour= eventDateTime.Hour,
+                        eventStartMin= eventStartMin,
+                        eventStartAmPm= eventStartAmPm,
+
+                        eventYearEnd= eventEndDateTime.Year,
+                        eventMonthEnd= eventEndDateTime.Month,
+                        eventDayEnd= eventEndDateTime.Day,
+                        eventEndHour= eventEndDateTime.Hour,
+                        eventEndMin= eventEndMin,
+                        eventEndAmPm= eventEndAmPm,
+
+                        eventName= eventName,
+                        eventLocation= eventLocation,
+                        eventDescription= eventDescription,
+                    },
+                
+                }
+                */
             }
 
         }
@@ -522,6 +556,27 @@ namespace Time_Management_Console_App
         //Declaring the Events Class 
         public class Events
         {
+            //Instance Variables (get means we can get the values for that variable, set means we can change the values for the variable)
+            public int eventYear { get; set; } //Year of the event
+            public int eventMonth { get; set; } //Month of the event
+            public int eventDay { get; set; } //Day of the event
+            public int eventStartHour { get; set; }//Starting Hour of the event
+            public string eventStartMin { get; set; } //Starting Minute of the event
+            public string eventStartAmPm { get; set; }//indicates if the time is in the morning (am) or after noon (pm)
+
+            public int eventYearEnd { get; set; }//Year of the event when it ends
+            public int eventMonthEnd { get; set; }//Month of the event when it ends
+            public int eventDayEnd { get; set; }//Day of the event when it ends
+            public int eventEndHour { get; set; }//Hour the event ends
+            public string eventEndMin { get; set; }//Minute when the event ends
+            public string eventEndAmPm { get; set; }//indicates if the time is in the morning (am) or after noon (pm)
+
+
+            public string eventName { get; set; }//Name of the event
+            public string eventLocation { get; set; }//Location that the event will be held at
+            public string eventDescription { get; set; } //Description of the event
+
+            /*
             //Instance Variables
             public int eventYear; //Year of the event
             public int eventMonth; //Month of the event
@@ -541,7 +596,7 @@ namespace Time_Management_Console_App
             public string eventName; //Name of the event
             public string eventLocation; //Location that the event will be held at
             public string eventDescription; //Description of the event
-
+            */
 
             //Class Constructor Declaration with multiple parameters
             public Events(int inputEventYear, int inputEventMonth, int inputEventDay,
@@ -555,8 +610,8 @@ namespace Time_Management_Console_App
                 eventStartHour = inputEventStartHour;
                 eventStartMin = inputEventStartMin;
                 eventStartAmPm = inputEventStartAmPm;
-                //Converting the time in hours to standard American time (not 24 hours time displaying)
-                if (eventStartAmPm == "PM")
+                //Converting the time in hours to standard American time (not 24 hours time displaying). 12:00 pm is the same as 12:00 in the 24 hours time.
+                if ((eventStartAmPm == "PM") && (eventStartHour !=12))
                 {
                     //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted back to AM/PM time (not military time of 24 hours clock)
                     //To do this, 12 hours has to be substracted to the eventStartHour variable
@@ -569,8 +624,8 @@ namespace Time_Management_Console_App
                 eventEndHour = inputEventEndHour;
                 eventEndMin = inputEventEndMin;
                 eventEndAmPm = inputEventEndAmPm;
-                //Converting the time in hours to standard American time (not 24 hours time displaying)
-                if (eventEndAmPm == "PM")
+                //Converting the time in hours to standard American time (not 24 hours time displaying). 12:00 pm is the same as 12:00 in the 24 hours time.
+                if ((eventEndAmPm == "PM") && (eventEndHour !=12))
                 {
                     //Since the user indicated that the time was in pm (during the afternoon or evening), the event's ending hour needs to be converted back to AM/PM time (not military time of 24 hours clock)
                     //To do this, 12 hours has to be substracted to the eventEndHour variable
