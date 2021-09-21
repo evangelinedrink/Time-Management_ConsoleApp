@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections; //With this, computer is able to use the ArrayList class
-using System.Collections.Generic; //With this, computer is able to add, remove and insert an object in a List<T>
+using System.Collections.Generic; //With this, computer is able to create Queues. It is also able to add, remove and insert an object in a List<T>
 using System.Timers; //With this, the timer can be used
 
 
@@ -10,7 +10,15 @@ namespace Time_Management_Console_App
     {
         static void Main(string[] args)
         {
+            //Creating the Queue called noteList that will contain all the notes
+            //that the user typed in when they were using the Notes function in the Time Management App
+            Queue noteList = new Queue();
 
+            //Passing in the noteList Queue to the Notes method
+            //noteList Queue will store all the notes (and new notes) added to the note list
+            Notes(noteList);
+            
+            
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
             //todaysTemp();
 
@@ -653,11 +661,75 @@ namespace Time_Management_Console_App
 
         }
 
+        //Need to create a class and constructor (to create the object) for the Notes
+        //Each note will have the date/time (currentDateTime) and the user's note below it
+        public class NoteDetails
+        {
+            public DateTime noteDateTime { get; set; }
+            public string userNote { get; set; }
+            //Constructor that will create the objects of the class
+            //The Constructor always has the same name as the class
+            public NoteDetails(DateTime currentDateTime, string note)
+            {
+                this.noteDateTime = currentDateTime;
+                //Console.WriteLine("\n"); //Creating a new line (space) between the date the note was created and the note that the user typed in the console.
+                this.userNote = note;
+
+            }
+        }
+
         //Method to create Notes and Memos in the Time Management App
         //Console.WriteLine will be used to ask the user if they would like to create a new set of notes
         //If they say "Yes", then the Console will ask them to name their notes and then register the date and time that the notes were created (using DateTime() method)
         //The notes will be stored in a Queue (first in, first out)
         //The Console will ask the user if they would like to view their notes. If they say "Yes", then the Console will display their notes starting from the first notes created to the latest notes.
+        public static void Notes(Queue noteList) //Passing in the noteList Queue to the Notes method
+        {
+            //Asking user if they would like to create a new Note or see their list of notes
+            Console.WriteLine("Would you like to create a new note or see your list of notes? Type \"Create\" to create a new note or \"List\" to view the list of notes.");
+
+            //Obtaining the user's input to the question and making their answer all capital letters with ToUpper();
+            string answerNotes = Console.ReadLine().ToUpper();
+
+
+
+            if(answerNotes=="CREATE")
+            {
+                //Placing the current date and time that the note was created using DateTime method
+                //Using DateTime.Now to get the current local date and time that the computer has
+                DateTime currentDateTime = DateTime.Now;
+                //Displaying the current date and time on the Console.
+                Console.WriteLine(currentDateTime);
+
+                //Tells user to type their note below
+                Console.WriteLine("Type your note below.");
+
+                //Gets the users notes and places it in the note variable
+                string note = Console.ReadLine();
+
+                //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
+                var noteInformation = new NoteDetails(currentDateTime, note);
+
+                //Adding the note that the user typed to the Note List (which is a Queue) using Enqueue().
+                //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
+                noteList.Enqueue(noteInformation);
+
+            } else if (answerNotes == "LIST")
+            {
+                //All the items in the noteList Queue are objects created by the NoteDetails class
+                //The code below doesn't work, have to find a way to display the notes in the noteList
+                foreach(NoteDetails item in noteList)
+                {
+                    Console.WriteLine(item);
+                }
+                /*
+                //Asking the user if they would like the Note List to be displayed in the Console.
+                Console.WriteLine("Would you like to see your notes in your list?");
+                //Getting the user's response to the question
+                string seeNotes = Console.ReadLine();
+                */
+            }
+        }
 
         //Method to create a Check List
         //Console.WriteLine will ask the user if they would like to create a Check List
