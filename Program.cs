@@ -665,15 +665,15 @@ namespace Time_Management_Console_App
         //Each note will have the date/time (currentDateTime) and the user's note below it
         public class NoteDetails
         {
-            public DateTime noteDateTime { get; set; }
+            public string noteDateTime { get; set; }
             public string userNote { get; set; }
             //Constructor that will create the objects of the class
             //The Constructor always has the same name as the class
-            public NoteDetails(DateTime currentDateTime, string note)
+            public NoteDetails(string currentDateTimeString, string note)
             {
-                this.noteDateTime = currentDateTime;
+                noteDateTime = currentDateTimeString;
                 //Console.WriteLine("\n"); //Creating a new line (space) between the date the note was created and the note that the user typed in the console.
-                this.userNote = note;
+                userNote = note;
 
             }
         }
@@ -691,13 +691,16 @@ namespace Time_Management_Console_App
             //Obtaining the user's input to the question and making their answer all capital letters with ToUpper();
             string answerNotes = Console.ReadLine().ToUpper();
 
-
+            //Initializing the variable currentDateTimeString in the Notes method
+            string currentDateTimeString = "value";
 
             if(answerNotes=="CREATE")
             {
                 //Placing the current date and time that the note was created using DateTime method
                 //Using DateTime.Now to get the current local date and time that the computer has
                 DateTime currentDateTime = DateTime.Now;
+                //Converting the currentDateTime to a string using ToString() method
+                currentDateTimeString= currentDateTime.ToString();
                 //Displaying the current date and time on the Console.
                 Console.WriteLine(currentDateTime);
 
@@ -708,11 +711,19 @@ namespace Time_Management_Console_App
                 string note = Console.ReadLine();
 
                 //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
-                var noteInformation = new NoteDetails(currentDateTime, note);
+                var noteInformation = new NoteDetails(currentDateTimeString, note);
 
                 //Adding the note that the user typed to the Note List (which is a Queue) using Enqueue().
                 //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
                 noteList.Enqueue(noteInformation);
+
+
+                //All the items in the noteList Queue are objects created by the NoteDetails class
+                //The code below doesn't work, have to find a way to display the notes in the noteList
+                foreach (NoteDetails item in noteList)
+                {
+                    Console.WriteLine(item);
+                }
 
             } else if (answerNotes == "LIST")
             {
