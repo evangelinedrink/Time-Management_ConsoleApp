@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections; //With this, computer is able to use the ArrayList class
+using System.Collections; //With this, computer is able to use the ArrayList class and the Queue.
 using System.Collections.Generic; //With this, computer is able to create Queues. It is also able to add, remove and insert an object in a List<T>
 using System.Timers; //With this, the timer can be used
 
@@ -14,9 +14,15 @@ namespace Time_Management_Console_App
             //that the user typed in when they were using the Notes function in the Time Management App
             Queue noteList = new Queue();
 
+            //Initializing the variable currentDateTimeString in the Notes method
+            string currentDateTimeString = "value";
+
+            //Initializing the variable note
+            string note = "value";
+
             //Passing in the noteList Queue to the Notes method
             //noteList Queue will store all the notes (and new notes) added to the note list
-            Notes(noteList);
+            Notes(noteList, currentDateTimeString, note);
             
             
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
@@ -29,36 +35,43 @@ namespace Time_Management_Console_App
             //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
             string scheduleAnotherEvent="NO";
 
-            //Asking the user if they would like to schedule an event
-            Console.WriteLine("Would you like to schedule an event in your event list?");
-            //Getting the user's response 
-            string scheduleEvent = Console.ReadLine().ToUpper();
+
             //Creating an ArrayList that will contain all the events placed by the user
             var eventsList = new ArrayList();
             do
             {
+                //Asking the user if they would like to schedule an event
+                Console.WriteLine("Would you like to schedule an event in your event list?");
+                //Getting the user's response 
+                string scheduleEvent = Console.ReadLine().ToUpper();
+
                 if ((scheduleEvent == "YES") || (scheduleAnotherEvent == "YES"))
                 {
                     //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
                     eventCreator(eventsList);
                 }
-                else if ((scheduleEvent != "YES") || (scheduleEvent != "NO"))
+                else if ((scheduleEvent != "YES") && (scheduleEvent != "NO")) //&& ensures that if the user types in a value that is neither "YES" or "NO", the Console will display the code within this else/if statement
                 {
                     Console.WriteLine("Please answer with a \"Yes\" or a \"No\".");
                 }
 
-                //Asking the user if they would like to schedule another event
-                Console.WriteLine("Would you like to add another event to your event's list?");
-                //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
-                scheduleAnotherEvent = Console.ReadLine().ToUpper();
-                //Ensuring that the user types "Yes" or "No" in the Console to whether they would like to schedule another event by using a While loop to check their response
-                //The code within this While loop will run when both scheduleAnotherEvent is not equal to YES or NO (True && True = True, all other combinations are equal to False). While loop only runs when conditions are True.
-                while ((scheduleAnotherEvent != "YES") && (scheduleAnotherEvent != "NO"))
+                //If the user says they do not want to schedule an event, the code in the If block will not run (it will not ask them if they want to schedule another event).
+                if (scheduleEvent != "NO")
                 {
-                    Console.WriteLine("Please answer the question with a \"Yes\" or a \"No\".\n Would you like to add another event to your event's list?");
+                    //Asking the user if they would like to schedule another event
+                    Console.WriteLine("Would you like to add another event to your event's list?");
                     //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
                     scheduleAnotherEvent = Console.ReadLine().ToUpper();
+                    //Ensuring that the user types "Yes" or "No" in the Console to whether they would like to schedule another event by using a While loop to check their response
+                    //The code within this While loop will run when both scheduleAnotherEvent is not equal to YES or NO (True && True = True, all other combinations are equal to False). While loop only runs when conditions are True.
+                    while ((scheduleAnotherEvent != "YES") && (scheduleAnotherEvent != "NO"))
+                    {
+                        Console.WriteLine("Please answer the question with a \"Yes\" or a \"No\".\n Would you like to add another event to your event's list?");
+                        //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
+                        scheduleAnotherEvent = Console.ReadLine().ToUpper();
+                    }
                 }
+
 
             } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
             
@@ -683,63 +696,80 @@ namespace Time_Management_Console_App
         //If they say "Yes", then the Console will ask them to name their notes and then register the date and time that the notes were created (using DateTime() method)
         //The notes will be stored in a Queue (first in, first out)
         //The Console will ask the user if they would like to view their notes. If they say "Yes", then the Console will display their notes starting from the first notes created to the latest notes.
-        public static void Notes(Queue noteList) //Passing in the noteList Queue to the Notes method
+        public static void Notes(Queue noteList, string currentDateTimeString, string note) //Passing in the noteList Queue to the Notes method
         {
-            //Asking user if they would like to create a new Note or see their list of notes
-            Console.WriteLine("Would you like to create a new note or see your list of notes? Type \"Create\" to create a new note or \"List\" to view the list of notes.");
-
-            //Obtaining the user's input to the question and making their answer all capital letters with ToUpper();
-            string answerNotes = Console.ReadLine().ToUpper();
-
-            //Initializing the variable currentDateTimeString in the Notes method
-            string currentDateTimeString = "value";
-
-            if(answerNotes=="CREATE")
+            //Defining the answerNotes variable (user's input to the question asking them if they would like to create a note, see their notes or quit the notes section
+            string answerNotes="value";
+            
+            //While loop that will ask the user if they would like to create a note or see the notes on their list.
+            //If user types "Quit" in the Console, the Notes section will stop running
+            while(answerNotes != "QUIT")
             {
-                //Placing the current date and time that the note was created using DateTime method
-                //Using DateTime.Now to get the current local date and time that the computer has
-                DateTime currentDateTime = DateTime.Now;
-                //Converting the currentDateTime to a string using ToString() method
-                currentDateTimeString= currentDateTime.ToString();
-                //Displaying the current date and time on the Console.
-                Console.WriteLine(currentDateTime);
+                //Asking user if they would like to create a new Note or see their list of notes
+                Console.WriteLine("Would you like to create a new note or see your list of notes? Type \"Create\" to create a new note or \"List\" to view the list of notes." +
+                    "To exit the Notes section, type \"Quit\".");
 
-                //Tells user to type their note below
-                Console.WriteLine("Type your note below.");
-
-                //Gets the users notes and places it in the note variable
-                string note = Console.ReadLine();
-
-                //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
-                var noteInformation = new NoteDetails(currentDateTimeString, note);
-
-                //Adding the note that the user typed to the Note List (which is a Queue) using Enqueue().
-                //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
-                noteList.Enqueue(noteInformation);
+                //Obtaining the user's input to the question and making their answer all capital letters with ToUpper();
+                answerNotes = Console.ReadLine().ToUpper();
 
 
-                //All the items in the noteList Queue are objects created by the NoteDetails class
-                //The code below doesn't work, have to find a way to display the notes in the noteList
-                foreach (NoteDetails item in noteList)
+                if (answerNotes == "CREATE")
                 {
-                    Console.WriteLine(item);
-                }
+                    //Placing the current date and time that the note was created using DateTime method
+                    //Using DateTime.Now to get the current local date and time that the computer has
+                    DateTime currentDateTime = DateTime.Now;
+                    //Converting the currentDateTime to a string using ToString() method
+                    currentDateTimeString = currentDateTime.ToString();
+                    //Displaying the current date and time on the Console.
+                    Console.WriteLine(currentDateTime);
 
-            } else if (answerNotes == "LIST")
-            {
-                //All the items in the noteList Queue are objects created by the NoteDetails class
-                //The code below doesn't work, have to find a way to display the notes in the noteList
-                foreach(NoteDetails item in noteList)
-                {
-                    Console.WriteLine(item);
+                    //Tells user to type their note below
+                    Console.WriteLine("Type your note below.");
+
+                    //Gets the users notes and places it in the note variable
+                    note = Console.ReadLine();
+
+                    //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
+                    var noteInformation = new NoteDetails(currentDateTimeString, note);
+
+                    //Adding the note that the user typed to the Note List (which is a Queue) using Enqueue().
+                    //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
+                    noteList.Enqueue(noteInformation);
+
+
+                    //All the items in the noteList Queue are objects created by the NoteDetails class
+                    //The code below doesn't work, have to find a way to display the notes in the noteList
+                    foreach (NoteDetails item in noteList)
+                    {
+                        Console.WriteLine(item);
+                    }
+
                 }
-                /*
-                //Asking the user if they would like the Note List to be displayed in the Console.
-                Console.WriteLine("Would you like to see your notes in your list?");
-                //Getting the user's response to the question
-                string seeNotes = Console.ReadLine();
-                */
+                else if (answerNotes == "LIST")
+                {
+                    //All the items in the noteList Queue are objects created by the NoteDetails class
+                    //The code below doesn't work, have to find a way to display the notes in the noteList
+                    foreach (NoteDetails item in noteList)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    /*
+                    //Asking the user if they would like the Note List to be displayed in the Console.
+                    Console.WriteLine("Would you like to see your notes in your list?");
+                    //Getting the user's response to the question
+                    string seeNotes = Console.ReadLine();
+                    */
+                } else if (answerNotes=="QUIT")
+                {
+                    break; //Break will let the computer stop running the code in the While loop (gets out of the While loop).
+                }
+                else
+                {
+                    Console.WriteLine("Please state whether you'd like to create a note (type \"Create\"), see the list containing your notes (type \"List\") or leave the Notes section (type \"Quit\").");
+                }
             }
+            
+            
         }
 
         //Method to create a Check List
