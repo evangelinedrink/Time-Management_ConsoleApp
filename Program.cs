@@ -736,6 +736,11 @@ namespace Time_Management_Console_App
                     //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
                     noteList.Enqueue(noteInformation);
 
+                    //Might want to place the notes in an arrayList, this will make it easier for the user to delete the notes they don't want
+                    //To delete the notes they don't want, the user will type in the note number they don't want
+                    //(this means that each note will have a number, need to create a For loop for this).
+                    //For the number they type, the index of the note will be "number-1", since the first note will be #1, but its index number will be 0.
+                    //Need to do this type of thing for the events list.
 
                     //All the items in the noteList Queue are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
