@@ -20,9 +20,14 @@ namespace Time_Management_Console_App
             //Initializing the variable note
             string note = "value";
 
+            //Initializing the noteDetails Constructor to be a string
+            //Constructors always have to be initialized in the Main 
+            //If the Constructor has different data types, define it as var
+            string NoteDetails = currentDateTimeString + note;
+
             //Passing in the noteList Queue to the Notes method
             //noteList Queue will store all the notes (and new notes) added to the note list
-            Notes(noteList, currentDateTimeString, note);
+            Notes(noteList, currentDateTimeString, note, NoteDetails);
             
             
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
@@ -680,6 +685,7 @@ namespace Time_Management_Console_App
         {
             public string noteDateTime { get; set; }
             public string userNote { get; set; }
+
             //Constructor that will create the objects of the class
             //The Constructor always has the same name as the class
             public NoteDetails(string currentDateTimeString, string note)
@@ -689,6 +695,7 @@ namespace Time_Management_Console_App
                 userNote = note;
 
             }
+
         }
 
         //Method to create Notes and Memos in the Time Management App
@@ -696,7 +703,7 @@ namespace Time_Management_Console_App
         //If they say "Yes", then the Console will ask them to name their notes and then register the date and time that the notes were created (using DateTime() method)
         //The notes will be stored in a Queue (first in, first out)
         //The Console will ask the user if they would like to view their notes. If they say "Yes", then the Console will display their notes starting from the first notes created to the latest notes.
-        public static void Notes(Queue noteList, string currentDateTimeString, string note) //Passing in the noteList Queue to the Notes method
+        public static void Notes(Queue noteList, string currentDateTimeString, string note, string NoteDetails) //Passing in the noteList Queue to the Notes method
         {
             //Defining the answerNotes variable (user's input to the question asking them if they would like to create a note, see their notes or quit the notes section
             string answerNotes="value";
