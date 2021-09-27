@@ -28,8 +28,35 @@ namespace Time_Management_Console_App
             //Passing in the noteList Queue to the Notes method
             //noteList Queue will store all the notes (and new notes) added to the note list
             Notes(noteList, currentDateTimeString, note, NoteDetails);
+
+            /*Method that will run the Check List Method*/
+
+            //Variable that will ask if the user would like to create/add an item in the Check List
+            string createCheckList = "YES";
+
+            //Using Do/While loop to let the code be read multiple times
+            do
+            {
+                //Asking the user if they would like to open the check list application
+                Console.WriteLine("Would you like to open the check list application?");
+                //Getting the user's response and making it upper case
+                createCheckList = Console.ReadLine().ToUpper();
+
+                //Using an If/Else IF statement to run the CheckList method
+                if (createCheckList == "YES")
+                {
+                    CheckList();
+                }
+                else if ((createCheckList != "YES") && (createCheckList != "NO")) //IF the user types in a word that is not YES or NO
+                {
+                    Console.WriteLine("Please type in \"Yes\" or \"No\"");
+                }
+            } while (createCheckList != "NO");
+
             
-            
+ 
+
+
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
             //todaysTemp();
 
@@ -794,6 +821,148 @@ namespace Time_Management_Console_App
         //Once items in the Check List are completed, the user can delete completed tasks by typing "Remove" to the question (if they would like to remove item(s) from the list).
         //After typing in "Remove", a new Console.WriteLine will ask what items in the Check List that they would like to remove. The user will have to type in the item number for each item they would like to delete, separating each by commas (using string.Split(",") to separate each item).
         //Remove.At(index number) will be used to delete each item from the List. Remember: First item in the Check List will have item number 1. To refer to its index number, it will be 1 (its item number) - 1
+        public static void CheckList()
+        {
+            //Initializing the variable that will get the user's response
+            string userAnswer = "CREATE";
+
+            //Creating an ArrayList that will hold the check list's elements
+            var checkListArray = new ArrayList();
+
+            //Using a Do/While Loop to run the code for the check list as long as the user does not type "Quit" in the Console.
+            do
+            {
+                //Asking the user if they would like to create/add/view/delete an item to the check list
+                Console.WriteLine("Would like to create a check list (type \"Create\"), add an item to the check list (type \"Add\"), view an item in the check list (type \"View\"), " +
+                    "or delete item(s) from the check list (type \"Delete\"). If you would like to leave the check list section, type \"Quit\".");
+                //Getting the user's response. Making the user's response capital letters
+                userAnswer = Console.ReadLine().ToUpper();
+
+                //Using If/Else If statement to decide which method will run based on the user's input
+                if ((userAnswer == "CREATE"))
+                {
+                    //Initializing the variable that the user will use to add item's in their check list
+                    string userCreate = "ITEM";
+                    do
+                    {
+                        //Prompting the user to write their items in the check list
+                        Console.WriteLine("Please type the items in your check list. When you are done typing an item, type \"Next\" to create the next line of the check list. " +
+                            "If you are finished creating your check list, type \"Done\".");
+                        //Getting the user's response which will decide which code runs
+                        userCreate = Console.ReadLine().ToUpper();
+
+                        //Adding the items in the check list 
+                        if ((userCreate != "NEXT") && (userCreate !="DONE"))
+                        {
+                            //Adding the user's item for the check list into the Array List containing the items in the check list
+                            checkListArray.Add(userCreate);
+                        } else if (userCreate=="DONE")
+                        {
+                            break; //Lets the computer get out of this loop
+                        }
+
+                        //Using a For Loop 
+                    } while (userCreate == "NEXT");
+
+                } else if (userAnswer == "ADD")
+                {
+                    //Initializing the variable that the user will use to add item's in their check list
+                    string userCreate = "ITEM";
+                    do
+                    {
+                        //Prompting the user to write their items in the check list
+                        Console.WriteLine("Add the item(s) to your check list. When you are done typing an item, type \"Next\" to create the next line of the check list. " +
+                            "If you are finished creating your check list, type \"Done\".");
+                        //Getting the user's response which will decide which code runs
+                        userCreate = Console.ReadLine().ToUpper();
+
+                        //Adding the items in the check list 
+                        if ((userCreate != "NEXT") && (userCreate != "DONE"))
+                        {
+                            //Adding the user's item for the check list into the Array List containing the items in the check list
+                            checkListArray.Add(userCreate);
+                        }
+                        else if (userCreate == "DONE")
+                        {
+                            break; //Lets the computer get out of this loop
+                        }
+
+                        //Using a For Loop 
+                    } while (userCreate == "NEXT");
+                }
+                else if (userAnswer == "VIEW")
+                {
+                    //Using a For Loop that will add numbers to each item in the check list
+                    for (int i = 0; i <= checkListArray.Count-1; i++)
+                    {
+                        int k = i + 1;
+                        checkListArray[i] += $"{k}) {checkListArray[i]}";
+                    }
+
+                    //Viewing the items in the ArrayList using foreach
+                    foreach (string item in checkListArray)
+                    {
+                        Console.WriteLine(item);
+                    }
+                }
+                else if (userAnswer == "DELETE")
+                {
+                    //Using a For Loop that will add numbers to each item in the check list
+                    for (int i = 0; i <= checkListArray.Count-1; i++)
+                    {
+                        int k = i + 1;
+                        checkListArray[i] += $"{k}) {checkListArray[i]}";
+                    }
+
+                    //Viewing the items in the ArrayList using foreach
+                    foreach (string item in checkListArray)
+                    {
+                        Console.WriteLine(item);
+                    }
+
+                    //Asking user to delete item(s) from their check list
+                    Console.WriteLine("Type the number(s) of the items that you'd like to delete from your check list. " +
+                        "For each item that you'd like to delete, use a comma (,) to separate each item's number.");
+                    //User's input to the above question
+                    string deleteItem = Console.ReadLine();
+                    //Separating the number of the items in the check list using the Split() method
+                    //Split method will take each of the values and place them in an array
+                    string[] deleteItemsArray = deleteItem.Split(",");
+
+                    //Determining the length of the deleteItemsArray
+                    int arrayLength = deleteItemsArray.Length;
+
+                    //Converting the items in the deleteItemsArray to integers
+                    //Initializing the array that will hold the integer elements
+                    int[] deleteItemsArrayInt = new int[arrayLength];
+
+                    //For loop to convert each string item in the deleteItemsArray into int items
+                    for (int i=0; i <= arrayLength-1; i++)
+                    {
+                        deleteItemsArrayInt[i] += Convert.ToInt32(deleteItemsArray[i]);
+                    }
+
+
+                    //Using a For loop to go through all the values in the array
+                    for (int i=0; i<= arrayLength; i++)
+                    {
+                        int deleteItemInt = deleteItemsArrayInt[i];
+
+                        //Since the number shown for the first item in the check list starts at 1, its index number is actually 0
+                        //This is why the number of the item that the user wants to delete is substracted by 1
+                        int k = deleteItemInt - 1;
+
+                        //Removing the element(s) from the array list using the RemoveAt() method
+                        checkListArray.RemoveAt(k);
+                    }
+                }
+
+            } while (userAnswer != "QUIT");
+
+
+
+        }
+
 
         //Method to create a Timer
         //Creating a timer with a certain interval (3 second interal= 3000 milliseconds)
