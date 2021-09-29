@@ -38,6 +38,10 @@ namespace Time_Management_Console_App
             //having a number for each item on the list (this is going to be a copy of the checkListArray)
             var checkListArrayNoNumbers = new ArrayList();
 
+            //Creating a queue that will contain the numbers next to each item in the check list
+            //Since this queue will contain numbers, <int> is needed to let numbers be added to the Queue
+            Queue<int> checkListNumbers = new Queue<int>();
+
             //Variable that will ask if the user would like to create/add an item in the Check List
             string createCheckList = "YES";
 
@@ -885,25 +889,15 @@ namespace Time_Management_Console_App
                 }
                 else if (userAnswer == "VIEW")
                 {
-                    //Copying the values of the checkListArray to checkListArrayNoNumbers
-                    //This will make sure that the copy doesn't contain numbers which can be helpful when user starts deleting items from the check list 
-                    for (int i=0; i<checkListArray.Count-1; i++)
-                    {
-                        checkListArrayNoNumbers.Add(checkListArray[i]);
-                    }
-
-                    //Using a For Loop that will add numbers to each item in the check list
-                    for (int i = 0; i <= checkListArray.Count-1; i++)
-                    {
-                        int k = i + 1;
-                        checkListArray[i] = $"{k}) {checkListArray[i]}";
-                    }
-                    
-
+                    //Counter that will Display the number of each item in the check list
+                    int counterItem = 1;
                     //Viewing the items in the ArrayList using foreach
                     foreach (string item in checkListArray)
                     {
-                        Console.WriteLine(item);
+                        //What will be displayed in the Console is: itemNumber) Item in the checklist
+                        //{0} corresponds to the number for that item in the checklist and {1} corresponds to the item in the check list
+                        //The counter to be displayed before the item in the checklist will be increased by 1 every time the foreach loop runs
+                        Console.WriteLine("{0}) {1}", counterItem++,item);
                     }
                 }
                 else if (userAnswer == "DELETE")
@@ -915,25 +909,32 @@ namespace Time_Management_Console_App
                         checkListArrayNoNumbers.Add(checkListArray[i]);
                     }
 
-                    //Using a For Loop that will add numbers to each item in the check list
-                    for (int i = 0; i <= checkListArray.Count - 1; i++)
+                    //Adding the item and number to the end of each item in the checkListArray
+                    //Item and number will be used for the user to help delete that item in the array. The user will just have to type the number they would like to delete
+                    //To do this, a For loop will be used
+                    /*for (int i=1; i< checkListArray.Count; i++)
                     {
-                        int j = i + 1;
-                        checkListArray[i] = $"{j}) {checkListArray[i]}";
-                    }
-                    
+                        //Using Template literal to include the element in the checkListArray and the item number that it has assigned to it
+                        checkListArray[i] = $"{checkListArray[i]} (Item {i})";
+                    }*/
 
+                    //Counter that will Display the number of each item in the check list
+                    int counterItem = 1;
                     //Viewing the items in the ArrayList using foreach
                     foreach (string item in checkListArray)
                     {
-                        Console.WriteLine(item);
+                        //What will be displayed in the Console is: itemNumber) Item in the checklist
+                        //{0} corresponds to the number for that item in the checklist and {1} corresponds to the item in the check list
+                        //The counter to be displayed before the item in the checklist will be increased by 1 every time the foreach loop runs
+                        Console.WriteLine("{0}) {1}", counterItem++, item);
                     }
 
                     //Asking user to delete item(s) from their check list
-                    Console.WriteLine("Type the number(s) of the items that you'd like to delete from your check list. " +
-                        "For each item that you'd like to delete, use a comma (,) to separate each item's number.");
-                    //User's input to the above question
-                    string deleteItem = Console.ReadLine();
+                    Console.WriteLine("Type the item(s) that you'd like to delete from your check list. " +
+                        "For each item that you'd like to delete, use a comma (,) to separate each item.");
+                    //User's input to the above question. Since the check list has all upper case letters, the user's input also has to be upper case for the Containts() method to verify it is there
+                    //This is why ToUpper() method is used.
+                    string deleteItem = Console.ReadLine().ToUpper();
                     //Separating the number of the items in the check list using the Split() method
                     //Split method will take each of the values and place them in an array
                     string[] deleteItemsArray = deleteItem.Split(",");
@@ -941,21 +942,36 @@ namespace Time_Management_Console_App
                     //Determining the length of the deleteItemsArray
                     int arrayLength = deleteItemsArray.Length;
 
-                    //Converting the items in the deleteItemsArray to integers
-                    //Initializing the array that will hold the integer elements
-                    int[] deleteItemsArrayInt = new int[arrayLength];
 
-                    //For loop to convert each string item in the deleteItemsArray into int items
-                    for (int i=0; i <= arrayLength-1; i++)
+                    //Since the items to be deleted are in an array (named deleteItemsArray), a For loop will iterate through all the items,
+                    //verify that the items are in the array using the Contains() method and then delete the item from the checkListArray with Remove() method
+                    for (int i=0; i<= arrayLength-1; i++)
                     {
-                        deleteItemsArrayInt[i] = Convert.ToInt32(deleteItemsArray[i]);
+                        string checkItem = deleteItemsArray[i];
+
+                        //Checking to see if the item is contained within the check list (checkListArray) by using an If statement
+                        //If the item is in the check list, it will then be deleted from the checklist using the Remove() method
+                        if (checkListArray.Contains(checkItem))
+                        {
+                            checkListArray.Remove(checkItem);
+                        }
                     }
 
-                    //Counter that will count the length of the array of the item
-                    int counterValue = 0;
+                    //Telling the user that the items that they would like removed from their check list has been removed by using Console.WriteLine()
+                    Console.WriteLine("The items that you'd like removed from your check list have been removed from the list. Here is your revised check list: ");
 
-                    //Maximum Value that i in the For loop can go to
-                    int iMax = 1;
+                    //Counter that will Display the number of each item in the check list
+                    int counterItem2 = 1;
+                    //Viewing the items in the ArrayList using foreach
+                    foreach (string item in checkListArray)
+                    {
+                        //What will be displayed in the Console is: itemNumber) Item in the checklist
+                        //{0} corresponds to the number for that item in the checklist and {1} corresponds to the item in the check list
+                        //The counter to be displayed before the item in the checklist will be increased by 1 every time the foreach loop runs
+                        Console.WriteLine("{0}) {1}", counterItem2++, item);
+                    }
+
+                    
 
                     //When the computer deletes a value on the list, it removes it, but the value in the array changes index number.
                     //This is why the correct items in the check list aren't being removed
@@ -963,80 +979,8 @@ namespace Time_Management_Console_App
                     //that contains the items that the user would like to delete. The value of checklistArrayDelete will 
 
 
-                    //Using a For loop to go through all the values in the array
-                    for (int i=0; i<= iMax; i++)
-                    {
-                        int deleteItemInt = deleteItemsArrayInt[i];
+   
 
-                        //Since the number shown for the first item in the check list starts at 1, its index number is actually 0
-                        //This is why the number of the item that the user wants to delete is substracted by 1
-                        int place = deleteItemInt-1;
-
-
-
-                        //Removing the element(s) from the array list using the RemoveAt() method
-                        checkListArray.RemoveAt(place);
-                        checkListArrayNoNumbers.RemoveAt(place);
-
-                        //Inserting a placeholder that will not let the other elements from the ArrayList go to the position at k
-                        //This will help with the computer to get rid of the other desired elements on the list to be removed
-                        //Insert() method will be used for this
-                        checkListArray.Insert(place, null);
-                        checkListArrayNoNumbers.Insert(place, null);
-
-                        //For every item that has been removed from the checkListArray, the counterValue will increase by 1.
-                        counterValue += 1;
-                        //The lenght of the array will be decreasing when items are being removed, this value below will be the maximum value that i can go up to
-                        iMax= (arrayLength - 1) - counterValue;
-                    }
-
-                    //Counter that will count the length of the array of the item
-                    int counterValue2 = 0;
-
-                    //Maximum Value that i in the For loop can go to
-                    int iMax2 = 1;
-
-                    //Using a For Loop that will add numbers to each item in the check list
-                    for (int i = 0; i <= checkListArray.Count - 1; i++)
-                    {
-                        //Removes the first null element in the array lists
-                        //Null was used as a placeholder for deleted check list items
-                        checkListArray.Remove(null);
-                        checkListArrayNoNumbers.Remove(null);
-
-                        //Getting the value of the checkListArray[i] to compare to see if its value is equal to "placeholder"
-                        //Using the var as a data type
-                        //string checkPlaceholder = checkListArray[i];
-
-                        //Checking to see if the term "placeholder" is in the ArrayList
-                        //If it is, then it will be deleted from the ArrayList
-                        /*if (checkListArray.Contains("placeholder"))
-                        {
-
-                        }
-                        /*
-                        if (string checkPlaceholder == "placeholder")
-                        {
-                            checkListArray.RemoveAt(i);
-                            checkListArrayNoNumbers.RemoveAt(i);
-                        }
-                        */
-
-                        //Making sure the number of the items in the check list are reassigned after deleting items from the list
-                        int k = i + 1;
-                        checkListArrayNoNumbers[i] = $"{k}) {checkListArrayNoNumbers[i]}";
-
-                        //For every item that has been removed from the checkListArray, the counterValue will increase by 1.
-                        counterValue2 += 1;
-                        //The lenght of the array will be decreasing when items are being removed, this value below will be the maximum value that i can go up to
-                        iMax2 = (arrayLength - 1) - counterValue2;
-                    }
-
-                    //Viewing the items in the ArrayList using foreach
-                    foreach (string item in checkListArrayNoNumbers)
-                    {
-                        Console.WriteLine(item);
-                    }
                 }
 
             } while (userAnswer != "QUIT");
