@@ -909,15 +909,6 @@ namespace Time_Management_Console_App
                         checkListArrayNoNumbers.Add(checkListArray[i]);
                     }
 
-                    //Adding the item and number to the end of each item in the checkListArray
-                    //Item and number will be used for the user to help delete that item in the array. The user will just have to type the number they would like to delete
-                    //To do this, a For loop will be used
-                    /*for (int i=1; i< checkListArray.Count; i++)
-                    {
-                        //Using Template literal to include the element in the checkListArray and the item number that it has assigned to it
-                        checkListArray[i] = $"{checkListArray[i]} (Item {i})";
-                    }*/
-
                     //Counter that will Display the number of each item in the check list
                     int counterItem = 1;
                     //Viewing the items in the ArrayList using foreach
@@ -929,33 +920,32 @@ namespace Time_Management_Console_App
                         Console.WriteLine("{0}) {1}", counterItem++, item);
                     }
 
-                    //Asking user to delete item(s) from their check list
-                    Console.WriteLine("Type the item(s) that you'd like to delete from your check list. " +
-                        "For each item that you'd like to delete, use a comma (,) to separate each item.");
-                    //User's input to the above question. Since the check list has all upper case letters, the user's input also has to be upper case for the Containts() method to verify it is there
-                    //This is why ToUpper() method is used.
-                    string deleteItem = Console.ReadLine().ToUpper();
-                    //Separating the number of the items in the check list using the Split() method
-                    //Split method will take each of the values and place them in an array
-                    string[] deleteItemsArray = deleteItem.Split(",");
+                    //Initializing the variable that the user will type the item that they would like to delete from their check list
+                    string deleteItem = "some value";
 
-                    //Determining the length of the deleteItemsArray
-                    int arrayLength = deleteItemsArray.Length;
-
-
-                    //Since the items to be deleted are in an array (named deleteItemsArray), a For loop will iterate through all the items,
-                    //verify that the items are in the array using the Contains() method and then delete the item from the checkListArray with Remove() method
-                    for (int i=0; i<= arrayLength-1; i++)
+                    //Using a Do/While loop to make sure that the user can continue deleting items from the list until they type "Stop" in the Console.
+                    do
                     {
-                        string checkItem = deleteItemsArray[i];
+                        //Asking the user to delete item(s) from their check list
+                        Console.WriteLine("Type the item (not the number, just the item's exact wording) that you'd like to delete from your check list. " +
+                            "Hit the enter key to delete another item from the list. To stop deleting from the check list, type \"Stop\".");
+
+                        //User's input to the above question. Since the check list has all upper case letters, the user's input also has to be upper case for the Containts() method to verify it is there
+                        //This is why ToUpper() method is used.
+                        deleteItem = Console.ReadLine().ToUpper();
 
                         //Checking to see if the item is contained within the check list (checkListArray) by using an If statement
                         //If the item is in the check list, it will then be deleted from the checklist using the Remove() method
-                        if (checkListArray.Contains(checkItem))
+                        if (checkListArray.Contains(deleteItem))
                         {
-                            checkListArray.Remove(checkItem);
+                            checkListArray.Remove(deleteItem);
+                        } else
+                        {
+                            Console.WriteLine("The item that you'd like to delete is not in your check list. Please make sure to type the item that you'd like to delete. " +
+                                "To exit deleting items from the check list, type \"Stop\".");
                         }
-                    }
+
+                    } while (deleteItem != "STOP");
 
                     //Telling the user that the items that they would like removed from their check list has been removed by using Console.WriteLine()
                     Console.WriteLine("The items that you'd like removed from your check list have been removed from the list. Here is your revised check list: ");
@@ -970,17 +960,6 @@ namespace Time_Management_Console_App
                         //The counter to be displayed before the item in the checklist will be increased by 1 every time the foreach loop runs
                         Console.WriteLine("{0}) {1}", counterItem2++, item);
                     }
-
-                    
-
-                    //When the computer deletes a value on the list, it removes it, but the value in the array changes index number.
-                    //This is why the correct items in the check list aren't being removed
-                    //Might have to create two array lists (checkListArray and checkListArrayDelete) where checkListArrayDelete is the arraylist
-                    //that contains the items that the user would like to delete. The value of checklistArrayDelete will 
-
-
-   
-
                 }
 
             } while (userAnswer != "QUIT");
