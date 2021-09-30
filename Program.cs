@@ -64,8 +64,29 @@ namespace Time_Management_Console_App
                 }
             } while (createCheckList != "NO");
 
-            
- 
+
+            /*Timer App*/
+
+            //Asking the user what time would they like to set up the timer
+            Console.WriteLine("What time would you like to set up the timer to? " +
+                "Use this format to type out the time: hours:minutes:seconds");
+            //Getting the user's input
+            string userTimerValue = Console.ReadLine();
+            //Using the Split() method to separate the hours, minutes and seconds
+            string[] timerValueString = userTimerValue.Split(":");
+            //The Split() method separates all the inputs that are separated by : into an array
+            //Converting all the string values in timerValueString into integers using Convert.ToInt32
+            //First going to create an array that will hold the integer values. It will have the same length as the timerValueString array
+            int[] timerValue = new int[timerValueString.Length];
+            //Using For loop to convert string values in timerValueString into integers
+            for (int i = 0; i <= timerValueString.Length - 1; i++)
+            {
+                timerValue[i] = Convert.ToInt32(timerValueString[i]);
+            }
+
+            //Running the timer method. Passing in the timerValue array containing the hours, minutes and seconds that 
+            //the user would like to set the timer for. 
+            TimerApp(timerValue); //Need to create the timer app method
 
 
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
