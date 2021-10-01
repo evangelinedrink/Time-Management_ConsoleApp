@@ -1000,7 +1000,21 @@ namespace Time_Management_Console_App
         //The code below needs to be in the Main component
         //appTimer.Stop();
         //appTimber.Dispose();
+        public static void TimerApp(int[] timerValue)
+        {
+            //Converting the time placed by the user to set the timer in milliseconds
+            //Timer in C# uses milliseconds
+            int hoursToMillisec = timerValue[0] * 60 * 60 * 1000;
+            int minutesToMillisec = timerValue[1] * 60 * 1000;
+            int secondsToMillisec = timerValue[2] * 1000;
+            //Adding all the milliseconds together
+            int totalMilliseconds = hoursToMillisec + minutesToMillisec + secondsToMillisec;
 
+            //Creating the timer
+            Timer timer = new Timer(totalMilliseconds);
+
+
+        }
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
         //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
         public static void todaysTemp()
