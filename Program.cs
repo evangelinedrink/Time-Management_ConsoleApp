@@ -1012,9 +1012,68 @@ namespace Time_Management_Console_App
 
             //Creating the timer
             Timer timer = new Timer(totalMilliseconds);
+            timer.Elapsed += OnTimedEvent;
+            //This will start the Timer
+            timer.Start();
+
+            /*
+            //Telling the user to type "Okay" to stop the timer once the time is up.
+            //Using a Do/While loop to make sure the user types "Okay", otherwise it will tell user that they have not yet confirmed that the timer has gone off
+            //Initializing the users response to be used for the Do/While loop
+            string confirmation;
+
+            do
+            {
+                Console.WriteLine("Please type \"okay\" to stop the timer.");
+                //Making sure that the user's response is lower case
+                confirmation = Console.ReadLine().ToLower();
+
+                //Using an If statement to ensure that the user has written "okay" to confirm that they have seen that the timer has gone off
+                if (confirmation != "okay")
+                {
+                    Console.WriteLine("Make sure to type \"okay\" to stop the timer from going off again.");
+                }
+            } while (confirmation != "okay"); 
+            */
+            //Key that will stop the timer once it has gone off
+            Console.ReadLine();
+            //This will stop the Timer
+            timer.Stop();
+
+            //Console App Timer: https://www.youtube.com/watch?v=2tyKPpoLV94
+            //Stopwatch in C#: https://www.youtube.com/watch?v=WbJ1aQwpb1s 
+            //Stopwatch: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stopwatch?view=net-5.0
+            //Timer: https://stackoverflow.com/questions/45258831/c-sharp-timer-console-application
+            //Timer in C#: https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=net-5.0
 
 
         }
+
+        public static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine($"Time is up! Type anything in the Console to stop the timer.");
+
+            //Telling the user to type "Okay" to stop the timer once the time is up.
+            //Using a Do/While loop to make sure the user types "Okay", otherwise it will tell user that they have not yet confirmed that the timer has gone off
+            //Initializing the users response to be used for the Do/While loop
+            string confirmation;
+
+            do
+            {
+                Console.WriteLine("Please type \"okay\" to stop the timer.");
+                //Making sure that the user's response is lower case
+                confirmation = Console.ReadLine().ToLower();
+
+                //Using an If statement to ensure that the user has written "okay" to confirm that they have seen that the timer has gone off
+                if (confirmation != "okay")
+                {
+                    Console.WriteLine("Make sure to type \"okay\" to stop the timer from going off again.");
+                }
+            } while (confirmation != "okay");
+
+        }
+
+
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
         //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
         public static void todaysTemp()
