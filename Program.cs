@@ -1016,26 +1016,7 @@ namespace Time_Management_Console_App
             //This will start the Timer
             timer.Start();
 
-            /*
-            //Telling the user to type "Okay" to stop the timer once the time is up.
-            //Using a Do/While loop to make sure the user types "Okay", otherwise it will tell user that they have not yet confirmed that the timer has gone off
-            //Initializing the users response to be used for the Do/While loop
-            string confirmation;
-
-            do
-            {
-                Console.WriteLine("Please type \"okay\" to stop the timer.");
-                //Making sure that the user's response is lower case
-                confirmation = Console.ReadLine().ToLower();
-
-                //Using an If statement to ensure that the user has written "okay" to confirm that they have seen that the timer has gone off
-                if (confirmation != "okay")
-                {
-                    Console.WriteLine("Make sure to type \"okay\" to stop the timer from going off again.");
-                }
-            } while (confirmation != "okay"); 
-            */
-            //Key that will stop the timer once it has gone off
+            //When the user types anything in the Console, whatever they type will stop the timer once it has gone off
             Console.ReadLine();
             //This will stop the Timer
             timer.Stop();
@@ -1051,26 +1032,7 @@ namespace Time_Management_Console_App
 
         public static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            Console.WriteLine($"Time is up! Type anything in the Console to stop the timer.");
-
-            //Telling the user to type "Okay" to stop the timer once the time is up.
-            //Using a Do/While loop to make sure the user types "Okay", otherwise it will tell user that they have not yet confirmed that the timer has gone off
-            //Initializing the users response to be used for the Do/While loop
-            string confirmation;
-
-            do
-            {
-                Console.WriteLine("Please type \"okay\" to stop the timer.");
-                //Making sure that the user's response is lower case
-                confirmation = Console.ReadLine().ToLower();
-
-                //Using an If statement to ensure that the user has written "okay" to confirm that they have seen that the timer has gone off
-                if (confirmation != "okay")
-                {
-                    Console.WriteLine("Make sure to type \"okay\" to stop the timer from going off again.");
-                }
-            } while (confirmation != "okay");
-
+            Console.WriteLine($"Time is up! Type anything in the Console and hit the \"Enter\" key to stop the timer.");
         }
 
 
