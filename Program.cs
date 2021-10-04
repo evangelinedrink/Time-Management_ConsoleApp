@@ -2,6 +2,8 @@
 using System.Collections; //With this, computer is able to use the ArrayList class and the Queue.
 using System.Collections.Generic; //With this, computer is able to create Queues. It is also able to add, remove and insert an object in a List<T>
 using System.Timers; //With this, the timer can be used
+using System.Diagnostics; //This lets the stopwatch be used in the application
+
 
 
 namespace Time_Management_Console_App
@@ -66,7 +68,7 @@ namespace Time_Management_Console_App
 
 
             /*Timer App*/
-
+            /*
             //Asking the user what time would they like to set up the timer
             Console.WriteLine("What time would you like to set up the timer to? " +
                 "Use this format to type out the time: hours:minutes:seconds");
@@ -87,7 +89,11 @@ namespace Time_Management_Console_App
             //Running the timer method. Passing in the timerValue array containing the hours, minutes and seconds that 
             //the user would like to set the timer for. 
             TimerApp(timerValue); //Need to create the timer app method
+            */
 
+            /*Chronometer (Stopwatch) app that will determine the time that a user takes to do something*/
+            //The Chronometer method will run once the user selects the Chronometer from the list
+            Chronometer();
 
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
             //todaysTemp();
@@ -1033,6 +1039,98 @@ namespace Time_Management_Console_App
         public static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             Console.WriteLine($"Time is up! Type anything in the Console and hit the \"Enter\" key to stop the timer.");
+        }
+
+        //Variable that will get the user's input to stop the chronometer
+        //This variable is placed here so it can be used by all the methods. static makes this variable be used for all the methods
+        static string stopChronometer;
+
+        //Creating a Stopwatch that can be used by the user to see how long a task takes
+        //This stopwatch is more of a chronometer, which is why this method is called Chronometer
+        public static void Chronometer()
+        {
+            //Creating the new stopwatch
+            Stopwatch stopwatch = new Stopwatch();
+
+            //Creating a timer that will display the time when the stopwatch starts
+            //Display the time the time that has passed in the Console every second (1000 milliseconds)
+            Timer stopwatchDisplay = new Timer(1000);
+
+            //Initializing the variable that gets the user's response
+            string chronometerStart;
+
+            //Do/While Loop that will start the chronometer if they type "start"
+            do
+            {
+                //Letting the user know that if they type "start" they will be able to start to the timer.
+                Console.WriteLine("Type \"start\" to start the chronometer.");
+                //Getting the user's response. ToLower() makes their response lower case so that it can be checked in the Do/While loop
+                chronometerStart = Console.ReadLine().ToLower();
+
+                if (chronometerStart == "start")
+                {
+                    //Begin the stopwatch and starts counting the time
+                    stopwatch.Start();
+
+                    //Begin the timer and starts counting the time 
+                    //Timer is used to help display the change in time in the chronometer
+                      stopwatchDisplay.Elapsed += OnTimedEventForChronometer; //This will let the computer go to the OnTimedEventForChronometer method
+                      stopwatchDisplay.Start(); //This will start the timer
+                }
+                else
+                {
+                    //Asking the user to type start
+                    Console.WriteLine("Please type \"start\" to start the chronometer.");
+                }
+            } while (chronometerStart != "start"); //This loop will continue to run if the user does not type "start" to start the chronometer
+
+            //Do/While loop is used to let the user know that to quit the chronometer, they have to type "q" and hit the Enter key
+            do
+            {
+                //Letting the user know they can stop the chronometer by typing "q" (which represents quit) in the Console and hitting enter
+                Console.WriteLine("To stop the chronometer, type \"q\" in the Console and hit the \"Enter\" key");
+                //Letting the user type anything in the Console
+                stopChronometer = Console.ReadLine().ToLower();
+            } while (stopChronometer != "q");
+
+            //Stopping the chronometer
+            stopwatch.Stop();
+            //Stopping the stopwatch timer display
+            stopwatchDisplay.Stop();
+
+            //Getting the Elapsed stopwatch time as a TimeSpan value 
+            //By getting the TimeSpan value, it is easier to display the hours, minutes, seconds and milliseconds. 
+            //Milliseconds can be displayed to 2 decimal places
+            TimeSpan elapsedChronometerTime = stopwatch.Elapsed;
+
+            //Displaying the final time from the chronometer
+            Console.WriteLine("Time elapsed: {0:00}:{1:00}:{2:00}:{3:00}", elapsedChronometerTime.Hours, elapsedChronometerTime.Minutes, elapsedChronometerTime.Seconds, elapsedChronometerTime.Milliseconds / 10);
+        }
+
+        //DateTime when the timer/stopwatch starts. Static makes this variable is accessible to all the methods
+        static DateTime timeStarted = DateTime.Now;
+
+        public static void OnTimedEventForChronometer(Object source, ElapsedEventArgs e)
+        {
+            //Getting the time when the stopwatched started and substracting that value from the current time
+            //Current time
+            DateTime timeNow = DateTime.Now;
+
+            //Using TimeSpan property to see the difference between the current time and the the time when the stopwatch started
+            TimeSpan timeDisplay = timeNow - timeStarted;
+
+            //Initializing the elapsedTime variable that will be used for the formatting of how the time will be displayed in the Chronometer
+            string elapsedTime;
+
+            //If the user doesn't type "q" to stop the chronometer, the time will continue to be shown in the Console.
+            if(stopChronometer !="q")
+            {
+                //elapsedTime is used for the formatting of the chronometer
+                elapsedTime = String.Format("{0:00}:{1:00}:{2:00}:{3:00}", timeDisplay.Hours, timeDisplay.Minutes, timeDisplay.Seconds, timeDisplay.Milliseconds / 10);
+                //The \r will help refresh the items being displayed below without creating another new line of time.
+                //The console will displayed the time that has passed since the start of the chronometer.
+                Console.Write($"\rTime elapsed so far: {elapsedTime}");
+            }  
         }
 
 
