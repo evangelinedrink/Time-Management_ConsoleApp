@@ -93,7 +93,10 @@ namespace Time_Management_Console_App
 
             /*Chronometer (Stopwatch) app that will determine the time that a user takes to do something*/
             //The Chronometer method will run once the user selects the Chronometer from the list
-            Chronometer();
+            //Chronometer();
+
+            //Alarm Method
+            Alarm();
 
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
             //todaysTemp();
@@ -105,9 +108,9 @@ namespace Time_Management_Console_App
             //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
             string scheduleAnotherEvent="NO";
 
-
+            
             //Creating an ArrayList that will contain all the events placed by the user
-            var eventsList = new ArrayList();
+            /*var eventsList = new ArrayList();
             do
             {
                 //Asking the user if they would like to schedule an event
@@ -144,7 +147,7 @@ namespace Time_Management_Console_App
 
 
             } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
-            
+            */
 
 
             //Method to create an event to be placed in the list of events
@@ -1133,6 +1136,91 @@ namespace Time_Management_Console_App
             }  
         }
 
+        //Creating an alarm component in the Time Management Application
+        public static void Alarm()
+        {
+            //Asking the user what time would they like the alarm to go off
+            Console.WriteLine("What time would you like to set the alarm? Use this format to set the alarm:\n hour:minutes:am/pm (make sure to separate each item with a colon).");
+            //Getting the user's input for what time they would like to set the alarm
+            //ToLower() makes sure that pm or am is lower cased
+            string settingAlarmString = Console.ReadLine().ToLower();
+
+            //Splitting the hour and minutes using the Split() method
+            string[] settingAlarmStringArray = settingAlarmString.Split(":");
+
+            //Creating the array that will keep the hour and minutes as integer data types
+            //It will have the same length as the settingAlarmString array minus one because am/pm will not be converted to an integer
+            int[] settingAlarmArray = new int[settingAlarmStringArray.Length-1];
+
+            //Using a For loop to convert the settingAlarmStringArray's string values to integer values
+            //i<= settingAlarmStringArray.Length-2 because am/pm will not be converted to an integer
+            for (int i=0; i<= settingAlarmStringArray.Length-2; i++)
+            {
+                //Converting the string values for hours and minutes to integers using the Convert.ToInt32() method
+                //Placing the integer values to the settingAlarmArray
+                settingAlarmArray[i] = Convert.ToInt32(settingAlarmStringArray[i]);
+            }
+
+            //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
+            if (settingAlarmStringArray[2] == "pm")
+            {
+                //Adding 12 to the hour
+                settingAlarmArray[0] += 12;
+            }
+
+            //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
+            //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
+
+            //To have a refreshed current DateTime.Now, a timer will be used to refresh it every 5 seconds.
+            //Time and Date for right now obtained by using DateTime.Now
+            DateTime currentTimeDate = DateTime.Now;
+
+            //Using an If statement to compare the alarm time and the current time
+            //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+            //User's alarm that corresponds to the hour
+            int userAlarmHour = settingAlarmArray[0];
+
+            //Hour that is for the current time using DateTime.Now
+            int currentHour = currentTimeDate.Hour;
+
+            //Differences between the hours. Getting the absolute value with Math.Abs()
+            int hourDifference = Math.Abs(userAlarmHour - currentHour);
+
+            //User's alarm that corresponds to the minutes
+            int userAlarmMinutes = settingAlarmArray[1];
+
+            //Hour that is for the current time using DateTime.Now
+            int currentMinutes = currentTimeDate.Minute;
+
+            //Differences between the minutes. Getting the absolute value with Math.Abs()
+            int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+
+            //Showing the user how long it will take until the alarm goes off
+            Console.WriteLine($"The amount of hours and minutes left until alarm goes off: ");
+            Console.Write($"\r {hourDifference}:{minutesDifference}");
+
+            //Using an If statement to compare the alarm time and the current time
+            //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+            if ((userAlarmHour - currentHour == 0) && (userAlarmMinutes - currentMinutes == 0))
+            {
+                Console.WriteLine("\n"); //Creates an extra space
+                Console.WriteLine("Time is up! The alarm is going off!"); //Displays that the alarm is going off.
+
+                //Creates a Beeping noise that beeps 10 times
+                for (int i=0; i<10; i++)
+                {
+                    Console.Beep();
+                }    
+            }
+
+            //Holding the other applications from working until this code is finished using Console.ReadKey()
+            Console.ReadLine();
+        }
+        
+        //Creating a method that will check the time in different time zones throughout the world
+        //Information about timezones: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo?view=net-5.0
+        //https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.local?redirectedfrom=MSDN&view=net-5.0#System_TimeZoneInfo_Local
+        //
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
         //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
