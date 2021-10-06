@@ -1136,6 +1136,20 @@ namespace Time_Management_Console_App
             }  
         }
 
+        //Initializing currentTimeDate variable that will contain the DateTime.Now as a global variable
+        //currentTimeDate variable will be used in the OnTimedEventForAlarm() method that refreshes DateTime.Now every 5 seconds
+        //Since we can't pass in other variables to OnTimedEventForAlarm() method, it is best to initialize currentTimeDate variable as a global variable
+        //Time and Date for right now obtained by using DateTime.Now
+        static DateTime currentTimeDate = DateTime.Now;
+
+        //Initializing variables
+        static int hourDifference;
+        static int minutesDifference;
+        static int userAlarmHour;
+        static int currentHour;
+        static int userAlarmMinutes;
+        static int currentMinutes;
+
         //Creating an alarm component in the Time Management Application
         public static void Alarm()
         {
@@ -1171,29 +1185,50 @@ namespace Time_Management_Console_App
             //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
             //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
 
-            //To have a refreshed current DateTime.Now, a timer will be used to refresh it every 5 seconds.
-            //Time and Date for right now obtained by using DateTime.Now
-            DateTime currentTimeDate = DateTime.Now;
-
-            //Using an If statement to compare the alarm time and the current time
-            //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
             //User's alarm that corresponds to the hour
-            int userAlarmHour = settingAlarmArray[0];
-
-            //Hour that is for the current time using DateTime.Now
-            int currentHour = currentTimeDate.Hour;
-
-            //Differences between the hours. Getting the absolute value with Math.Abs()
-            int hourDifference = Math.Abs(userAlarmHour - currentHour);
+            userAlarmHour = settingAlarmArray[0];
 
             //User's alarm that corresponds to the minutes
-            int userAlarmMinutes = settingAlarmArray[1];
+            userAlarmMinutes = settingAlarmArray[1];
 
-            //Hour that is for the current time using DateTime.Now
-            int currentMinutes = currentTimeDate.Minute;
+            //To have a refreshed current DateTime.Now, a timer will be used to refresh it every 5 seconds.
+            //Creating the timer that will refresh DateTime.Now every 5 seconds (5000 milliseconds)
+            Timer timerAlarm = new Timer(5000);
+            timerAlarm.Elapsed += OnTimedEventForAlarm;
+            //timerAlarm.Enabled = true;
+            //This will start the timer that will refresh DateTime.Now every 5 seconds
+            timerAlarm.Start();
 
-            //Differences between the minutes. Getting the absolute value with Math.Abs()
-            int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+            
+                //Time and Date for right now obtained by using DateTime.Now
+                //DateTime currentTimeDate = DateTime.Now;
+                //Console.WriteLine(currentTimeDate);
+
+                //Using an If statement to compare the alarm time and the current time
+                //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+                //User's alarm that corresponds to the hour
+                userAlarmHour = settingAlarmArray[0];
+
+                //Hour that is for the current time using DateTime.Now
+                currentHour = currentTimeDate.Hour;
+
+                //Differences between the hours. Getting the absolute value with Math.Abs()
+                hourDifference = Math.Abs(userAlarmHour - currentHour);
+
+                //User's alarm that corresponds to the minutes
+                userAlarmMinutes = settingAlarmArray[1];
+
+                //Hour that is for the current time using DateTime.Now
+                currentMinutes = currentTimeDate.Minute;
+
+                //Differences between the minutes. Getting the absolute value with Math.Abs()
+                minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+
+                //Showing the user how long it will take until the alarm goes off
+                //Console.WriteLine($"The amount of hours and minutes left until alarm goes off: ");
+                //Console.Write($"\r {hourDifference}:{minutesDifference}");
+     
+            
 
             //Showing the user how long it will take until the alarm goes off
             Console.WriteLine($"The amount of hours and minutes left until alarm goes off: ");
@@ -1201,10 +1236,13 @@ namespace Time_Management_Console_App
 
             //Using an If statement to compare the alarm time and the current time
             //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-            if ((userAlarmHour - currentHour == 0) && (userAlarmMinutes - currentMinutes == 0))
+            if ((hourDifference == 0) && (minutesDifference == 0))
             {
                 Console.WriteLine("\n"); //Creates an extra space
                 Console.WriteLine("Time is up! The alarm is going off!"); //Displays that the alarm is going off.
+
+                //The timer will stop updating DateTime.Now every 5 seconds
+                //timerAlarm.Stop();
 
                 //Creates a Beeping noise that beeps 10 times
                 for (int i=0; i<10; i++)
@@ -1212,11 +1250,25 @@ namespace Time_Management_Console_App
                     Console.Beep();
                 }    
             }
+           
+
+            //The timer will stop updating DateTime.Now every 5 seconds
+            timerAlarm.Stop();
 
             //Holding the other applications from working until this code is finished using Console.ReadKey()
             Console.ReadLine();
         }
-        
+
+        public static void OnTimedEventForAlarm(Object source, ElapsedEventArgs e)
+        {
+            //This timer is used to update/refresh the DateTime.Now every 5 seconds, which is why 
+            //Time and Date for right now obtained by using DateTime.Now
+            currentTimeDate = DateTime.Now;
+
+            Console.WriteLine(currentTimeDate);
+
+        }
+
         //Creating a method that will check the time in different time zones throughout the world
         //Information about timezones: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo?view=net-5.0
         //https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.local?redirectedfrom=MSDN&view=net-5.0#System_TimeZoneInfo_Local
