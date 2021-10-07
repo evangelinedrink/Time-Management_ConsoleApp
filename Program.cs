@@ -1184,55 +1184,59 @@ namespace Time_Management_Console_App
 
             //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
             //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
-
             //User's alarm that corresponds to the hour
             userAlarmHour = settingAlarmArray[0];
 
             //User's alarm that corresponds to the minutes
             userAlarmMinutes = settingAlarmArray[1];
-
-            //To have a refreshed current DateTime.Now, a timer will be used to refresh it every 5 seconds.
-            //Creating the timer that will refresh DateTime.Now every 5 seconds (5000 milliseconds)
-            Timer timerAlarm = new Timer(5000);
-            timerAlarm.Elapsed += OnTimedEventForAlarm;
-            //timerAlarm.Enabled = true;
-            //This will start the timer that will refresh DateTime.Now every 5 seconds
-            timerAlarm.Start();
-
             
-                //Time and Date for right now obtained by using DateTime.Now
-                //DateTime currentTimeDate = DateTime.Now;
-                //Console.WriteLine(currentTimeDate);
+             //Time and Date for right now obtained by using DateTime.Now
+             DateTime currentTimeDate = DateTime.Now;
 
-                //Using an If statement to compare the alarm time and the current time
-                //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-                //User's alarm that corresponds to the hour
-                userAlarmHour = settingAlarmArray[0];
+             //Using an If statement to compare the alarm time and the current time
+             //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+             //User's alarm that corresponds to the hour
+             userAlarmHour = settingAlarmArray[0];
 
-                //Hour that is for the current time using DateTime.Now
+             //Hour that is for the current time using DateTime.Now
+             currentHour = currentTimeDate.Hour;
+
+             //Differences between the hours. Getting the absolute value with Math.Abs()
+             hourDifference = Math.Abs(userAlarmHour - currentHour);
+
+             //User's alarm that corresponds to the minutes
+             userAlarmMinutes = settingAlarmArray[1];
+
+             //Hour that is for the current time using DateTime.Now
+             currentMinutes = currentTimeDate.Minute;
+
+             //Differences between the minutes. Getting the absolute value with Math.Abs()
+             minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+
+            //Showing the line with the amount of hours and minutes left
+            Console.WriteLine($"The amount of hours: minutes: seconds left until alarm goes off: ");
+
+            //Using a While loop to refresh the DateTime values
+            //The || (or) will ensure that While loop will work if one of them is true
+            while ((hourDifference != 0) || (minutesDifference != 0))
+            {
+                //Refreshing the values for DateTime, currentHour and currentMinutes
+                currentTimeDate = DateTime.Now;
                 currentHour = currentTimeDate.Hour;
+                currentMinutes = currentTimeDate.Minute;
 
                 //Differences between the hours. Getting the absolute value with Math.Abs()
                 hourDifference = Math.Abs(userAlarmHour - currentHour);
 
-                //User's alarm that corresponds to the minutes
-                userAlarmMinutes = settingAlarmArray[1];
-
-                //Hour that is for the current time using DateTime.Now
-                currentMinutes = currentTimeDate.Minute;
-
                 //Differences between the minutes. Getting the absolute value with Math.Abs()
                 minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
 
-                //Showing the user how long it will take until the alarm goes off
-                //Console.WriteLine($"The amount of hours and minutes left until alarm goes off: ");
-                //Console.Write($"\r {hourDifference}:{minutesDifference}");
-     
-            
+                //Seconds difference
+                int secondsDifference = (60 - currentTimeDate.Second);
 
-            //Showing the user how long it will take until the alarm goes off
-            Console.WriteLine($"The amount of hours and minutes left until alarm goes off: ");
-            Console.Write($"\r {hourDifference}:{minutesDifference}");
+                //Showing the user how long it will take until the alarm goes off
+                Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
+            }
 
             //Using an If statement to compare the alarm time and the current time
             //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
@@ -1251,23 +1255,8 @@ namespace Time_Management_Console_App
                 }    
             }
            
-
-            //The timer will stop updating DateTime.Now every 5 seconds
-            timerAlarm.Stop();
-
-            //Holding the other applications from working until this code is finished using Console.ReadKey()
-            Console.ReadLine();
         }
 
-        public static void OnTimedEventForAlarm(Object source, ElapsedEventArgs e)
-        {
-            //This timer is used to update/refresh the DateTime.Now every 5 seconds, which is why 
-            //Time and Date for right now obtained by using DateTime.Now
-            currentTimeDate = DateTime.Now;
-
-            Console.WriteLine(currentTimeDate);
-
-        }
 
         //Creating a method that will check the time in different time zones throughout the world
         //Information about timezones: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo?view=net-5.0
