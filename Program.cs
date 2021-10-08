@@ -12,6 +12,11 @@ namespace Time_Management_Console_App
     {
         static void Main(string[] args)
         {
+            //Displaying the different applications within the Time Managment App and welcoming the user to this application
+            Console.WriteLine("Welcome to the Time Management Console Application! Here are the applications that you can visit within the app: ");
+            Console.WriteLine("Calendar" + "Scheduler" + "To Do List" + "Notes" + "Timer" + "Chronometer" + "Alarm");
+            //Place each of the applications in an array and then have them next to a number so that the user can type the number instead of the name of each application to open it
+
             //Creating the Queue called noteList that will contain all the notes
             //that the user typed in when they were using the Notes function in the Time Management App
             Queue noteList = new Queue();
@@ -68,7 +73,6 @@ namespace Time_Management_Console_App
 
 
             /*Timer App*/
-            /*
             //Asking the user what time would they like to set up the timer
             Console.WriteLine("What time would you like to set up the timer to? " +
                 "Use this format to type out the time: hours:minutes:seconds");
@@ -89,20 +93,20 @@ namespace Time_Management_Console_App
             //Running the timer method. Passing in the timerValue array containing the hours, minutes and seconds that 
             //the user would like to set the timer for. 
             TimerApp(timerValue); //Need to create the timer app method
-            */
+            
 
             /*Chronometer (Stopwatch) app that will determine the time that a user takes to do something*/
             //The Chronometer method will run once the user selects the Chronometer from the list
-            //Chronometer();
+            Chronometer();
 
             //Alarm Method
             Alarm();
 
             //Run the todaysTemp method (Weather App Component of the Time Management Application)
-            //todaysTemp();
+            todaysTemp();
 
             //Running the Schedule Planner Component
-            //schedulePlanner();
+            schedulePlanner();
 
             //Creating a Do/While loop to ask if the user would like to place an event in their event's list
             //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
@@ -110,11 +114,12 @@ namespace Time_Management_Console_App
 
             
             //Creating an ArrayList that will contain all the events placed by the user
-            /*var eventsList = new ArrayList();
+            var eventsList = new ArrayList();
             do
             {
                 //Asking the user if they would like to schedule an event
-                Console.WriteLine("Would you like to schedule an event in your event list?");
+                //\n will create a new line to ask the user if they would like to schedule an event since this question comes after the calendar.
+                Console.WriteLine("\nWould you like to schedule an event in your event list?");
                 //Getting the user's response 
                 string scheduleEvent = Console.ReadLine().ToUpper();
 
@@ -147,7 +152,7 @@ namespace Time_Management_Console_App
 
 
             } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
-            */
+            
 
 
             //Method to create an event to be placed in the list of events
@@ -1030,13 +1035,6 @@ namespace Time_Management_Console_App
             //This will stop the Timer
             timer.Stop();
 
-            //Console App Timer: https://www.youtube.com/watch?v=2tyKPpoLV94
-            //Stopwatch in C#: https://www.youtube.com/watch?v=WbJ1aQwpb1s 
-            //Stopwatch: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stopwatch?view=net-5.0
-            //Timer: https://stackoverflow.com/questions/45258831/c-sharp-timer-console-application
-            //Timer in C#: https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=net-5.0
-
-
         }
 
         public static void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -1136,20 +1134,6 @@ namespace Time_Management_Console_App
             }  
         }
 
-        //Initializing currentTimeDate variable that will contain the DateTime.Now as a global variable
-        //currentTimeDate variable will be used in the OnTimedEventForAlarm() method that refreshes DateTime.Now every 5 seconds
-        //Since we can't pass in other variables to OnTimedEventForAlarm() method, it is best to initialize currentTimeDate variable as a global variable
-        //Time and Date for right now obtained by using DateTime.Now
-        static DateTime currentTimeDate = DateTime.Now;
-
-        //Initializing variables
-        static int hourDifference;
-        static int minutesDifference;
-        static int userAlarmHour;
-        static int currentHour;
-        static int userAlarmMinutes;
-        static int currentMinutes;
-
         //Creating an alarm component in the Time Management Application
         public static void Alarm()
         {
@@ -1185,33 +1169,28 @@ namespace Time_Management_Console_App
             //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
             //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
             //User's alarm that corresponds to the hour
-            userAlarmHour = settingAlarmArray[0];
+            int userAlarmHour = settingAlarmArray[0];
 
             //User's alarm that corresponds to the minutes
-            userAlarmMinutes = settingAlarmArray[1];
+            int userAlarmMinutes = settingAlarmArray[1];
             
              //Time and Date for right now obtained by using DateTime.Now
              DateTime currentTimeDate = DateTime.Now;
 
              //Using an If statement to compare the alarm time and the current time
              //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-             //User's alarm that corresponds to the hour
-             userAlarmHour = settingAlarmArray[0];
 
              //Hour that is for the current time using DateTime.Now
-             currentHour = currentTimeDate.Hour;
+             int currentHour = currentTimeDate.Hour;
 
              //Differences between the hours. Getting the absolute value with Math.Abs()
-             hourDifference = Math.Abs(userAlarmHour - currentHour);
-
-             //User's alarm that corresponds to the minutes
-             userAlarmMinutes = settingAlarmArray[1];
+             int hourDifference = Math.Abs(userAlarmHour - currentHour);
 
              //Hour that is for the current time using DateTime.Now
-             currentMinutes = currentTimeDate.Minute;
+             int currentMinutes = currentTimeDate.Minute;
 
              //Differences between the minutes. Getting the absolute value with Math.Abs()
-             minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+             int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
 
             //Showing the line with the amount of hours and minutes left
             Console.WriteLine($"The amount of hours: minutes: seconds left until alarm goes off: ");
@@ -1235,6 +1214,7 @@ namespace Time_Management_Console_App
                 int secondsDifference = (60 - currentTimeDate.Second);
 
                 //Showing the user how long it will take until the alarm goes off
+                //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
                 Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
             }
 
@@ -1255,13 +1235,7 @@ namespace Time_Management_Console_App
                 }    
             }
            
-        }
-
-
-        //Creating a method that will check the time in different time zones throughout the world
-        //Information about timezones: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo?view=net-5.0
-        //https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.local?redirectedfrom=MSDN&view=net-5.0#System_TimeZoneInfo_Local
-        //
+        } 
 
         //Pre-conditions for Weather App Component: The input placed by the user has to be converted into integers to be passed through the DateTime method. The variable from the DateTime method will then be called userDate.
         //userDate has to be a string that says what the day of the week is. userDate will be pased into the todaysTemp method.
