@@ -12,434 +12,475 @@ namespace Time_Management_Console_App
     {
         static void Main(string[] args)
         {
-            //Displaying the different applications within the Time Managment App and welcoming the user to this application. \n gives a new line for each of the applications (it makes it easier to read)
-            Console.WriteLine("Welcome to the Time Management Console Application! Here are the applications that you can visit within the app: ");
-            Console.WriteLine("\n Calendar" + "\n\n Scheduler" + "\n\n To Do List" + "\n\n Notes" + "\n\n Timer" + "\n\n Chronometer" + "\n\n Alarm"+ "\n\n Weather App \n");
-            //Place each of the applications in an array and then have them next to a number so that the user can type the number instead of the name of each application to open it
+            //Initializing the variable that will be the user's input on what application they would like to open 
+            string selectedApplication;
 
-            //Creating the Queue called noteList that will contain all the notes
-            //that the user typed in when they were using the Notes function in the Time Management App
-            Queue noteList = new Queue();
-
-            //Initializing the variable currentDateTimeString in the Notes method
-            string currentDateTimeString = "value";
-
-            //Initializing the variable note
-            string note = "value";
-
-            //Initializing the noteDetails Constructor to be a string
-            //Constructors always have to be initialized in the Main 
-            //If the Constructor has different data types, define it as var
-            string NoteDetails = currentDateTimeString + note;
-
-            //Passing in the noteList Queue to the Notes method
-            //noteList Queue will store all the notes (and new notes) added to the note list
-            Notes(noteList, currentDateTimeString, note, NoteDetails);
-
-            /*Method that will run the Check List Method*/
-
-            //Creating an ArrayList that will hold the check list's elements
-            var checkListArray = new ArrayList();
-
-            //Creating an ArrayList that will hold all of items in the check list without
-            //having a number for each item on the list (this is going to be a copy of the checkListArray)
-            var checkListArrayNoNumbers = new ArrayList();
-
-            //Creating a queue that will contain the numbers next to each item in the check list
-            //Since this queue will contain numbers, <int> is needed to let numbers be added to the Queue
-            Queue<int> checkListNumbers = new Queue<int>();
-
-            //Variable that will ask if the user would like to create/add an item in the Check List
-            string createCheckList = "YES";
-
-            //Using Do/While loop to let the code be read multiple times
+            //Using a Do/While Loop that will ask the user which application they would like to open. If user would like to leave the application, they would type Quit in the Console
             do
             {
-                //Asking the user if they would like to open the check list application
-                Console.WriteLine("Would you like to open the check list application?");
-                //Getting the user's response and making it upper case
-                createCheckList = Console.ReadLine().ToUpper();
+                //Displaying the different applications within the Time Managment App and welcoming the user to this application. \n gives a new line for each of the applications (it makes it easier to read)
+                Console.WriteLine("\n"); //Creating a new line that will separate the information from the previously open app and the welcome menu
+                Console.WriteLine("Welcome to the Time Management Console Application! Here are the applications that you can visit within the app: ");
+                Console.WriteLine("\n Calendar" + "\n\n Scheduler" + "\n\n To Do List" + "\n\n Notes" + "\n\n Timer" + "\n\n Chronometer" + "\n\n Alarm" + "\n\n Weather App \n");
+                //Asking the user to type which application they would like to open
+                Console.WriteLine("Please type below which application you would like to open. If you would like to leave the Time Management App, type \"quit\".");
+                Console.WriteLine("Name of the application that I would like to open: ");
+                //Getting the user's input and making it upper cased 
+                selectedApplication = Console.ReadLine().ToUpper();
 
-                //Using an If/Else IF statement to run the CheckList method
-                if (createCheckList == "YES")
+                //Using an If/Else If statements to open the applications
+                if (selectedApplication == "NOTES")
                 {
-                    CheckList(checkListArray, checkListArrayNoNumbers);
+                    //Creating the Queue called noteList that will contain all the notes
+                    //that the user typed in when they were using the Notes function in the Time Management App
+                    Queue noteList = new Queue();
+
+                    //Initializing the variable currentDateTimeString in the Notes method
+                    string currentDateTimeString = "value";
+
+                    //Initializing the variable note
+                    string note = "value";
+
+                    //Initializing the noteDetails Constructor to be a string
+                    //Constructors always have to be initialized in the Main 
+                    //If the Constructor has different data types, define it as var
+                    string NoteDetails = currentDateTimeString + note;
+
+                    //Passing in the noteList Queue to the Notes method
+                    //noteList Queue will store all the notes (and new notes) added to the note list
+                    Notes(noteList, currentDateTimeString, note, NoteDetails);
                 }
-                else if ((createCheckList != "YES") && (createCheckList != "NO")) //IF the user types in a word that is not YES or NO
+                else if (selectedApplication == "TO DO LIST")
                 {
-                    Console.WriteLine("Please type in \"Yes\" or \"No\"");
-                }
-            } while (createCheckList != "NO");
+                    /*Method that will run the Check List Method*/
 
+                    //Creating an ArrayList that will hold the check list's elements
+                    var checkListArray = new ArrayList();
 
-            /*Timer App*/
-            //Asking the user what time would they like to set up the timer
-            Console.WriteLine("What time would you like to set up the timer to? " +
-                "Use this format to type out the time: hours:minutes:seconds");
-            //Getting the user's input
-            string userTimerValue = Console.ReadLine();
-            //Using the Split() method to separate the hours, minutes and seconds
-            string[] timerValueString = userTimerValue.Split(":");
-            //The Split() method separates all the inputs that are separated by : into an array
-            //Converting all the string values in timerValueString into integers using Convert.ToInt32
-            //First going to create an array that will hold the integer values. It will have the same length as the timerValueString array
-            int[] timerValue = new int[timerValueString.Length];
-            //Using For loop to convert string values in timerValueString into integers
-            for (int i = 0; i <= timerValueString.Length - 1; i++)
-            {
-                timerValue[i] = Convert.ToInt32(timerValueString[i]);
-            }
+                    //Creating an ArrayList that will hold all of items in the check list without
+                    //having a number for each item on the list (this is going to be a copy of the checkListArray)
+                    var checkListArrayNoNumbers = new ArrayList();
 
-            //Running the timer method. Passing in the timerValue array containing the hours, minutes and seconds that 
-            //the user would like to set the timer for. 
-            TimerApp(timerValue); //Need to create the timer app method
-            
+                    //Creating a queue that will contain the numbers next to each item in the check list
+                    //Since this queue will contain numbers, <int> is needed to let numbers be added to the Queue
+                    Queue<int> checkListNumbers = new Queue<int>();
 
-            /*Chronometer (Stopwatch) app that will determine the time that a user takes to do something*/
-            //The Chronometer method will run once the user selects the Chronometer from the list
-            Chronometer();
+                    //Variable that will ask if the user would like to create/add an item in the Check List
+                    string createCheckList = "YES";
 
-            //Alarm Method
-            Alarm();
-
-            //Run the todaysTemp method (Weather App Component of the Time Management Application)
-            todaysTemp();
-
-            //Running the Schedule Planner Component
-            schedulePlanner();
-
-            //Creating a Do/While loop to ask if the user would like to place an event in their event's list
-            //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
-            string scheduleAnotherEvent="NO";
-
-            
-            //Creating an ArrayList that will contain all the events placed by the user
-            var eventsList = new ArrayList();
-            do
-            {
-                //Asking the user if they would like to schedule an event
-                //\n will create a new line to ask the user if they would like to schedule an event since this question comes after the calendar.
-                Console.WriteLine("\nWould you like to schedule an event in your event list?");
-                //Getting the user's response 
-                string scheduleEvent = Console.ReadLine().ToUpper();
-
-                if ((scheduleEvent == "YES") || (scheduleAnotherEvent == "YES"))
-                {
-                    //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
-                    eventCreator(eventsList);
-                }
-                else if ((scheduleEvent != "YES") && (scheduleEvent != "NO")) //&& ensures that if the user types in a value that is neither "YES" or "NO", the Console will display the code within this else/if statement
-                {
-                    Console.WriteLine("Please answer with a \"Yes\" or a \"No\".");
-                }
-
-                //If the user says they do not want to schedule an event, the code in the If block will not run (it will not ask them if they want to schedule another event).
-                if (scheduleEvent != "NO")
-                {
-                    //Asking the user if they would like to schedule another event
-                    Console.WriteLine("Would you like to add another event to your event's list?");
-                    //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
-                    scheduleAnotherEvent = Console.ReadLine().ToUpper();
-                    //Ensuring that the user types "Yes" or "No" in the Console to whether they would like to schedule another event by using a While loop to check their response
-                    //The code within this While loop will run when both scheduleAnotherEvent is not equal to YES or NO (True && True = True, all other combinations are equal to False). While loop only runs when conditions are True.
-                    while ((scheduleAnotherEvent != "YES") && (scheduleAnotherEvent != "NO"))
+                    //Using Do/While loop to let the code be read multiple times
+                    do
                     {
-                        Console.WriteLine("Please answer the question with a \"Yes\" or a \"No\".\n Would you like to add another event to your event's list?");
-                        //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
-                        scheduleAnotherEvent = Console.ReadLine().ToUpper();
+                        //Asking the user if they would like to open the check list application
+                        Console.WriteLine("Would you like to open the check list application?");
+                        //Getting the user's response and making it upper case
+                        createCheckList = Console.ReadLine().ToUpper();
+
+                        //Using an If/Else IF statement to run the CheckList method
+                        if (createCheckList == "YES")
+                        {
+                            CheckList(checkListArray, checkListArrayNoNumbers);
+                        }
+                        else if ((createCheckList != "YES") && (createCheckList != "NO")) //IF the user types in a word that is not YES or NO
+                        {
+                            Console.WriteLine("Please type in \"Yes\" or \"No\"");
+                        }
+                    } while (createCheckList != "NO");
+                }
+                else if (selectedApplication == "TIMER")
+                {
+                    /*Timer App*/
+
+                    //Asking the user what time would they like to set up the timer
+                    Console.WriteLine("What time would you like to set up the timer to? " +
+                    "Use this format to type out the time: hours:minutes:seconds");
+
+                    //Getting the user's input
+                    string userTimerValue = Console.ReadLine();
+                    //Using the Split() method to separate the hours, minutes and seconds
+                    string[] timerValueString = userTimerValue.Split(":");
+                    //The Split() method separates all the inputs that are separated by : into an array
+                    //Converting all the string values in timerValueString into integers using Convert.ToInt32
+                    //First going to create an array that will hold the integer values. It will have the same length as the timerValueString array
+                    int[] timerValue = new int[timerValueString.Length];
+                    //Using For loop to convert string values in timerValueString into integers
+                    for (int i = 0; i <= timerValueString.Length - 1; i++)
+                    {
+                        timerValue[i] = Convert.ToInt32(timerValueString[i]);
                     }
+
+                    //Running the timer method. Passing in the timerValue array containing the hours, minutes and seconds that 
+                    //the user would like to set the timer for. 
+                    TimerApp(timerValue); //Need to create the timer app method
                 }
-
-
-            } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
-            
-
-
-            //Method to create an event to be placed in the list of events
-            static void eventCreator(ArrayList eventsList)
-            {
-                //For this section of the code, the user will type in the events they would like in their event schedule.
-                //The date (year, month and day), time (which will include a time range), and the name of the event (this will be a string) will be stored in the eventsHolderArray (probably needs to be an ArrayList since its size will be changing depending on user input).
-                //The date will be passed as a string into DateTime method to determine which day of the week the event will be at. The day of the week will be displayed in the Console with the date like this: May 27, 2022 (Friday)
-                //The events will be stored and displayed based on the date from the closest date to the farthest away date (this will probably be done comparing the years, months and then days for each event). Sorting method will need to be done on the eventsHolderArray (which is an ArrayList).
-                //The user will be able to see the events and add and delete events. Add() and Remove() methods will be used on the ArrayList. Insert() can be used to insert an element into the ArrayList at a specific position (since the events will be displayed in chonological order, this method might be used).
-                //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
-                //User will be able to delete events based on the Event Number and will be asked if they are sure they want to delete an event (before actually deleting the event).
-
-                //Asking the user what date they would like to create an event
-                //Creating two new rows between the calendar and the question below using "\n\n" and concatenation.
-                Console.WriteLine("\n\n" + "What date would you like to create an event for? Make sure to type the year, month and date in numbers. " +
-                    "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
-                //Getting the user's input with Console.ReadLine(). It will be represented as a string.
-                string eventDate = Console.ReadLine();
-
-                //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
-                //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
-                //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
-                string[] eventDateArray = eventDate.Split(",");
-
-                //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
-                //Converting the year, which was originally a string data type, into an integer data type
-                int eventYear = Convert.ToInt32(eventDateArray[0]);
-                //Converting the month, which was originally an string data type, into an integer data type
-                int eventMonth = Convert.ToInt32(eventDateArray[1]);
-                //Converting the day, which was originally an string data type, into an integer data type
-                int eventDay = Convert.ToInt32(eventDateArray[2]);
-
-
-                //Asking the user what time the event starts 
-                Console.WriteLine("What time does the event start (make sure to type it in this format:  hour : minutes: am or pm)? Start time: ");
-                //Creating the variables that will keep the start time of the event
-                string eventStartTime = Console.ReadLine();
-                //Splitting the time to have a section for the hour and for minutes
-                //Hour= eventStartTimeSplit[0], Minute= eventStartTimeSplit[1], am or pm = eventStartTimeSplit[2]
-                string[] eventStartTimeSplit = eventStartTime.Split(":");
-                //Converting the hour and minutes into int data types to be used in the DateTime method
-                int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
-                int eventStartMinInt = Convert.ToInt32(eventStartTimeSplit[1]);
-                string eventStartMin = eventStartTimeSplit[1];
-
-                //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
-                //Declaring the variable eventStartAmPm to check if the time needs to be converted to military time (24 hours clock)
-                //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
-                string eventStartAmPm = eventStartTimeSplit[2].ToUpper();
-                if ((eventStartAmPm=="PM") && (eventStartHour !=12))  //If the eventStartHour is equal to 12, there is no need to add 12 to it since 12:00 pm is equal to 12:00 in the 24 hours time.
+                else if (selectedApplication == "CHRONOMETER")
                 {
-                    //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
-                    //To do this, 12 hours has to be added to the eventStartHour variable
-                    eventStartHour += 12;
+                    /*Chronometer (Stopwatch) app that will determine the time that a user takes to do something*/
+                    //The Chronometer method will run once the user selects the Chronometer from the list
+                    Chronometer();
                 }
-
-                //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
-                //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
-                DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMinInt, 00);
-
-                //Testing to see if the DateTime() method works with the user's inputed information
-                //Console.WriteLine(eventDateTime);
-
-
-                //Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
-                //Ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
-                //If the end time is on another day, then the DateTime for the end time of the event will be different.
-                //Creating a Do/While Loop that will ask if the event ends on the same day that it starts.
-                //If the user types something besides "Yes" or "No" to the question, the code within the Do Loop will continue to prompt them to answer the question.
-
-                //Declaring the error variable that will let this Do/While loop run when the user does not answer the question with a "Yes" or "No" to whether the event ends on the same day that it starts
-                string error = "False";
-
-                //Declaring the variables ending event's month, day and year, that way it can be used in the DateTime() method that is outside of the If/Else If/Else statement
-                int eventYearEnd = 0;
-                int eventMonthEnd = 0;
-                int eventDayEnd = 0;
-
-                do
+                else if (selectedApplication == "ALARM")
                 {
-                    //Asking the user if the event ends on the same day. If the event ends on the same day, the event's year, month and day will be the same
-                    Console.WriteLine("Does the event end on the same day? Type \"Yes\" if it does, \"No\" if it does not.");
-                    //Obtaining the user input to determine if the event ends on the same day or not. ToUpper() ensures that the user's input will be converted to upper case
-                    string eventSameDay = Console.ReadLine().ToUpper();
+                    //Alarm Method
+                    Alarm();
+                }
+                else if (selectedApplication == "WEATHER APP")
+                {
+                    //Run the todaysTemp method (Weather App Component of the Time Management Application)
+                    todaysTemp();
+                }
+                else if (selectedApplication == "CALENDAR")
+                {
+                    //Running the Calendar Component
+                    Calendar();
+                    //schedulePlanner();
+                }
+                else if (selectedApplication == "SCHEDULER")
+                {
+                    //Creating a Do/While loop to ask if the user would like to place an event in their event's list
+                    //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
+                    string scheduleAnotherEvent = "NO";
 
-                    //Using an If Statement to run the code below if the user states that the event does not end on the same day that it starts.
-                    if (eventSameDay == "NO")
+
+                    //Creating an ArrayList that will contain all the events placed by the user
+                    var eventsList = new ArrayList();
+                    do
                     {
-                        //Asking the user what day the event ends
-                        Console.WriteLine("What date does the event end? Make sure to type the year, month and date in numbers. " +
+                        //Asking the user if they would like to schedule an event
+                        //\n will create a new line to ask the user if they would like to schedule an event since this question comes after the calendar.
+                        Console.WriteLine("\nWould you like to schedule an event in your event list?");
+                        //Getting the user's response 
+                        string scheduleEvent = Console.ReadLine().ToUpper();
+
+                        if ((scheduleEvent == "YES") || (scheduleAnotherEvent == "YES"))
+                        {
+                            //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
+                            eventCreator(eventsList);
+                        }
+                        else if ((scheduleEvent != "YES") && (scheduleEvent != "NO")) //&& ensures that if the user types in a value that is neither "YES" or "NO", the Console will display the code within this else/if statement
+                        {
+                            Console.WriteLine("Please answer with a \"Yes\" or a \"No\".");
+                        }
+
+                        //If the user says they do not want to schedule an event, the code in the If block will not run (it will not ask them if they want to schedule another event).
+                        if (scheduleEvent != "NO")
+                        {
+                            //Asking the user if they would like to schedule another event
+                            Console.WriteLine("Would you like to add another event to your event's list?");
+                            //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
+                            scheduleAnotherEvent = Console.ReadLine().ToUpper();
+                            //Ensuring that the user types "Yes" or "No" in the Console to whether they would like to schedule another event by using a While loop to check their response
+                            //The code within this While loop will run when both scheduleAnotherEvent is not equal to YES or NO (True && True = True, all other combinations are equal to False). While loop only runs when conditions are True.
+                            while ((scheduleAnotherEvent != "YES") && (scheduleAnotherEvent != "NO"))
+                            {
+                                Console.WriteLine("Please answer the question with a \"Yes\" or a \"No\".\n Would you like to add another event to your event's list?");
+                                //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
+                                scheduleAnotherEvent = Console.ReadLine().ToUpper();
+                            }
+                        }
+
+
+                    } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
+
+
+
+                    //Method to create an event to be placed in the list of events
+                    static void eventCreator(ArrayList eventsList)
+                    {
+                        //For this section of the code, the user will type in the events they would like in their event schedule.
+                        //The date (year, month and day), time (which will include a time range), and the name of the event (this will be a string) will be stored in the eventsHolderArray (probably needs to be an ArrayList since its size will be changing depending on user input).
+                        //The date will be passed as a string into DateTime method to determine which day of the week the event will be at. The day of the week will be displayed in the Console with the date like this: May 27, 2022 (Friday)
+                        //The events will be stored and displayed based on the date from the closest date to the farthest away date (this will probably be done comparing the years, months and then days for each event). Sorting method will need to be done on the eventsHolderArray (which is an ArrayList).
+                        //The user will be able to see the events and add and delete events. Add() and Remove() methods will be used on the ArrayList. Insert() can be used to insert an element into the ArrayList at a specific position (since the events will be displayed in chonological order, this method might be used).
+                        //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
+                        //User will be able to delete events based on the Event Number and will be asked if they are sure they want to delete an event (before actually deleting the event).
+
+                        //Asking the user what date they would like to create an event
+                        //Creating two new rows between the calendar and the question below using "\n\n" and concatenation.
+                        Console.WriteLine("\n\n" + "What date would you like to create an event for? Make sure to type the year, month and date in numbers. " +
                             "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
                         //Getting the user's input with Console.ReadLine(). It will be represented as a string.
-                        string eventDateEnd = Console.ReadLine();
+                        string eventDate = Console.ReadLine();
 
                         //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
                         //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
                         //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
-                        string[] eventDateEndArray = eventDateEnd.Split(",");
+                        string[] eventDateArray = eventDate.Split(",");
 
                         //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
                         //Converting the year, which was originally a string data type, into an integer data type
-                        eventYearEnd = Convert.ToInt32(eventDateEndArray[0]);
+                        int eventYear = Convert.ToInt32(eventDateArray[0]);
                         //Converting the month, which was originally an string data type, into an integer data type
-                        eventMonthEnd = Convert.ToInt32(eventDateEndArray[1]);
-                        //Converting the month, which was originally an string data type, into an integer data type
-                        eventDayEnd = Convert.ToInt32(eventDateEndArray[2]);
-
-                        //Gets out of the loop because the user answered the question if the event ends on the same day or not
-                        error = "False";
-                    }
-                    else if (eventSameDay == "YES") //If the event ends on the same day that it starts
-                    {
-                        eventYearEnd = eventYear;
-                        eventMonthEnd = eventMonth;
-                        eventDayEnd = eventDay;
-                        //There is no error, so the loop doesn't need to be repeated again
-                        error = "False";
-                    }
-                    else //If the user does not type Yes or No in the Console, an error message will ask them to type Yes Or No to the question asking if the event ends on the same day
-                    {
-                        Console.WriteLine("You must answer \"Yes\" or \"No\" to whether or not the event ends on the same day that it starts.");
-                        error = "True";
-                    }
-                } while (error=="True");
-
-                //Asking the user what time the event ends 
-                Console.WriteLine("What time does the event end (make sure to type it in this format:  hour : minutes: am or pm)? End time: ");
-                //Creating the variables that will keep the ending time of the event
-                string eventEndTime = Console.ReadLine();
-                //Splitting the time to have a section for the hour and for minutes
-                string[] eventEndTimeSplit = eventEndTime.Split(":");
-                //Converting the hour and minutes into int data types to be used in the DateTime method
-                int eventEndHour= Convert.ToInt32(eventEndTimeSplit[0]);
-                int eventEndMinInt = Convert.ToInt32(eventEndTimeSplit[1]);
-                string eventEndMin = eventEndTimeSplit[1];
+                        int eventMonth = Convert.ToInt32(eventDateArray[1]);
+                        //Converting the day, which was originally an string data type, into an integer data type
+                        int eventDay = Convert.ToInt32(eventDateArray[2]);
 
 
-                //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
-                //Declaring the variable eventEndAmPm to check if the time needs to be converted to military time (24 hours clock). eventEndAmPm will either be AM or PM
-                //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
-                string eventEndAmPm = eventEndTimeSplit[2].ToUpper();
-                if ((eventEndAmPm == "PM") && (eventEndHour != 12))
-                {
-                    //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
-                    //To do this, 12 hours has to be added to the eventEndHour variable
-                    eventEndHour += 12;
-                }
+                        //Asking the user what time the event starts 
+                        Console.WriteLine("What time does the event start (make sure to type it in this format:  hour : minutes: am or pm)? Start time: ");
+                        //Creating the variables that will keep the start time of the event
+                        string eventStartTime = Console.ReadLine();
+                        //Splitting the time to have a section for the hour and for minutes
+                        //Hour= eventStartTimeSplit[0], Minute= eventStartTimeSplit[1], am or pm = eventStartTimeSplit[2]
+                        string[] eventStartTimeSplit = eventStartTime.Split(":");
+                        //Converting the hour and minutes into int data types to be used in the DateTime method
+                        int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
+                        int eventStartMinInt = Convert.ToInt32(eventStartTimeSplit[1]);
+                        string eventStartMin = eventStartTimeSplit[1];
 
-                //Taking the end date that the user placed in the Console and using DateTime method to display the end date and time of the event.
-                //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
-                DateTime eventEndDateTime = new DateTime(eventYearEnd, eventMonthEnd, eventDayEnd, eventEndHour, eventEndMinInt, 00);
-
-                //Checking to see if the eventEndDateTime will be displayed in the Console
-                //Console.WriteLine(eventEndDateTime);
-
-                //Asking the user the name of the event using Console.WriteLine
-                Console.WriteLine("What is the name of the event?");
-                //Setting the user input to a variable, eventName, by using Console.ReadLine()
-                string eventName = Console.ReadLine();
-
-
-                //Asking the user the location of the event using Console.WriteLine
-                Console.WriteLine("Where will the location of the event take place?");
-                //Setting the user input of the event's location to a variable, eventLocation, by using Console.ReadLine()
-                string eventLocation = Console.ReadLine();
-
-
-                //Asking the user the event's description (if any) or notes about the event using Console.WriteLine
-                Console.WriteLine("Any descriptions or notes that you'd like to include for this event?");
-                //Setting the user input of the event's location to a variable, eventLocation, by using Console.ReadLine()
-                string eventDescription = Console.ReadLine();
-
-                //Using the values from DateTime to display the date and times of the event
-                //Displaying the event and its details in the console with this layout: "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
-                //Console.WriteLine and Template Literal is used to display the information about the event. \n creates a new line (line break) for the information
-                /*
-                Console.WriteLine($"Date and starting time of the event: {eventDateTime} \n" +
-                    $"Ending date and time of the event: {eventEndDateTime} \n" +
-                    $"Name of the event: {eventName} \n" +
-                    $"Location of the event: {eventLocation} \n" +
-                    $"Description/Notes about the event: {eventDescription}");
-                */
-
-
-                //The template to create an event will be the same for all events: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
-                //Since all of the events have the same format, classes can be used as a blueprint for creating the event and objects for each event.  
-                //All of the events will be stored in an ArrayList. ArrayLists are able to store objects that can be accessed by an index. Objects in an ArrayList can be searched, sorted and manipulated. 
-                //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
-
-
-                /*Creating the Object for each event using the Event Class*/
-                //Creating the event object using each variable for the date, time, name, location and details of the event 
-                Events eventInformation = new Events(eventDateTime.Year, eventDateTime.Month, eventDateTime.Day, 
-                     eventDateTime.Hour, eventStartMin, eventStartAmPm,
-                   eventEndDateTime.Year, eventEndDateTime.Month, eventEndDateTime.Day,
-                 eventEndDateTime.Hour, eventEndMin, eventEndAmPm,
-                  eventName, eventLocation, eventDescription);
-
-                //Displaying the details of the event using the eventDetails method (which is located in the Events Class)
-                //Console.WriteLine(eventInformation.displayEvent());
-
-                //Adding the events in the ArrayList titled eventsList. The eventsList ArrayList was passed in as a parameter to be used for the createEvent() method
-                eventsList.Add(eventInformation);
-
-                //Asking users if they would like to see the events from the Event's List
-                Console.WriteLine("Would you like to see the events in your event list?");
-                //Obtaining the user's response to the question above. The user's response will be converted to upper case
-                string seeEventList = Console.ReadLine().ToUpper();
-                //If the user would like to see the events in the event's list, an If Statement will check this and then display the events in chronological order
-                if (seeEventList == "YES")
-                {
-                    //Telling user how many events are in their event list by using template literal
-                    Console.WriteLine($"There are {eventsList.Count} event(s) in your event list. Here are the event(s) in your list: ");
-
-                    //Using a For loop to display the number of the events
-                    for(int i=1; i<= eventsList.Count; i++)
-                    {                       
-                        //The first item in an ArrayList starts with index 0, which is why k is equal to zero for the first event on the list
-                        int k = i - 1;
-
-                        //One event should be displayed on the Console per iteration of the For loop
-                        //foreach loop is used to display items in an ArrayList. Since the eventsList ArrayList has multiple items in it and we want one event and its description to be shown per iteration
-                        //each event has to be in its own ArrayList to display only that event's description.
-                        //This is why the oneEvent ArrayList was created to display its content for only one event per For loop iteration.
-                        //If the onEvent ArrayList was not created, all of the events and their details will show up per iteration of the For loop.
-                        ArrayList oneEvent= new ArrayList() { eventsList[k] };
-
-                        //Displaying the information about the event
-                        //Reading the items in the ArrayList
-                        //Events is the name of the Class. eventsList is the name of the ArrayList.
-                        //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
-                        foreach (Events items in oneEvent)
+                        //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
+                        //Declaring the variable eventStartAmPm to check if the time needs to be converted to military time (24 hours clock)
+                        //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
+                        string eventStartAmPm = eventStartTimeSplit[2].ToUpper();
+                        if ((eventStartAmPm == "PM") && (eventStartHour != 12))  //If the eventStartHour is equal to 12, there is no need to add 12 to it since 12:00 pm is equal to 12:00 in the 24 hours time.
                         {
-                            Console.WriteLine($"Event #{i} \n" + //Displaying the number of the event on the list
-                            $"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
-                            $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
-                            $"Name of the event: {items.eventName} \n" +
-                            $"Location of the event: {items.eventLocation} \n" +
-                            $"Description/Notes about the event: {items.eventDescription} \n");
+                            //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
+                            //To do this, 12 hours has to be added to the eventStartHour variable
+                            eventStartHour += 12;
                         }
+
+                        //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
+                        //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
+                        DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMinInt, 00);
+
+                        //Testing to see if the DateTime() method works with the user's inputed information
+                        //Console.WriteLine(eventDateTime);
+
+
+                        //Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
+                        //Ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
+                        //If the end time is on another day, then the DateTime for the end time of the event will be different.
+                        //Creating a Do/While Loop that will ask if the event ends on the same day that it starts.
+                        //If the user types something besides "Yes" or "No" to the question, the code within the Do Loop will continue to prompt them to answer the question.
+
+                        //Declaring the error variable that will let this Do/While loop run when the user does not answer the question with a "Yes" or "No" to whether the event ends on the same day that it starts
+                        string error = "False";
+
+                        //Declaring the variables ending event's month, day and year, that way it can be used in the DateTime() method that is outside of the If/Else If/Else statement
+                        int eventYearEnd = 0;
+                        int eventMonthEnd = 0;
+                        int eventDayEnd = 0;
+
+                        do
+                        {
+                            //Asking the user if the event ends on the same day. If the event ends on the same day, the event's year, month and day will be the same
+                            Console.WriteLine("Does the event end on the same day? Type \"Yes\" if it does, \"No\" if it does not.");
+                            //Obtaining the user input to determine if the event ends on the same day or not. ToUpper() ensures that the user's input will be converted to upper case
+                            string eventSameDay = Console.ReadLine().ToUpper();
+
+                            //Using an If Statement to run the code below if the user states that the event does not end on the same day that it starts.
+                            if (eventSameDay == "NO")
+                            {
+                                //Asking the user what day the event ends
+                                Console.WriteLine("What date does the event end? Make sure to type the year, month and date in numbers. " +
+                                    "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
+                                //Getting the user's input with Console.ReadLine(). It will be represented as a string.
+                                string eventDateEnd = Console.ReadLine();
+
+                                //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
+                                //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
+                                //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
+                                string[] eventDateEndArray = eventDateEnd.Split(",");
+
+                                //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
+                                //Converting the year, which was originally a string data type, into an integer data type
+                                eventYearEnd = Convert.ToInt32(eventDateEndArray[0]);
+                                //Converting the month, which was originally an string data type, into an integer data type
+                                eventMonthEnd = Convert.ToInt32(eventDateEndArray[1]);
+                                //Converting the month, which was originally an string data type, into an integer data type
+                                eventDayEnd = Convert.ToInt32(eventDateEndArray[2]);
+
+                                //Gets out of the loop because the user answered the question if the event ends on the same day or not
+                                error = "False";
+                            }
+                            else if (eventSameDay == "YES") //If the event ends on the same day that it starts
+                            {
+                                eventYearEnd = eventYear;
+                                eventMonthEnd = eventMonth;
+                                eventDayEnd = eventDay;
+                                //There is no error, so the loop doesn't need to be repeated again
+                                error = "False";
+                            }
+                            else //If the user does not type Yes or No in the Console, an error message will ask them to type Yes Or No to the question asking if the event ends on the same day
+                            {
+                                Console.WriteLine("You must answer \"Yes\" or \"No\" to whether or not the event ends on the same day that it starts.");
+                                error = "True";
+                            }
+                        } while (error == "True");
+
+                        //Asking the user what time the event ends 
+                        Console.WriteLine("What time does the event end (make sure to type it in this format:  hour : minutes: am or pm)? End time: ");
+                        //Creating the variables that will keep the ending time of the event
+                        string eventEndTime = Console.ReadLine();
+                        //Splitting the time to have a section for the hour and for minutes
+                        string[] eventEndTimeSplit = eventEndTime.Split(":");
+                        //Converting the hour and minutes into int data types to be used in the DateTime method
+                        int eventEndHour = Convert.ToInt32(eventEndTimeSplit[0]);
+                        int eventEndMinInt = Convert.ToInt32(eventEndTimeSplit[1]);
+                        string eventEndMin = eventEndTimeSplit[1];
+
+
+                        //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
+                        //Declaring the variable eventEndAmPm to check if the time needs to be converted to military time (24 hours clock). eventEndAmPm will either be AM or PM
+                        //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
+                        string eventEndAmPm = eventEndTimeSplit[2].ToUpper();
+                        if ((eventEndAmPm == "PM") && (eventEndHour != 12))
+                        {
+                            //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
+                            //To do this, 12 hours has to be added to the eventEndHour variable
+                            eventEndHour += 12;
+                        }
+
+                        //Taking the end date that the user placed in the Console and using DateTime method to display the end date and time of the event.
+                        //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
+                        DateTime eventEndDateTime = new DateTime(eventYearEnd, eventMonthEnd, eventDayEnd, eventEndHour, eventEndMinInt, 00);
+
+                        //Checking to see if the eventEndDateTime will be displayed in the Console
+                        //Console.WriteLine(eventEndDateTime);
+
+                        //Asking the user the name of the event using Console.WriteLine
+                        Console.WriteLine("What is the name of the event?");
+                        //Setting the user input to a variable, eventName, by using Console.ReadLine()
+                        string eventName = Console.ReadLine();
+
+
+                        //Asking the user the location of the event using Console.WriteLine
+                        Console.WriteLine("Where will the location of the event take place?");
+                        //Setting the user input of the event's location to a variable, eventLocation, by using Console.ReadLine()
+                        string eventLocation = Console.ReadLine();
+
+
+                        //Asking the user the event's description (if any) or notes about the event using Console.WriteLine
+                        Console.WriteLine("Any descriptions or notes that you'd like to include for this event?");
+                        //Setting the user input of the event's location to a variable, eventLocation, by using Console.ReadLine()
+                        string eventDescription = Console.ReadLine();
+
+                        //Using the values from DateTime to display the date and times of the event
+                        //Displaying the event and its details in the console with this layout: "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
+                        //Console.WriteLine and Template Literal is used to display the information about the event. \n creates a new line (line break) for the information
+                        /*
+                        Console.WriteLine($"Date and starting time of the event: {eventDateTime} \n" +
+                            $"Ending date and time of the event: {eventEndDateTime} \n" +
+                            $"Name of the event: {eventName} \n" +
+                            $"Location of the event: {eventLocation} \n" +
+                            $"Description/Notes about the event: {eventDescription}");
+                        */
+
+
+                        //The template to create an event will be the same for all events: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
+                        //Since all of the events have the same format, classes can be used as a blueprint for creating the event and objects for each event.  
+                        //All of the events will be stored in an ArrayList. ArrayLists are able to store objects that can be accessed by an index. Objects in an ArrayList can be searched, sorted and manipulated. 
+                        //Since the objects are values inputed by the user, it is best to ask the user if they would like to schedule an event. If they say "Yes," then the If Statement's block will run (this block contains the code to place user input into the object).
+
+
+                        /*Creating the Object for each event using the Event Class*/
+                        //Creating the event object using each variable for the date, time, name, location and details of the event 
+                        Events eventInformation = new Events(eventDateTime.Year, eventDateTime.Month, eventDateTime.Day,
+                             eventDateTime.Hour, eventStartMin, eventStartAmPm,
+                           eventEndDateTime.Year, eventEndDateTime.Month, eventEndDateTime.Day,
+                         eventEndDateTime.Hour, eventEndMin, eventEndAmPm,
+                          eventName, eventLocation, eventDescription);
+
+                        //Displaying the details of the event using the eventDetails method (which is located in the Events Class)
+                        //Console.WriteLine(eventInformation.displayEvent());
+
+                        //Adding the events in the ArrayList titled eventsList. The eventsList ArrayList was passed in as a parameter to be used for the createEvent() method
+                        eventsList.Add(eventInformation);
+
+                        //Asking users if they would like to see the events from the Event's List
+                        Console.WriteLine("Would you like to see the events in your event list?");
+                        //Obtaining the user's response to the question above. The user's response will be converted to upper case
+                        string seeEventList = Console.ReadLine().ToUpper();
+                        //If the user would like to see the events in the event's list, an If Statement will check this and then display the events in chronological order
+                        if (seeEventList == "YES")
+                        {
+                            //Telling user how many events are in their event list by using template literal
+                            Console.WriteLine($"There are {eventsList.Count} event(s) in your event list. Here are the event(s) in your list: ");
+
+                            //Using a For loop to display the number of the events
+                            for (int i = 1; i <= eventsList.Count; i++)
+                            {
+                                //The first item in an ArrayList starts with index 0, which is why k is equal to zero for the first event on the list
+                                int k = i - 1;
+
+                                //One event should be displayed on the Console per iteration of the For loop
+                                //foreach loop is used to display items in an ArrayList. Since the eventsList ArrayList has multiple items in it and we want one event and its description to be shown per iteration
+                                //each event has to be in its own ArrayList to display only that event's description.
+                                //This is why the oneEvent ArrayList was created to display its content for only one event per For loop iteration.
+                                //If the onEvent ArrayList was not created, all of the events and their details will show up per iteration of the For loop.
+                                ArrayList oneEvent = new ArrayList() { eventsList[k] };
+
+                                //Displaying the information about the event
+                                //Reading the items in the ArrayList
+                                //Events is the name of the Class. eventsList is the name of the ArrayList.
+                                //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
+                                foreach (Events items in oneEvent)
+                                {
+                                    Console.WriteLine($"Event #{i} \n" + //Displaying the number of the event on the list
+                                    $"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
+                                    $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
+                                    $"Name of the event: {items.eventName} \n" +
+                                    $"Location of the event: {items.eventLocation} \n" +
+                                    $"Description/Notes about the event: {items.eventDescription} \n");
+                                }
+                            }
+                        }
+
+                        //Displaying all the events in the ArrayList containing all the events (named eventsList) to the user in chronological order
+                        //To determine which event will be displayed first, there will be a comparaison between the year, month and days of the event using If/Else If Statements
+                        //If the date is the same for both events, their starting time (the hour the event starts) will be compared. If they start at the same hour, their starting time in minutes will be compared.
+                        //Comparisons will be done using If/Else If Statements
+
+
+                        /*Trying to place the events in a List
+                        //Placing the events in a List (this List will be named eventsList).
+                        //This line, List<Events>, will add the objects of the Events class to this list.
+                        List<Events> eventsList = new List<Events>
+                        {
+                            //new Events {eventInformation }, //All the information for the event's object will be added to the eventsList
+
+
+                            new Events
+                            {
+                                eventYear=  eventDateTime.Year,
+                                eventMonth= eventDateTime.Month,
+                                eventDay= eventDateTime.Day,
+                                eventStartHour= eventDateTime.Hour,
+                                eventStartMin= eventStartMin,
+                                eventStartAmPm= eventStartAmPm,
+
+                                eventYearEnd= eventEndDateTime.Year,
+                                eventMonthEnd= eventEndDateTime.Month,
+                                eventDayEnd= eventEndDateTime.Day,
+                                eventEndHour= eventEndDateTime.Hour,
+                                eventEndMin= eventEndMin,
+                                eventEndAmPm= eventEndAmPm,
+
+                                eventName= eventName,
+                                eventLocation= eventLocation,
+                                eventDescription= eventDescription,
+                            },
+
+                        }
+                        */
                     }
-                }
-
-                //Displaying all the events in the ArrayList containing all the events (named eventsList) to the user in chronological order
-                //To determine which event will be displayed first, there will be a comparaison between the year, month and days of the event using If/Else If Statements
-                //If the date is the same for both events, their starting time (the hour the event starts) will be compared. If they start at the same hour, their starting time in minutes will be compared.
-                //Comparisons will be done using If/Else If Statements
-
-
-                /*Trying to place the events in a List
-                //Placing the events in a List (this List will be named eventsList).
-                //This line, List<Events>, will add the objects of the Events class to this list.
-                List<Events> eventsList = new List<Events>
+                } else if (selectedApplication== "QUIT")
                 {
-                    //new Events {eventInformation }, //All the information for the event's object will be added to the eventsList
-
-                
-                    new Events
-                    {
-                        eventYear=  eventDateTime.Year,
-                        eventMonth= eventDateTime.Month,
-                        eventDay= eventDateTime.Day,
-                        eventStartHour= eventDateTime.Hour,
-                        eventStartMin= eventStartMin,
-                        eventStartAmPm= eventStartAmPm,
-
-                        eventYearEnd= eventEndDateTime.Year,
-                        eventMonthEnd= eventEndDateTime.Month,
-                        eventDayEnd= eventEndDateTime.Day,
-                        eventEndHour= eventEndDateTime.Hour,
-                        eventEndMin= eventEndMin,
-                        eventEndAmPm= eventEndAmPm,
-
-                        eventName= eventName,
-                        eventLocation= eventLocation,
-                        eventDescription= eventDescription,
-                    },
-                
+                    break; //This will let the computer stop going through this Do/While loop and the user will be able to exit the Time Management App
                 }
-                */
-            }
+                else
+                {
+                    //Teling the user that they didn't select an item from the list of options
+                    Console.WriteLine("You didn't select an application from the list of options. If you would like to quit the application, type \"quit\".");
+
+                }
+
+            } while (selectedApplication != "QUIT");
 
         }
 
-        //Method for the Schedule Planner Component
-        public static void schedulePlanner()
+        //Method for opening the Calendar Component
+        public static void Calendar()
         {
             
             /*Creating a calendar that will appear in the Console.
@@ -674,28 +715,6 @@ namespace Time_Management_Console_App
             public string eventName { get; set; }//Name of the event
             public string eventLocation { get; set; }//Location that the event will be held at
             public string eventDescription { get; set; } //Description of the event
-
-            /*
-            //Instance Variables
-            public int eventYear; //Year of the event
-            public int eventMonth; //Month of the event
-            public int eventDay; //Day of the event
-            public int eventStartHour; //Starting Hour of the event
-            public string eventStartMin; //Starting Minute of the event
-            public string eventStartAmPm; //indicates if the time is in the morning (am) or after noon (pm)
-
-            public int eventYearEnd; //Year of the event when it ends
-            public int eventMonthEnd; //Month of the event when it ends
-            public int eventDayEnd; //Day of the event when it ends
-            public int eventEndHour; //Hour the event ends
-            public string eventEndMin; //Minute when the event ends
-            public string eventEndAmPm; //indicates if the time is in the morning (am) or after noon (pm)
-
-
-            public string eventName; //Name of the event
-            public string eventLocation; //Location that the event will be held at
-            public string eventDescription; //Description of the event
-            */
 
             //Class Constructor Declaration with multiple parameters
             public Events(int inputEventYear, int inputEventMonth, int inputEventDay,
