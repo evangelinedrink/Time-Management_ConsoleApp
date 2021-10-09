@@ -41,14 +41,19 @@ namespace Time_Management_Console_App
                     //Initializing the variable note
                     string note = "value";
 
+                    //Creating a string value that will show the note number value to be placed in the note's object
+                    string noteNumber = "Note # ";
+           
                     //Initializing the noteDetails Constructor to be a string
                     //Constructors always have to be initialized in the Main 
                     //If the Constructor has different data types, define it as var
-                    string NoteDetails = currentDateTimeString + note;
+                    string NoteDetails = noteNumber + currentDateTimeString + note;
+
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
                     //Passing in the noteList Queue to the Notes method
                     //noteList Queue will store all the notes (and new notes) added to the note list
-                    Notes(noteList, currentDateTimeString, note, NoteDetails);
+                    Notes(noteList, currentDateTimeString, note, NoteDetails, noteNumber);
                 }
                 else if (selectedApplication == "TO DO LIST")
                 {
@@ -67,6 +72,8 @@ namespace Time_Management_Console_App
 
                     //Variable that will ask if the user would like to create/add an item in the Check List
                     string createCheckList = "YES";
+
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
                     //Using Do/While loop to let the code be read multiple times
                     do
@@ -90,6 +97,8 @@ namespace Time_Management_Console_App
                 else if (selectedApplication == "TIMER")
                 {
                     /*Timer App*/
+
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
                     //Asking the user what time would they like to set up the timer
                     Console.WriteLine("What time would you like to set up the timer to? " +
@@ -115,28 +124,37 @@ namespace Time_Management_Console_App
                 }
                 else if (selectedApplication == "CHRONOMETER")
                 {
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
                     /*Chronometer (Stopwatch) app that will determine the time that a user takes to do something*/
                     //The Chronometer method will run once the user selects the Chronometer from the list
                     Chronometer();
                 }
                 else if (selectedApplication == "ALARM")
                 {
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
                     //Alarm Method
                     Alarm();
                 }
                 else if (selectedApplication == "WEATHER APP")
                 {
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
                     //Run the todaysTemp method (Weather App Component of the Time Management Application)
                     todaysTemp();
                 }
                 else if (selectedApplication == "CALENDAR")
                 {
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
                     //Running the Calendar Component
                     Calendar();
-                    //schedulePlanner();
                 }
                 else if (selectedApplication == "SCHEDULER")
                 {
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
                     //Creating a Do/While loop to ask if the user would like to place an event in their event's list
                     //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
                     string scheduleAnotherEvent = "NO";
@@ -470,6 +488,8 @@ namespace Time_Management_Console_App
                 }
                 else
                 {
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
                     //Teling the user that they didn't select an item from the list of options
                     Console.WriteLine("You didn't select an application from the list of options. If you would like to quit the application, type \"quit\".");
 
@@ -775,15 +795,16 @@ namespace Time_Management_Console_App
         //Each note will have the date/time (currentDateTime) and the user's note below it
         public class NoteDetails
         {
+            public string noteNumberValue { get; set; }
             public string noteDateTime { get; set; }
             public string userNote { get; set; }
 
             //Constructor that will create the objects of the class
             //The Constructor always has the same name as the class
-            public NoteDetails(string currentDateTimeString, string note)
+            public NoteDetails(string noteNumber, string currentDateTimeString, string note)
             {
+                noteNumberValue = noteNumber;
                 noteDateTime = currentDateTimeString;
-                //Console.WriteLine("\n"); //Creating a new line (space) between the date the note was created and the note that the user typed in the console.
                 userNote = note;
 
             }
@@ -795,7 +816,7 @@ namespace Time_Management_Console_App
         //If they say "Yes", then the Console will ask them to name their notes and then register the date and time that the notes were created (using DateTime() method)
         //The notes will be stored in a Queue (first in, first out)
         //The Console will ask the user if they would like to view their notes. If they say "Yes", then the Console will display their notes starting from the first notes created to the latest notes.
-        public static void Notes(Queue noteList, string currentDateTimeString, string note, string NoteDetails) //Passing in the noteList Queue to the Notes method
+        public static void Notes(Queue noteList, string currentDateTimeString, string note, string NoteDetails, string noteNumber) //Passing in the noteList Queue to the Notes method
         {
             //Defining the answerNotes variable (user's input to the question asking them if they would like to create a note, see their notes or quit the notes section
             string answerNotes="value";
@@ -828,8 +849,24 @@ namespace Time_Management_Console_App
                     //Gets the users notes and places it in the note variable
                     note = Console.ReadLine();
 
+                    //Initializing the note number variable
+                    int noteNumberValueInt = 1;
+
+                    //Since each note will have their own note number, a For loop is used to increate the note number for each note
+                    //Count method is based on the length of the Queue called noteList
+                    for (int i = 1; i <= noteList.Count; i++)
+                    {
+                        noteNumberValueInt += 1; //Increasing the note number value
+                    }
+
+                    //Converting the note number value to a string
+                    string noteNumberValue = Convert.ToString(noteNumberValueInt);
+
+                    //Adding the note number into the string for the noteNumber variable
+                    noteNumber = $"Note #{noteNumberValue}";
+
                     //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
-                    var noteInformation = new NoteDetails(currentDateTimeString, note);
+                    var noteInformation = new NoteDetails(noteNumber, currentDateTimeString, note);
 
                     //Adding the note that the user typed to the Note List (which is a Queue) using Enqueue().
                     //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
@@ -841,28 +878,44 @@ namespace Time_Management_Console_App
                     //For the number they type, the index of the note will be "number-1", since the first note will be #1, but its index number will be 0.
                     //Need to do this type of thing for the events list.
 
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+                    Console.WriteLine("Here are the list of notes that you have written: "); //Displaying a message to the user.
+
+                    //Creating a For loop that will show the list of 
                     //All the items in the noteList Queue are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
                     foreach (NoteDetails item in noteList)
                     {
-                        Console.WriteLine(item);
+
+                        //Have to specify which item you would like to display inside of the Object based on the name it was given
+                        //Displaying the note's number in the list
+                        Console.WriteLine(item.noteNumberValue);
+                        //Displays the Date and Time that the user created the Note
+                        Console.WriteLine(item.noteDateTime);
+                        //Displays the user's note in the Console
+                        Console.WriteLine(item.userNote);
+                        Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
 
                 }
                 else if (answerNotes == "LIST")
                 {
+                    Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
                     //All the items in the noteList Queue are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
                     foreach (NoteDetails item in noteList)
                     {
-                        Console.WriteLine(item);
+                        //Have to specify which item you would like to display inside of the Object based on the name it was given
+                        //Displaying the note's number in the list
+                        Console.WriteLine(item.noteNumberValue);
+                        //Displays the Date and Time that the user created the Note
+                        Console.WriteLine(item.noteDateTime);
+                        //Displays the user's note in the Console
+                        Console.WriteLine(item.userNote);
+                        Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
-                    /*
-                    //Asking the user if they would like the Note List to be displayed in the Console.
-                    Console.WriteLine("Would you like to see your notes in your list?");
-                    //Getting the user's response to the question
-                    string seeNotes = Console.ReadLine();
-                    */
+
                 } else if (answerNotes=="QUIT")
                 {
                     break; //Break will let the computer stop running the code in the While loop (gets out of the While loop).
