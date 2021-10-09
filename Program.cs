@@ -12,9 +12,9 @@ namespace Time_Management_Console_App
     {
         static void Main(string[] args)
         {
-            //Displaying the different applications within the Time Managment App and welcoming the user to this application
+            //Displaying the different applications within the Time Managment App and welcoming the user to this application. \n gives a new line for each of the applications (it makes it easier to read)
             Console.WriteLine("Welcome to the Time Management Console Application! Here are the applications that you can visit within the app: ");
-            Console.WriteLine("Calendar" + "Scheduler" + "To Do List" + "Notes" + "Timer" + "Chronometer" + "Alarm");
+            Console.WriteLine("\n Calendar" + "\n\n Scheduler" + "\n\n To Do List" + "\n\n Notes" + "\n\n Timer" + "\n\n Chronometer" + "\n\n Alarm"+ "\n\n Weather App \n");
             //Place each of the applications in an array and then have them next to a number so that the user can type the number instead of the name of each application to open it
 
             //Creating the Queue called noteList that will contain all the notes
