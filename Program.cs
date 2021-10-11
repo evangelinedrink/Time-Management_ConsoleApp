@@ -3,7 +3,7 @@ using System.Collections; //With this, computer is able to use the ArrayList cla
 using System.Collections.Generic; //With this, computer is able to create Queues. It is also able to add, remove and insert an object in a List<T>
 using System.Timers; //With this, the timer can be used
 using System.Diagnostics; //This lets the stopwatch be used in the application
-
+using System.Linq; //Let's Where() method for the Queue be usable
 
 
 namespace Time_Management_Console_App
@@ -34,6 +34,8 @@ namespace Time_Management_Console_App
                     //Creating the Queue called noteList that will contain all the notes
                     //that the user typed in when they were using the Notes function in the Time Management App
                     Queue noteList = new Queue();
+
+                    //Creating a new note list that will include the 
 
                     //Initializing the variable currentDateTimeString in the Notes method
                     string currentDateTimeString = "value";
@@ -827,6 +829,7 @@ namespace Time_Management_Console_App
             {
                 //Asking user if they would like to create a new Note or see their list of notes
                 Console.WriteLine("Would you like to create a new note or see your list of notes? Type \"Create\" to create a new note or \"List\" to view the list of notes." +
+                    "If you would like to delete notes, type \"Delete\"."+ 
                     "To exit the Notes section, type \"Quit\".");
 
                 //Obtaining the user's input to the question and making their answer all capital letters with ToUpper();
@@ -916,13 +919,51 @@ namespace Time_Management_Console_App
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
 
-                } else if (answerNotes=="QUIT")
+                } else if (answerNotes == "DELETE")
+                {
+                    //Displaying the list of notes to the user, so they know which notes they would like to delete
+                    Console.WriteLine("Here is your list of notes: ");
+
+                    //All the items in the noteList Queue are objects created by the NoteDetails class
+                    //The code below doesn't work, have to find a way to display the notes in the noteList
+                    foreach (NoteDetails item in noteList)
+                    {
+                        //Have to specify which item you would like to display inside of the Object based on the name it was given
+                        //Displaying the note's number in the list
+                        Console.WriteLine(item.noteNumberValue);
+                        //Displays the Date and Time that the user created the Note
+                        Console.WriteLine(item.noteDateTime);
+                        //Displays the user's note in the Console
+                        Console.WriteLine(item.userNote);
+                        Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+                    }
+
+                    //Telling the user to delete a note by typing in the notes number
+                    Console.WriteLine("To delete a note, type the note's number below and hit the Enter key.");
+                    //User's input to delete the note
+                    string deleteNoteNumber= Console.ReadLine();
+
+                    //Initializing the string that will contain the Note # part that will be added to the
+                    //user's number that they typed in deleteNoteNumber
+                    string deleteNoteNumberInfo = $"Note #{deleteNoteNumber}";
+
+                    while(deleteNoteNumber != "QUIT")
+                    {
+                        //I will probably have to create another Queue to remove the information
+                        //Using an If statement to check and see if the Note #{deleteNoteNumber} is located inside of the Queue
+                        if(noteList.Contains(deleteNoteNumberInfo))
+                        {
+                            noteList.Dequeue();
+                        }
+                    }
+                } 
+                else if (answerNotes=="QUIT")
                 {
                     break; //Break will let the computer stop running the code in the While loop (gets out of the While loop).
                 }
                 else
                 {
-                    Console.WriteLine("Please state whether you'd like to create a note (type \"Create\"), see the list containing your notes (type \"List\") or leave the Notes section (type \"Quit\").");
+                    Console.WriteLine("Please state whether you'd like to create a note (type \"Create\"), see the list containing your notes (type \"List\"), delete notes (type \"Delete\"), or leave the Notes section (type \"Quit\").");
                 }
             }
             
@@ -1102,6 +1143,12 @@ namespace Time_Management_Console_App
             //This will start the Timer
             timer.Start();
 
+            //DateTime.se
+            //While loop to update the countdown
+            //while()
+            //Displaying the count down in the timer
+            //Console.WriteLine($"\r Countdown until timer rings (in milliseconds): ");
+
             //When the user types anything in the Console, whatever they type will stop the timer once it has gone off
             Console.ReadLine();
             //This will stop the Timer
@@ -1111,6 +1158,12 @@ namespace Time_Management_Console_App
 
         public static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
+            //Creates a Beeping noise that beeps 10 times
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Beep();
+            }
+
             Console.WriteLine($"Time is up! Type anything in the Console and hit the \"Enter\" key to stop the timer.");
         }
 
