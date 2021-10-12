@@ -33,9 +33,10 @@ namespace Time_Management_Console_App
                 {
                     //Creating the Queue called noteList that will contain all the notes
                     //that the user typed in when they were using the Notes function in the Time Management App
-                    Queue noteList = new Queue();
+                    //Queue noteList = new Queue();
 
-                    //Creating a new note list that will include the 
+                    //Creating a not list that will be a List
+                    List<string> noteList = new List<string>();
 
                     //Initializing the variable currentDateTimeString in the Notes method
                     string currentDateTimeString = "value";
@@ -812,13 +813,27 @@ namespace Time_Management_Console_App
             }
 
         }
+        
+        /*
+        public class NoteDetails
+        {
+            public string noteNumberValue { get; set; }
+            public string noteDateTime { get; set; }
+            public string userNote { get; set; }
+        }
+
+        public class NoteDetailsList
+        {
+           public var noteDetailsUpdated = new List<NoteDetails>();
+        }
+        */
 
         //Method to create Notes and Memos in the Time Management App
         //Console.WriteLine will be used to ask the user if they would like to create a new set of notes
         //If they say "Yes", then the Console will ask them to name their notes and then register the date and time that the notes were created (using DateTime() method)
         //The notes will be stored in a Queue (first in, first out)
         //The Console will ask the user if they would like to view their notes. If they say "Yes", then the Console will display their notes starting from the first notes created to the latest notes.
-        public static void Notes(Queue noteList, string currentDateTimeString, string note, string NoteDetails, string noteNumber) //Passing in the noteList Queue to the Notes method
+        public static void Notes(List<string> noteList, string currentDateTimeString, string note, string NoteDetails, string noteNumber) //Passing in the noteList Queue to the Notes method
         {
             //Defining the answerNotes variable (user's input to the question asking them if they would like to create a note, see their notes or quit the notes section
             string answerNotes="value";
@@ -873,7 +888,18 @@ namespace Time_Management_Console_App
 
                     //Adding the note that the user typed to the Note List (which is a Queue) using Enqueue().
                     //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
-                    noteList.Enqueue(noteInformation);
+                    //noteList.Enqueue(noteInformation);
+
+                    //Adding the object noteInformation into the noteList C# List
+                    //Adding the object of noteInformation into the noteList C# List using AddRange() method. The Add() method adds one element at a time.
+                    noteList.AddRange(new string[] { noteInformation.noteNumberValue, noteInformation.noteDateTime, noteInformation.userNote });
+                    //Each object has to be added one at a time since the Add() method in C# List only takes one argument
+                    /*
+                    noteList.Add(noteInformation.noteNumberValue);
+                    noteList.Add(noteInformation.noteDateTime);
+                    noteList.Add(noteInformation.userNote);
+                    */
+
 
                     //Might want to place the notes in an arrayList, this will make it easier for the user to delete the notes they don't want
                     //To delete the notes they don't want, the user will type in the note number they don't want
@@ -887,9 +913,11 @@ namespace Time_Management_Console_App
                     //Creating a For loop that will show the list of 
                     //All the items in the noteList Queue are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
-                    foreach (NoteDetails item in noteList)
+                    foreach (string item in noteList)
                     {
 
+                        Console.WriteLine(item);
+                        /*
                         //Have to specify which item you would like to display inside of the Object based on the name it was given
                         //Displaying the note's number in the list
                         Console.WriteLine(item.noteNumberValue);
@@ -898,6 +926,7 @@ namespace Time_Management_Console_App
                         //Displays the user's note in the Console
                         Console.WriteLine(item.userNote);
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+                        */
                     }
 
                 }
@@ -905,6 +934,11 @@ namespace Time_Management_Console_App
                 {
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
+                    foreach (string item in noteList)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    /*
                     //All the items in the noteList Queue are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
                     foreach (NoteDetails item in noteList)
@@ -918,12 +952,19 @@ namespace Time_Management_Console_App
                         Console.WriteLine(item.userNote);
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
+                    */
 
                 } else if (answerNotes == "DELETE")
                 {
                     //Displaying the list of notes to the user, so they know which notes they would like to delete
                     Console.WriteLine("Here is your list of notes: ");
 
+                    foreach (string item in noteList)
+                    {
+                        Console.WriteLine(item);
+                    }
+
+                    /*
                     //All the items in the noteList Queue are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
                     foreach (NoteDetails item in noteList)
@@ -937,6 +978,7 @@ namespace Time_Management_Console_App
                         Console.WriteLine(item.userNote);
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
+                    */
 
                     //Telling the user to delete a note by typing in the notes number
                     Console.WriteLine("To delete a note, type the note's number below and hit the Enter key.");
@@ -953,7 +995,7 @@ namespace Time_Management_Console_App
                         //Using an If statement to check and see if the Note #{deleteNoteNumber} is located inside of the Queue
                         if(noteList.Contains(deleteNoteNumberInfo))
                         {
-                            noteList.Dequeue();
+                            noteList.Remove(deleteNoteNumberInfo);
                         }
                     }
                 } 
