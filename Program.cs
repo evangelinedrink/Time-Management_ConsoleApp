@@ -35,8 +35,9 @@ namespace Time_Management_Console_App
                     //that the user typed in when they were using the Notes function in the Time Management App
                     //Queue noteList = new Queue();
 
-                    //Creating a not list that will be a List
-                    List<string> noteList = new List<string>();
+                    //Creating a note list that will be a List
+                    //The Class Object, titled NoteDetails, is what will be placed inside of the C# List
+                    List<NoteDetails> noteList = new List<NoteDetails>();
 
                     //Initializing the variable currentDateTimeString in the Notes method
                     string currentDateTimeString = "value";
@@ -814,6 +815,7 @@ namespace Time_Management_Console_App
 
         }
         
+        
         /*
         public class NoteDetails
         {
@@ -825,15 +827,23 @@ namespace Time_Management_Console_App
         public class NoteDetailsList
         {
            public var noteDetailsUpdated = new List<NoteDetails>();
+
+            public string AddNote(string noteNumber, string currentDateTimeString, string note)
+            {
+                noteDetailsUpdated.Add(new NoteDetails { noteNumberValue = noteNumber, noteDateTime = currentDateTimeString, userNote = note });
+            }
         }
         */
+
+        //https://stackoverflow.com/questions/39082621/add-new-object-to-list
+
 
         //Method to create Notes and Memos in the Time Management App
         //Console.WriteLine will be used to ask the user if they would like to create a new set of notes
         //If they say "Yes", then the Console will ask them to name their notes and then register the date and time that the notes were created (using DateTime() method)
         //The notes will be stored in a Queue (first in, first out)
         //The Console will ask the user if they would like to view their notes. If they say "Yes", then the Console will display their notes starting from the first notes created to the latest notes.
-        public static void Notes(List<string> noteList, string currentDateTimeString, string note, string NoteDetails, string noteNumber) //Passing in the noteList Queue to the Notes method
+        public static void Notes(List<NoteDetails> noteList, string currentDateTimeString, string note, string NoteDetails, string noteNumber) //Passing in the noteList Queue to the Notes method
         {
             //Defining the answerNotes variable (user's input to the question asking them if they would like to create a note, see their notes or quit the notes section
             string answerNotes="value";
@@ -892,7 +902,8 @@ namespace Time_Management_Console_App
 
                     //Adding the object noteInformation into the noteList C# List
                     //Adding the object of noteInformation into the noteList C# List using AddRange() method. The Add() method adds one element at a time.
-                    noteList.AddRange(new string[] { noteInformation.noteNumberValue, noteInformation.noteDateTime, noteInformation.userNote });
+                    noteList.Add(noteInformation);
+                    //noteList.AddRange(new string[] { noteInformation.noteNumberValue, noteInformation.noteDateTime, noteInformation.userNote });
                     //Each object has to be added one at a time since the Add() method in C# List only takes one argument
                     /*
                     noteList.Add(noteInformation.noteNumberValue);
@@ -911,13 +922,9 @@ namespace Time_Management_Console_App
                     Console.WriteLine("Here are the list of notes that you have written: "); //Displaying a message to the user.
 
                     //Creating a For loop that will show the list of 
-                    //All the items in the noteList Queue are objects created by the NoteDetails class
-                    //The code below doesn't work, have to find a way to display the notes in the noteList
-                    foreach (string item in noteList)
-                    {
-
-                        Console.WriteLine(item);
-                        /*
+                    //All the items in the noteList C# List are objects created by the NoteDetails class
+                    foreach (NoteDetails item in noteList)
+                    {                    
                         //Have to specify which item you would like to display inside of the Object based on the name it was given
                         //Displaying the note's number in the list
                         Console.WriteLine(item.noteNumberValue);
@@ -926,7 +933,7 @@ namespace Time_Management_Console_App
                         //Displays the user's note in the Console
                         Console.WriteLine(item.userNote);
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
-                        */
+                        
                     }
 
                 }
@@ -934,12 +941,7 @@ namespace Time_Management_Console_App
                 {
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
-                    foreach (string item in noteList)
-                    {
-                        Console.WriteLine(item);
-                    }
-                    /*
-                    //All the items in the noteList Queue are objects created by the NoteDetails class
+                    //All the items in the noteList List are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
                     foreach (NoteDetails item in noteList)
                     {
@@ -952,20 +954,14 @@ namespace Time_Management_Console_App
                         Console.WriteLine(item.userNote);
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
-                    */
+                    
 
                 } else if (answerNotes == "DELETE")
                 {
                     //Displaying the list of notes to the user, so they know which notes they would like to delete
                     Console.WriteLine("Here is your list of notes: ");
 
-                    foreach (string item in noteList)
-                    {
-                        Console.WriteLine(item);
-                    }
-
-                    /*
-                    //All the items in the noteList Queue are objects created by the NoteDetails class
+                    //All the items in the noteList List are objects created by the NoteDetails class
                     //The code below doesn't work, have to find a way to display the notes in the noteList
                     foreach (NoteDetails item in noteList)
                     {
@@ -978,7 +974,7 @@ namespace Time_Management_Console_App
                         Console.WriteLine(item.userNote);
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
-                    */
+
 
                     //Telling the user to delete a note by typing in the notes number
                     Console.WriteLine("To delete a note, type the note's number below and hit the Enter key.");
@@ -989,15 +985,37 @@ namespace Time_Management_Console_App
                     //user's number that they typed in deleteNoteNumber
                     string deleteNoteNumberInfo = $"Note #{deleteNoteNumber}";
 
-                    while(deleteNoteNumber != "QUIT")
+
+                    //Exists() method for C# Lists checks to see if a certain element is in the C# list (it will either be True or False)
+                    //Want to verify that the note the user would like to delete has the same number number as a note in the list
+                    //This is why the object's element (noteNumberValue) is being compared to what the user typed in the Console.
+                    //If it is the same note number, then the If statement below will run and delete that note.
+                    Console.WriteLine("Checking to see if the note is in the list: {0}", noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo));
+
+                    if((noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo)) == true)
                     {
-                        //I will probably have to create another Queue to remove the information
+                        //Trying to find a way to delete the class object in the noteList List that has the same deleteNoteNumberInfo that the user inputed.
+                        //noteList.Remove(noteList.noteNumberValue == deleteNoteNumberInfo);
+                    }
+                    /*
+                    while (deleteNoteNumber != "QUIT")
+                    {
+                        //Find() method for C# Lists checks to see if a certain element is in the C# list
+                        //Want to verify that the note the user would like to delete has the same number number as a note in the list
+                        //This is why the object's element (noteNumberValue) is being compared to what the user typed in the Console.
+                        //If it is the same note number, then the If statement below will run and delete that note.
+                        NoteDetails correctDelete = noteList.Find(item => item.noteNumberValue.Contains(deleteNoteNumberInfo));
+
+                        Console.WriteLine($"Checking to see if the note is in the list: {correctDelete}"); 
+                        /*
                         //Using an If statement to check and see if the Note #{deleteNoteNumber} is located inside of the Queue
-                        if(noteList.Contains(deleteNoteNumberInfo))
+                        if (correctDelete)
                         {
                             noteList.Remove(deleteNoteNumberInfo);
                         }
-                    }
+                        */
+                    //  }
+
                 } 
                 else if (answerNotes=="QUIT")
                 {
