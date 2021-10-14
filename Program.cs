@@ -992,11 +992,33 @@ namespace Time_Management_Console_App
                     //If it is the same note number, then the If statement below will run and delete that note.
                     Console.WriteLine("Checking to see if the note is in the list: {0}", noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo));
 
-                    if((noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo)) == true)
+                    //Creating a variable that will say if the user's inputed item to delete exists in the noteList List
+                    bool existValue = noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo);
+
+                    //Using a For loop to check and see if deleteNoteNumberInfo is in one of the class object's values that are contained in the noteList
+                    for(int i=0; i<noteList.Count -1; i++)
+                    {
+                        //Checking each of the Note class objects that are in the noteList
+                        NoteDetails checkInfo = noteList[i];
+
+                        //If the noteNumberValue in the Note class object is the same as the user's defined deleteNoteNumberInfo
+                        //then this Note class object will be deleted
+                        if (checkInfo.noteNumberValue == deleteNoteNumberInfo)
+                        {
+                            //This will remove the Note class object containing the note number that the user would like to delete
+                            noteList.Remove(checkInfo);
+                        }
+                    }
+
+                    /*
+                    if ((noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo)) == true)
                     {
                         //Trying to find a way to delete the class object in the noteList List that has the same deleteNoteNumberInfo that the user inputed.
                         //noteList.Remove(noteList.noteNumberValue == deleteNoteNumberInfo);
+                        //https://www.geeksforgeeks.org/c-sharp-removing-the-specified-element-from-the-list/
+                        //https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.find?view=net-5.0
                     }
+                    */
                     /*
                     while (deleteNoteNumber != "QUIT")
                     {
