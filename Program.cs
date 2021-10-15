@@ -800,6 +800,14 @@ namespace Time_Management_Console_App
         public class NoteDetails
         {
             public string noteNumberValue { get; set; }
+            //Might have to create a new method for the set property where it will get
+            //the index number of the note inside of the C# list
+            //When creating this new method, might have to pass in the C# List noteList that will determine the
+            /// <summary>
+            /// /the number of the note based on its position in the C# List.
+            /// </summary>
+            //Example of this is found here: https://social.msdn.microsoft.com/Forums/vstudio/en-US/13ce74db-5cc5-4fb1-965d-a0ea5b9c934d/update-all-object-properties-on-a-single-property-change-c?forum=csharpgeneral 
+            //https://www.guru99.com/c-sharp-class-object.html
             public string noteDateTime { get; set; }
             public string userNote { get; set; }
 
@@ -815,28 +823,6 @@ namespace Time_Management_Console_App
 
         }
         
-        
-        /*
-        public class NoteDetails
-        {
-            public string noteNumberValue { get; set; }
-            public string noteDateTime { get; set; }
-            public string userNote { get; set; }
-        }
-
-        public class NoteDetailsList
-        {
-           public var noteDetailsUpdated = new List<NoteDetails>();
-
-            public string AddNote(string noteNumber, string currentDateTimeString, string note)
-            {
-                noteDetailsUpdated.Add(new NoteDetails { noteNumberValue = noteNumber, noteDateTime = currentDateTimeString, userNote = note });
-            }
-        }
-        */
-
-        //https://stackoverflow.com/questions/39082621/add-new-object-to-list
-
 
         //Method to create Notes and Memos in the Time Management App
         //Console.WriteLine will be used to ask the user if they would like to create a new set of notes
@@ -879,13 +865,18 @@ namespace Time_Management_Console_App
 
                     //Initializing the note number variable
                     int noteNumberValueInt = 1;
+                  
 
                     //Since each note will have their own note number, a For loop is used to increate the note number for each note
-                    //Count method is based on the length of the Queue called noteList
+                    //To delete the notes they don't want, the user will type in the note number they don't want
+                    //this means that each note will have a number, need to create a For loop for this.
+                    //Count method is based on the length of the C# List called noteList
+ 
                     for (int i = 1; i <= noteList.Count; i++)
                     {
-                        noteNumberValueInt += 1; //Increasing the note number value
+                        noteNumberValueInt +=1; //Creating the number for each note in noteList
                     }
+                    
 
                     //Converting the note number value to a string
                     string noteNumberValue = Convert.ToString(noteNumberValueInt);
@@ -896,27 +887,8 @@ namespace Time_Management_Console_App
                     //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
                     var noteInformation = new NoteDetails(noteNumber, currentDateTimeString, note);
 
-                    //Adding the note that the user typed to the Note List (which is a Queue) using Enqueue().
-                    //Enqueue only accepts one argument, which is why the date (currentDateTime) and the details of the note (note) were placed as an object in noteInformation
-                    //noteList.Enqueue(noteInformation);
-
                     //Adding the object noteInformation into the noteList C# List
-                    //Adding the object of noteInformation into the noteList C# List using AddRange() method. The Add() method adds one element at a time.
                     noteList.Add(noteInformation);
-                    //noteList.AddRange(new string[] { noteInformation.noteNumberValue, noteInformation.noteDateTime, noteInformation.userNote });
-                    //Each object has to be added one at a time since the Add() method in C# List only takes one argument
-                    /*
-                    noteList.Add(noteInformation.noteNumberValue);
-                    noteList.Add(noteInformation.noteDateTime);
-                    noteList.Add(noteInformation.userNote);
-                    */
-
-
-                    //Might want to place the notes in an arrayList, this will make it easier for the user to delete the notes they don't want
-                    //To delete the notes they don't want, the user will type in the note number they don't want
-                    //(this means that each note will have a number, need to create a For loop for this).
-                    //For the number they type, the index of the note will be "number-1", since the first note will be #1, but its index number will be 0.
-                    //Need to do this type of thing for the events list.
 
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     Console.WriteLine("Here are the list of notes that you have written: "); //Displaying a message to the user.
@@ -934,6 +906,65 @@ namespace Time_Management_Console_App
                         Console.WriteLine(item.userNote);
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                         
+                    }
+
+                    //This If statement ensures that the numbering of the notes in the list will be refreshed once an item gets deleted from the note list 
+                    if((noteList.Count != 0) && (answerNotes == "CREATE"))
+                    {
+                        //Placing the current date and time that the note was created using DateTime method
+                        //Using DateTime.Now to get the current local date and time that the computer has
+                        currentDateTime = DateTime.Now;
+                        //Converting the currentDateTime to a string using ToString() method
+                        currentDateTimeString = currentDateTime.ToString();
+                        //Displaying the current date and time on the Console.
+                        Console.WriteLine(currentDateTime);
+
+                        //Tells user to type their note below
+                        Console.WriteLine("Type your note below.");
+
+                        //Gets the users notes and places it in the note variable
+                        note = Console.ReadLine();
+
+                        //Since each note will have their own note number, a For loop is used to increate the note number for each note
+                        //To delete the notes they don't want, the user will type in the note number they don't want
+                        //this means that each note will have a number, need to create a For loop for this.
+                        //Count method is based on the length of the C# List called noteList
+
+                        for (int i = 1; i <= noteList.Count; i++)
+                        {
+                            noteNumberValueInt =i; //Creating the number for each note in noteList
+                        }
+
+
+                        //Converting the note number value to a string
+                        noteNumberValue = Convert.ToString(noteNumberValueInt);
+
+                        //Adding the note number into the string for the noteNumber variable
+                        noteNumber = $"Note #{noteNumberValue}";
+
+                        //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
+                        noteInformation = new NoteDetails(noteNumber, currentDateTimeString, note);
+
+                        //Adding the object noteInformation into the noteList C# List
+                        noteList.Add(noteInformation);
+
+                        Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+                        Console.WriteLine("Here are the list of notes that you have written: "); //Displaying a message to the user.
+
+                        //Creating a For loop that will show the list of 
+                        //All the items in the noteList C# List are objects created by the NoteDetails class
+                        foreach (NoteDetails item in noteList)
+                        {
+                            //Have to specify which item you would like to display inside of the Object based on the name it was given
+                            //Displaying the note's number in the list
+                            Console.WriteLine(item.noteNumberValue);
+                            //Displays the Date and Time that the user created the Note
+                            Console.WriteLine(item.noteDateTime);
+                            //Displays the user's note in the Console
+                            Console.WriteLine(item.userNote);
+                            Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
+
+                        }
                     }
 
                 }
@@ -989,14 +1020,10 @@ namespace Time_Management_Console_App
                     //Exists() method for C# Lists checks to see if a certain element is in the C# list (it will either be True or False)
                     //Want to verify that the note the user would like to delete has the same number number as a note in the list
                     //This is why the object's element (noteNumberValue) is being compared to what the user typed in the Console.
-                    //If it is the same note number, then the If statement below will run and delete that note.
-                    Console.WriteLine("Checking to see if the note is in the list: {0}", noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo));
-
-                    //Creating a variable that will say if the user's inputed item to delete exists in the noteList List
-                    bool existValue = noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo);
+                    //Console.WriteLine("Checking to see if the note is in the list: {0}", noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo));
 
                     //Using a For loop to check and see if deleteNoteNumberInfo is in one of the class object's values that are contained in the noteList
-                    for(int i=0; i<noteList.Count -1; i++)
+                    for(int i=0; i<=noteList.Count -1; i++)
                     {
                         //Checking each of the Note class objects that are in the noteList
                         NoteDetails checkInfo = noteList[i];
@@ -1009,35 +1036,6 @@ namespace Time_Management_Console_App
                             noteList.Remove(checkInfo);
                         }
                     }
-
-                    /*
-                    if ((noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo)) == true)
-                    {
-                        //Trying to find a way to delete the class object in the noteList List that has the same deleteNoteNumberInfo that the user inputed.
-                        //noteList.Remove(noteList.noteNumberValue == deleteNoteNumberInfo);
-                        //https://www.geeksforgeeks.org/c-sharp-removing-the-specified-element-from-the-list/
-                        //https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.find?view=net-5.0
-                    }
-                    */
-                    /*
-                    while (deleteNoteNumber != "QUIT")
-                    {
-                        //Find() method for C# Lists checks to see if a certain element is in the C# list
-                        //Want to verify that the note the user would like to delete has the same number number as a note in the list
-                        //This is why the object's element (noteNumberValue) is being compared to what the user typed in the Console.
-                        //If it is the same note number, then the If statement below will run and delete that note.
-                        NoteDetails correctDelete = noteList.Find(item => item.noteNumberValue.Contains(deleteNoteNumberInfo));
-
-                        Console.WriteLine($"Checking to see if the note is in the list: {correctDelete}"); 
-                        /*
-                        //Using an If statement to check and see if the Note #{deleteNoteNumber} is located inside of the Queue
-                        if (correctDelete)
-                        {
-                            noteList.Remove(deleteNoteNumberInfo);
-                        }
-                        */
-                    //  }
-
                 } 
                 else if (answerNotes=="QUIT")
                 {
