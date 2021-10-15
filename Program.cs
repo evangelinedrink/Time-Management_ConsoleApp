@@ -890,6 +890,18 @@ namespace Time_Management_Console_App
                     //Adding the object noteInformation into the noteList C# List
                     noteList.Add(noteInformation);
 
+                    //Updating the number of the note based upon its position in the noteList List
+                    for(int i=0; i<= noteList.Count-1; i++)
+                    {
+                        noteNumberValueInt = i + 1;
+                        //Making noteNumberValueInt into a string
+                        noteNumberValue = Convert.ToString(noteNumberValueInt);
+                        //Adding the note number into the string for the noteNumber variable
+                        noteNumber = $"Note #{noteNumberValue}";
+                        //Changing the item in the class object (this is the noteNumber, in the class object it is called noteNumberValue) based on the note's position in the List
+                        noteInformation.noteNumberValue = noteNumber;
+                    }
+
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     Console.WriteLine("Here are the list of notes that you have written: "); //Displaying a message to the user.
 
@@ -907,69 +919,23 @@ namespace Time_Management_Console_App
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                         
                     }
-
-                    //This If statement ensures that the numbering of the notes in the list will be refreshed once an item gets deleted from the note list 
-                    if((noteList.Count != 0) && (answerNotes == "CREATE"))
-                    {
-                        //Placing the current date and time that the note was created using DateTime method
-                        //Using DateTime.Now to get the current local date and time that the computer has
-                        currentDateTime = DateTime.Now;
-                        //Converting the currentDateTime to a string using ToString() method
-                        currentDateTimeString = currentDateTime.ToString();
-                        //Displaying the current date and time on the Console.
-                        Console.WriteLine(currentDateTime);
-
-                        //Tells user to type their note below
-                        Console.WriteLine("Type your note below.");
-
-                        //Gets the users notes and places it in the note variable
-                        note = Console.ReadLine();
-
-                        //Since each note will have their own note number, a For loop is used to increate the note number for each note
-                        //To delete the notes they don't want, the user will type in the note number they don't want
-                        //this means that each note will have a number, need to create a For loop for this.
-                        //Count method is based on the length of the C# List called noteList
-
-                        for (int i = 1; i <= noteList.Count; i++)
-                        {
-                            noteNumberValueInt =i; //Creating the number for each note in noteList
-                        }
-
-
-                        //Converting the note number value to a string
-                        noteNumberValue = Convert.ToString(noteNumberValueInt);
-
-                        //Adding the note number into the string for the noteNumber variable
-                        noteNumber = $"Note #{noteNumberValue}";
-
-                        //Creating an Object for the note (the note's object contains the date and the user's note) using the NoteDetails Class
-                        noteInformation = new NoteDetails(noteNumber, currentDateTimeString, note);
-
-                        //Adding the object noteInformation into the noteList C# List
-                        noteList.Add(noteInformation);
-
-                        Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
-                        Console.WriteLine("Here are the list of notes that you have written: "); //Displaying a message to the user.
-
-                        //Creating a For loop that will show the list of 
-                        //All the items in the noteList C# List are objects created by the NoteDetails class
-                        foreach (NoteDetails item in noteList)
-                        {
-                            //Have to specify which item you would like to display inside of the Object based on the name it was given
-                            //Displaying the note's number in the list
-                            Console.WriteLine(item.noteNumberValue);
-                            //Displays the Date and Time that the user created the Note
-                            Console.WriteLine(item.noteDateTime);
-                            //Displays the user's note in the Console
-                            Console.WriteLine(item.userNote);
-                            Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
-
-                        }
-                    }
-
                 }
                 else if (answerNotes == "LIST")
                 {
+                    /* Create the variables in this For loop as global variables that can be used in this section of the Notes app
+                    //Updating the number of the note based upon its position in the noteList List
+                    for (int i = 0; i <= noteList.Count - 1; i++)
+                    {
+                        noteNumberValueInt = i + 1;
+                        //Making noteNumberValueInt into a string
+                        noteNumberValue = Convert.ToString(noteNumberValueInt);
+                        //Adding the note number into the string for the noteNumber variable
+                        noteNumber = $"Note #{noteNumberValue}";
+                        //Changing the item in the class object (this is the noteNumber, in the class object it is called noteNumberValue) based on the note's position in the List
+                        noteInformation.noteNumberValue = noteNumber;
+                    }
+                    */
+
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
                     //All the items in the noteList List are objects created by the NoteDetails class
