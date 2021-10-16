@@ -846,6 +846,11 @@ namespace Time_Management_Console_App
                 //Obtaining the user's input to the question and making their answer all capital letters with ToUpper();
                 answerNotes = Console.ReadLine().ToUpper();
 
+                //Initializing the note number variable so it can be used in other sections of the Notes
+                int noteNumberValueInt = 1;
+
+                //Initializing the note number value to a string so it can be used in other sections of the Notes
+                string noteNumberValue;
 
                 if (answerNotes == "CREATE")
                 {
@@ -864,7 +869,7 @@ namespace Time_Management_Console_App
                     note = Console.ReadLine();
 
                     //Initializing the note number variable
-                    int noteNumberValueInt = 1;
+                    //int noteNumberValueInt = 1;
                   
 
                     //Since each note will have their own note number, a For loop is used to increate the note number for each note
@@ -879,7 +884,7 @@ namespace Time_Management_Console_App
                     
 
                     //Converting the note number value to a string
-                    string noteNumberValue = Convert.ToString(noteNumberValueInt);
+                    noteNumberValue = Convert.ToString(noteNumberValueInt);
 
                     //Adding the note number into the string for the noteNumber variable
                     noteNumber = $"Note #{noteNumberValue}";
@@ -890,7 +895,7 @@ namespace Time_Management_Console_App
                     //Adding the object noteInformation into the noteList C# List
                     noteList.Add(noteInformation);
 
-                    //Updating the number of the note based upon its position in the noteList List
+                    //Updating the note's number based upon its position in the noteList List
                     for(int i=0; i<= noteList.Count-1; i++)
                     {
                         noteNumberValueInt = i + 1;
@@ -898,8 +903,13 @@ namespace Time_Management_Console_App
                         noteNumberValue = Convert.ToString(noteNumberValueInt);
                         //Adding the note number into the string for the noteNumber variable
                         noteNumber = $"Note #{noteNumberValue}";
-                        //Changing the item in the class object (this is the noteNumber, in the class object it is called noteNumberValue) based on the note's position in the List
-                        noteInformation.noteNumberValue = noteNumber;
+
+                        //Getting the information for a certain note inside of the noteList C# List using its index number
+                        var itemInNoteList = noteList[i];
+
+                        //Changing the note's number in the list containing the notes (list of notes is called the noteNumber,
+                        //the note's number in the class object is called noteNumberValue) based on the note's position in the List
+                        itemInNoteList.noteNumberValue = noteNumber;
                     }
 
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
@@ -922,8 +932,8 @@ namespace Time_Management_Console_App
                 }
                 else if (answerNotes == "LIST")
                 {
-                    /* Create the variables in this For loop as global variables that can be used in this section of the Notes app
-                    //Updating the number of the note based upon its position in the noteList List
+                    
+                    //Updating the note's number based upon its position in the noteList List
                     for (int i = 0; i <= noteList.Count - 1; i++)
                     {
                         noteNumberValueInt = i + 1;
@@ -931,11 +941,15 @@ namespace Time_Management_Console_App
                         noteNumberValue = Convert.ToString(noteNumberValueInt);
                         //Adding the note number into the string for the noteNumber variable
                         noteNumber = $"Note #{noteNumberValue}";
-                        //Changing the item in the class object (this is the noteNumber, in the class object it is called noteNumberValue) based on the note's position in the List
-                        noteInformation.noteNumberValue = noteNumber;
-                    }
-                    */
 
+                        //Getting the information for a certain note inside of the noteList C# List using its index number
+                        var itemInNoteList = noteList[i];
+
+                        //Changing the note's number in the list containing the notes (list of notes is called the noteNumber,
+                        //the note's number in the class object is called noteNumberValue) based on the note's position in the List
+                        itemInNoteList.noteNumberValue = noteNumber;
+                    }
+                    
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
                     //All the items in the noteList List are objects created by the NoteDetails class
@@ -955,6 +969,23 @@ namespace Time_Management_Console_App
 
                 } else if (answerNotes == "DELETE")
                 {
+                    //Updating the note's number based upon its position in the noteList List
+                    for (int i = 0; i <= noteList.Count - 1; i++)
+                    {
+                        noteNumberValueInt = i + 1;
+                        //Making noteNumberValueInt into a string
+                        noteNumberValue = Convert.ToString(noteNumberValueInt);
+                        //Adding the note number into the string for the noteNumber variable
+                        noteNumber = $"Note #{noteNumberValue}";
+
+                        //Getting the information for a certain note inside of the noteList C# List using its index number
+                        var itemInNoteList= noteList[i];
+
+                        //Changing the note's number in the list containing the notes (list of notes is called the noteNumber,
+                        //the note's number in the class object is called noteNumberValue) based on the note's position in the List
+                        itemInNoteList.noteNumberValue = noteNumber;
+                    }
+
                     //Displaying the list of notes to the user, so they know which notes they would like to delete
                     Console.WriteLine("Here is your list of notes: ");
 
