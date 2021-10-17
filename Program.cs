@@ -83,7 +83,7 @@ namespace Time_Management_Console_App
                     do
                     {
                         //Asking the user if they would like to open the check list application
-                        Console.WriteLine("Would you like to open the check list application?");
+                        Console.WriteLine("Would you like to open the To Do List (check list) application?");
                         //Getting the user's response and making it upper case
                         createCheckList = Console.ReadLine().ToUpper();
 
@@ -800,14 +800,7 @@ namespace Time_Management_Console_App
         public class NoteDetails
         {
             public string noteNumberValue { get; set; }
-            //Might have to create a new method for the set property where it will get
-            //the index number of the note inside of the C# list
-            //When creating this new method, might have to pass in the C# List noteList that will determine the
-            /// <summary>
-            /// /the number of the note based on its position in the C# List.
-            /// </summary>
-            //Example of this is found here: https://social.msdn.microsoft.com/Forums/vstudio/en-US/13ce74db-5cc5-4fb1-965d-a0ea5b9c934d/update-all-object-properties-on-a-single-property-change-c?forum=csharpgeneral 
-            //https://www.guru99.com/c-sharp-class-object.html
+          
             public string noteDateTime { get; set; }
             public string userNote { get; set; }
 
@@ -867,11 +860,7 @@ namespace Time_Management_Console_App
 
                     //Gets the users notes and places it in the note variable
                     note = Console.ReadLine();
-
-                    //Initializing the note number variable
-                    //int noteNumberValueInt = 1;
                   
-
                     //Since each note will have their own note number, a For loop is used to increate the note number for each note
                     //To delete the notes they don't want, the user will type in the note number they don't want
                     //this means that each note will have a number, need to create a For loop for this.
@@ -1204,6 +1193,9 @@ namespace Time_Management_Console_App
         //The code below needs to be in the Main component
         //appTimer.Stop();
         //appTimber.Dispose();
+
+        //The total milliseconds that the user has indicated for the timer will be a global variable that can be used in all methods
+        static int totalMilliseconds;
         public static void TimerApp(int[] timerValue)
         {
             //Converting the time placed by the user to set the timer in milliseconds
@@ -1212,13 +1204,46 @@ namespace Time_Management_Console_App
             int minutesToMillisec = timerValue[1] * 60 * 1000;
             int secondsToMillisec = timerValue[2] * 1000;
             //Adding all the milliseconds together
-            int totalMilliseconds = hoursToMillisec + minutesToMillisec + secondsToMillisec;
+            totalMilliseconds = hoursToMillisec + minutesToMillisec + secondsToMillisec;
 
             //Creating the timer
             Timer timer = new Timer(totalMilliseconds);
             timer.Elapsed += OnTimedEvent;
+
+            //Creating a timer that will display the time elapsed until the timer rings
+            //The time will be displayed (updated) in the Console every second (every 1000 milliseconds)
+            //Timer timerDisplay = new Timer(1000);
+            //timerDisplay.Elapsed += OnTimedEventDisplay; //This is the method that will display the time elapsed every second
+
+            //Will need to convert totalMilliseconds and the 1000 milliseconds to DateTime milliseconds (this way it won't be fast when displaying the time in seconds
+
+
+            //Converting the integer of totalMilliseconds to a millisecond value
+            TimeSpan userMilliseconds = TimeSpan.FromMilliseconds(totalMilliseconds);
+            //Using DateTime to make the user's milliseconds become subtracted together
+            //DateTime userTime = new DateTime(userMilliseconds);
+            //Creating 1 second (1000 milliseconds) integer data type to a DateTime millisecond
+            TimeSpan oneSec = TimeSpan.FromMilliseconds(1000);
+            //Difference between the userMilliseconds and oneSec
+
+
             //This will start the Timer
             timer.Start();
+
+            //Using the TimeSpan method for subtraction
+            TimeSpan difference = userMilliseconds.Subtract(oneSec);
+            Console.WriteLine($"/r{difference}");
+
+            while (!(userMilliseconds.Equals(TimeSpan.Zero)))
+            {
+                userMilliseconds -= oneSec;
+
+                //Displaying the time on the Console to show how the time until the timer goes off
+                Console.WriteLine($"\rTimer will go off in {userMilliseconds} milliseconds.");
+            }
+
+            //This will start the display time for the timer
+            //timerDisplay.Start();
 
             //DateTime.se
             //While loop to update the countdown
@@ -1231,17 +1256,37 @@ namespace Time_Management_Console_App
             //This will stop the Timer
             timer.Stop();
 
+            //This will stop the display from the timer from showing in the Console.
+            //timerDisplay.Stop();
+
         }
 
         public static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
+            Console.WriteLine($"Time is up! Type anything in the Console and hit the \"Enter\" key to stop the timer.");
+
             //Creates a Beeping noise that beeps 10 times
             for (int i = 0; i < 10; i++)
             {
                 Console.Beep();
             }
+        }
 
-            Console.WriteLine($"Time is up! Type anything in the Console and hit the \"Enter\" key to stop the timer.");
+        public static void OnTimedEventDisplay(Object source, ElapsedEventArgs e)
+        {
+            //Initializing the timeDifference variable
+            int timerDifference= totalMilliseconds;
+
+            while(timerDifference != 0)
+            {
+                //The time that the user indicated for the timer will be subtracted by 1 second (1000 milliseconds)
+                //By doing this, the difference between the times can be shown in the Console so the user will know when the timer will go off
+                timerDifference -= 1000;
+            }
+
+            //Displaying the time on the Console to show how the time until the timer goes off
+            Console.WriteLine($"\rTimer will go off in {timerDifference} milliseconds.");
+            
         }
 
         //Variable that will get the user's input to stop the chronometer
