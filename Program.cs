@@ -1217,24 +1217,40 @@ namespace Time_Management_Console_App
 
             //Will need to convert totalMilliseconds and the 1000 milliseconds to DateTime milliseconds (this way it won't be fast when displaying the time in seconds
 
+            //Using DateTime to convert the user's milliseconds to DateTime's milliseconds
+            //A tick represents 100 nanoseconds so multiplying by 10000 will give 1 millisecond
+            DateTime userMillisecondsDT = new DateTime(2021,10,18,0,0,0,totalMilliseconds);
+            //DateTime userMillisecondsDT = new DateTime((100 * 10000) * totalMilliseconds);
+            //Creating 1 second (1000 milliseconds) integer data type to a DateTime millisecond
+            DateTime oneSecDT = new DateTime(2021,10,18,0,0,0,1000);
+            //DateTime oneSecDT = new DateTime(100 * 10000);
 
+            //userMilliseconds that will be used to display the time in the Console
+            int userMilliseconds = userMillisecondsDT.Millisecond;
+            //One second that will be subtracted by the userMilliseconds
+            int oneSec = oneSecDT.Millisecond;
+
+            //Difference between the userMilliseconds and oneSec
+            //TimeSpan differenceSec = userMilliseconds - oneSec;
+
+            //
             //Converting the integer of totalMilliseconds to a millisecond value
-            TimeSpan userMilliseconds = TimeSpan.FromMilliseconds(totalMilliseconds);
+            //TimeSpan userMilliseconds = TimeSpan.FromMilliseconds(totalMilliseconds);
             //Using DateTime to make the user's milliseconds become subtracted together
             //DateTime userTime = new DateTime(userMilliseconds);
             //Creating 1 second (1000 milliseconds) integer data type to a DateTime millisecond
-            TimeSpan oneSec = TimeSpan.FromMilliseconds(1000);
-            //Difference between the userMilliseconds and oneSec
+            //TimeSpan oneSec = TimeSpan.FromMilliseconds(1000);
+
 
 
             //This will start the Timer
             timer.Start();
 
             //Using the TimeSpan method for subtraction
-            TimeSpan difference = userMilliseconds.Subtract(oneSec);
-            Console.WriteLine($"/r{difference}");
+            //TimeSpan difference = userMilliseconds.Subtract(oneSec);
+            //Console.WriteLine($"/r{difference}");
 
-            while (!(userMilliseconds.Equals(TimeSpan.Zero)))
+            while ((userMilliseconds-oneSec)!=0)
             {
                 userMilliseconds -= oneSec;
 
