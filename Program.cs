@@ -204,7 +204,11 @@ namespace Time_Management_Console_App
 
                     } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
 
-
+                    //Create a Do/While loop for asking if the user would like to delete an event from their scheduler
+                    //User will type the event number they would like to delete and the computer will delete the event based off the 
+                    //index number of the event. the first event starts at 1, so the index for that event will be 0 (event number -1).
+                    //Asking the user if they would like to delete an event from their scheduler
+                    Console.WriteLine("");
 
                     //Method to create an event to be placed in the list of events
                     static void eventCreator(ArrayList eventsList)
