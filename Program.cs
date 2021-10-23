@@ -207,8 +207,38 @@ namespace Time_Management_Console_App
                     //Create a Do/While loop for asking if the user would like to delete an event from their scheduler
                     //User will type the event number they would like to delete and the computer will delete the event based off the 
                     //index number of the event. the first event starts at 1, so the index for that event will be 0 (event number -1).
-                    //Asking the user if they would like to delete an event from their scheduler
-                    Console.WriteLine("");
+                    string userAnswerDelete = "YES";
+
+                    do
+                    {
+                        //Asking the user if they would like to delete an event from their scheduler
+                        Console.WriteLine("Would you like to delete an event from your event scheduler?");
+                        //User's input to the abov question
+                        userAnswerDelete = Console.ReadLine().ToUpper();
+
+                        if(userAnswerDelete == "YES")
+                        {
+                            
+                            //Displaying the information about the event
+                            for(int i=1; i<= eventsList.Count; i++)
+                            {
+                                //Reading the items in the ArrayList
+                                //Events is the name of the Class. eventsList is the name of the ArrayList.
+                                //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
+                                foreach (Events items in eventsList)
+                                {
+                                    Console.WriteLine($"Event #{i} \n" + //Displaying the number of the event on the list
+                                    $"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
+                                    $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
+                                    $"Name of the event: {items.eventName} \n" +
+                                    $"Location of the event: {items.eventLocation} \n" +
+                                    $"Description/Notes about the event: {items.eventDescription} \n");
+                                }
+                            }
+
+                        }
+                    } while (userAnswerDelete == "YES");
+
 
                     //Method to create an event to be placed in the list of events
                     static void eventCreator(ArrayList eventsList)
