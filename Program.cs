@@ -166,6 +166,9 @@ namespace Time_Management_Console_App
 
                     //Creating an ArrayList that will contain all the events placed by the user
                     var eventsList = new ArrayList();
+                    //Creating an ArrayList that will display one event at a time
+                    ArrayList oneEvent = new ArrayList() { eventsList.Count };
+
                     do
                     {
                         //Asking the user if they would like to schedule an event
@@ -182,8 +185,62 @@ namespace Time_Management_Console_App
                         else if ((scheduleEvent != "YES") && (scheduleEvent != "NO")) //&& ensures that if the user types in a value that is neither "YES" or "NO", the Console will display the code within this else/if statement
                         {
                             Console.WriteLine("Please answer with a \"Yes\" or a \"No\".");
+                        } else
+                        {
+                            //Initializing the userViewDelete variable
+                            string userViewDelete = "VIEW";
+                            do
+                            {
+                                //Asking the user if they would like to see their list of events or delete an event
+                                Console.WriteLine("Would you like to see your events in your scheduler or delete an event? Type \"view\" to see your events or \"delete\" to delete event(s)" +
+                                    "from your scheduler. If you would like to leave the scheduler, type \"quit\".");
+                                //Getting the user's input to the above question
+                                userViewDelete = Console.ReadLine().ToUpper();
+
+                                if (userViewDelete == "VIEW")
+                                {
+                                    //Telling user how many events are in their event list by using template literal
+                                    Console.WriteLine($"There are {eventsList.Count} event(s) in your event list. Here are the event(s) in your list: ");
+
+                                    //Using a For loop to display the number of the events
+                                    for (int i = 1; i <= eventsList.Count; i++)
+                                    {
+                                        //The first item in an ArrayList starts with index 0, which is why k is equal to zero for the first event on the list
+                                        int k = i - 1;
+
+                                        //One event should be displayed on the Console per iteration of the For loop
+                                        //foreach loop is used to display items in an ArrayList. Since the eventsList ArrayList has multiple items in it and we want one event and its description to be shown per iteration
+                                        //each event has to be in its own ArrayList to display only that event's description.
+                                        //This is why the oneEvent ArrayList was created to display its content for only one event per For loop iteration.
+                                        //If the onEvent ArrayList was not created, all of the events and their details will show up per iteration of the For loop.
+                                        oneEvent = new ArrayList() { eventsList[k] };
+
+                                        //Displaying the information about the event
+                                        //Reading the items in the ArrayList
+                                        //Events is the name of the Class. eventsList is the name of the ArrayList.
+                                        //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
+                                        foreach (Events items in oneEvent)
+                                        {
+                                            Console.WriteLine($"Event #{i} \n" + //Displaying the number of the event on the list
+                                            $"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
+                                            $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
+                                            $"Name of the event: {items.eventName} \n" +
+                                            $"Location of the event: {items.eventLocation} \n" +
+                                            $"Description/Notes about the event: {items.eventDescription} \n");
+                                        }
+                                    }
+                                } else if (userViewDelete == "DELETE")
+                                {
+
+                                }
+  
+                            } while (userViewDelete != "QUIT");
+
+
+
                         }
 
+                        /*
                         //If the user says they do not want to schedule an event, the code in the If block will not run (it will not ask them if they want to schedule another event).
                         if (scheduleEvent != "NO")
                         {
@@ -239,6 +296,7 @@ namespace Time_Management_Console_App
                         }
                     } while (userAnswerDelete == "YES");
 
+                    */
 
                     //Method to create an event to be placed in the list of events
                     static void eventCreator(ArrayList eventsList)
