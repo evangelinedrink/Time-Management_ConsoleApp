@@ -161,7 +161,10 @@ namespace Time_Management_Console_App
 
                     //Creating a Do/While loop to ask if the user would like to place an event in their event's list
                     //Declaring the scheduleAnotherEvent variable that will let this Do/While loop run again when the user types "YES" in the Console
-                    string scheduleAnotherEvent = "NO";
+                    string scheduleEvent = "NO";
+
+                    //Initializing the variable userViewDelete
+                    string userViewDelete = "VIEW";
 
 
                     //Creating an ArrayList that will contain all the events placed by the user
@@ -175,9 +178,9 @@ namespace Time_Management_Console_App
                         //\n will create a new line to ask the user if they would like to schedule an event since this question comes after the calendar.
                         Console.WriteLine("\nWould you like to schedule an event in your event list?");
                         //Getting the user's response 
-                        string scheduleEvent = Console.ReadLine().ToUpper();
+                        scheduleEvent = Console.ReadLine().ToUpper();
 
-                        if ((scheduleEvent == "YES") || (scheduleAnotherEvent == "YES"))
+                        if ((scheduleEvent == "YES"))
                         {
                             //Running the Event Creator Method (which creates the events (they are objects) and places the events in a List)
                             eventCreator(eventsList);
@@ -185,10 +188,9 @@ namespace Time_Management_Console_App
                         else if ((scheduleEvent != "YES") && (scheduleEvent != "NO")) //&& ensures that if the user types in a value that is neither "YES" or "NO", the Console will display the code within this else/if statement
                         {
                             Console.WriteLine("Please answer with a \"Yes\" or a \"No\".");
-                        } else
+                        }
+                        else
                         {
-                            //Initializing the userViewDelete variable
-                            string userViewDelete = "VIEW";
                             do
                             {
                                 //Asking the user if they would like to see their list of events or delete an event
@@ -229,74 +231,61 @@ namespace Time_Management_Console_App
                                             $"Description/Notes about the event: {items.eventDescription} \n");
                                         }
                                     }
-                                } else if (userViewDelete == "DELETE")
-                                {
-
                                 }
-  
+                                else if (userViewDelete == "DELETE")
+                                {
+                                    //Telling user how many events are in their event list by using template literal
+                                    Console.WriteLine($"There are {eventsList.Count} event(s) in your event list. Here are the event(s) in your list: ");
+
+                                    //Using a For loop to display the number of the events
+                                    for (int i = 1; i <= eventsList.Count; i++)
+                                    {
+                                        //The first item in an ArrayList starts with index 0, which is why k is equal to zero for the first event on the list
+                                        int k = i - 1;
+
+                                        //One event should be displayed on the Console per iteration of the For loop
+                                        //foreach loop is used to display items in an ArrayList. Since the eventsList ArrayList has multiple items in it and we want one event and its description to be shown per iteration
+                                        //each event has to be in its own ArrayList to display only that event's description.
+                                        //This is why the oneEvent ArrayList was created to display its content for only one event per For loop iteration.
+                                        //If the onEvent ArrayList was not created, all of the events and their details will show up per iteration of the For loop.
+                                        oneEvent = new ArrayList() { eventsList[k] };
+
+                                        //Displaying the information about the event
+                                        //Reading the items in the ArrayList
+                                        //Events is the name of the Class. eventsList is the name of the ArrayList.
+                                        //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
+                                        foreach (Events items in oneEvent)
+                                        {
+                                            Console.WriteLine($"Event #{i} \n" + //Displaying the number of the event on the list
+                                            $"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
+                                            $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
+                                            $"Name of the event: {items.eventName} \n" +
+                                            $"Location of the event: {items.eventLocation} \n" +
+                                            $"Description/Notes about the event: {items.eventDescription} \n");
+                                        }
+                                    }
+
+                                    //Indicate which event you would like to delete from your scheduler
+                                    Console.WriteLine("Type the event number in the Console that you would like to delete.");
+                                    //Obtaining the user's response to the question above
+                                    string userDeleteEventString = Console.ReadLine();
+                                    //Converting the value that the user typed in the Console to the event number symbol
+                                    string userDeleteEvent = $"Event #{userDeleteEventString}";
+
+                                    //Converting the user's number to an integer
+                                    int userDeleteEventNumber = Convert.ToInt32(userDeleteEventString);
+                                    //Index number for that event's value
+                                    int userDeleteEventNumberIndex = userDeleteEventNumber - 1;
+
+                                    //Removing the event from eventsList ArrayList (containing all the events that the user uploaded)
+                                    eventsList.RemoveAt(userDeleteEventNumberIndex);
+                                }
+
                             } while (userViewDelete != "QUIT");
 
-
-
                         }
+                    } while (scheduleEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
 
-                        /*
-                        //If the user says they do not want to schedule an event, the code in the If block will not run (it will not ask them if they want to schedule another event).
-                        if (scheduleEvent != "NO")
-                        {
-                            //Asking the user if they would like to schedule another event
-                            Console.WriteLine("Would you like to add another event to your event's list?");
-                            //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
-                            scheduleAnotherEvent = Console.ReadLine().ToUpper();
-                            //Ensuring that the user types "Yes" or "No" in the Console to whether they would like to schedule another event by using a While loop to check their response
-                            //The code within this While loop will run when both scheduleAnotherEvent is not equal to YES or NO (True && True = True, all other combinations are equal to False). While loop only runs when conditions are True.
-                            while ((scheduleAnotherEvent != "YES") && (scheduleAnotherEvent != "NO"))
-                            {
-                                Console.WriteLine("Please answer the question with a \"Yes\" or a \"No\".\n Would you like to add another event to your event's list?");
-                                //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
-                                scheduleAnotherEvent = Console.ReadLine().ToUpper();
-                            }
-                        }
-
-
-                    } while (scheduleAnotherEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
-
-                    //Create a Do/While loop for asking if the user would like to delete an event from their scheduler
-                    //User will type the event number they would like to delete and the computer will delete the event based off the 
-                    //index number of the event. the first event starts at 1, so the index for that event will be 0 (event number -1).
-                    string userAnswerDelete = "YES";
-
-                    do
-                    {
-                        //Asking the user if they would like to delete an event from their scheduler
-                        Console.WriteLine("Would you like to delete an event from your event scheduler?");
-                        //User's input to the abov question
-                        userAnswerDelete = Console.ReadLine().ToUpper();
-
-                        if(userAnswerDelete == "YES")
-                        {
-                            
-                            //Displaying the information about the event
-                            for(int i=1; i<= eventsList.Count; i++)
-                            {
-                                //Reading the items in the ArrayList
-                                //Events is the name of the Class. eventsList is the name of the ArrayList.
-                                //items is each individual section that was added to the Arraylist. items.nameOfPassedVariable will display that variable in the Console.
-                                foreach (Events items in eventsList)
-                                {
-                                    Console.WriteLine($"Event #{i} \n" + //Displaying the number of the event on the list
-                                    $"Date and starting time of the event: {items.eventMonth}/{items.eventDay}/{items.eventYear} at {items.eventStartHour}:{items.eventStartMin} {items.eventStartAmPm}\n" +
-                                    $"Ending date and time of the event: {items.eventMonthEnd}/{items.eventDayEnd}/{items.eventYearEnd} at {items.eventEndHour}:{items.eventEndMin} {items.eventEndAmPm}\n" +
-                                    $"Name of the event: {items.eventName} \n" +
-                                    $"Location of the event: {items.eventLocation} \n" +
-                                    $"Description/Notes about the event: {items.eventDescription} \n");
-                                }
-                            }
-
-                        }
-                    } while (userAnswerDelete == "YES");
-
-                    */
 
                     //Method to create an event to be placed in the list of events
                     static void eventCreator(ArrayList eventsList)
@@ -578,6 +567,7 @@ namespace Time_Management_Console_App
                         }
                         */
                     }
+
                 } else if (selectedApplication== "QUIT")
                 {
                     break; //This will let the computer stop going through this Do/While loop and the user will be able to exit the Time Management App
