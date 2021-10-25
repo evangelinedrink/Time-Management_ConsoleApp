@@ -126,47 +126,19 @@ namespace Updating_the_Scheduler
                             string userDeleteEventString = Console.ReadLine();
                             //Converting the value that the user typed in the Console to the event number symbol
                             string userDeleteEvent = $"Event #{userDeleteEventString}";
+                            
+                            //Converting the user's number to an integer
+                            int userDeleteEventNumber = Convert.ToInt32(userDeleteEventString);
+                            //Index number for that event's value
+                            int userDeleteEventNumberIndex = userDeleteEventNumber - 1;
 
-
-                            //Using the If/Else statement to delete the event from the scheduler
-                            if (oneEvent.Contains(userDeleteEvent))
-                            {
-                                //Converting the user's number to an integer
-                                int userDeleteEventNumber = Convert.ToInt32(userDeleteEventString);
-
-                                //Index number for that event's value
-                                int userDeleteEventNumberIndex = userDeleteEventNumber - 1;
-
-                                //Removing the event from both ArrayLists
-                                oneEvent.RemoveAt(userDeleteEventNumberIndex);
-                                eventsList.RemoveAt(userDeleteEventNumberIndex);
-                            }
+                            //Removing the event from eventsList ArrayList (containing all the events that the user uploaded)
+                            eventsList.RemoveAt(userDeleteEventNumberIndex);
                         }
 
                     } while (userViewDelete != "QUIT");
 
                 }
-
-                /*
-                //If the user says they do not want to schedule an event, the code in the If block will not run (it will not ask them if they want to schedule another event).
-                if (scheduleEvent != "NO")
-                {
-                    //Asking the user if they would like to schedule another event
-                    Console.WriteLine("Would you like to add another event to your event's list?");
-                    //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
-                    scheduleAnotherEvent = Console.ReadLine().ToUpper();
-                    //Ensuring that the user types "Yes" or "No" in the Console to whether they would like to schedule another event by using a While loop to check their response
-                    //The code within this While loop will run when both scheduleAnotherEvent is not equal to YES or NO (True && True = True, all other combinations are equal to False). While loop only runs when conditions are True.
-                    while ((scheduleAnotherEvent != "YES") && (scheduleAnotherEvent != "NO"))
-                    {
-                        Console.WriteLine("Please answer the question with a \"Yes\" or a \"No\".\n Would you like to add another event to your event's list?");
-                        //Getting the user's response to the questions with Console.ReadLine. Making the answer to upper case with ToUpper()
-                        scheduleAnotherEvent = Console.ReadLine().ToUpper();
-                    }
-                }
-                */
-
-
             } while (scheduleEvent == "YES"); //The code within this Do/While loop will run again if the user answers "Yes" to adding another event to their event's list
 
 
