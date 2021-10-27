@@ -490,6 +490,18 @@ namespace Time_Management_Console_App
                         //Adding the events in the ArrayList titled eventsList. The eventsList ArrayList was passed in as a parameter to be used for the createEvent() method
                         eventsList.Add(eventInformation);
 
+                        //Displaying the list of events in chronological order based on the event's starting date and time
+                        //For each event in the eventsList ArrayList, it must compare its starting date and then time (time will be compared if the two events start on the same day)
+                        //To iterate through each of the event's objects in the eventsList ArrayList, a For loop will be used. This For loop will first compare the first event object
+                        //with the second event's object. 
+                        //First, the year of the two events will be compared using an If statement. If the years are different, the event with the closer year will be placed before the other event
+                        //If the two events start at the same year, then an Else If statement will be used to compare the months that each event will start
+                        //If the events start in the same month, then an Else If statement will be used to compare the days that each events start.
+                        //This Else If statement will be used to go through the date (first the year, then the month, last the day) and then the time (am/pm, then hour, then minutes)
+                        //If the event starts before the other event it is being compared to, that event will then be placed before the other event (index number of other event - 1 )
+                        //Once the events have switched places to be in chronological order, the next iteration must start. To do this, Continue statement will be used.
+                        //Continue will be at the end of every If/Else If statement, so when the body of these statements run, then it is time to iterate (go to the next event) in the ArrayList.
+
                         //Asking users if they would like to see the events from the Event's List
                         Console.WriteLine("Would you like to see the events in your event list?");
                         //Obtaining the user's response to the question above. The user's response will be converted to upper case
