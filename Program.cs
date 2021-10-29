@@ -490,6 +490,9 @@ namespace Time_Management_Console_App
                         //Adding the events in the ArrayList titled eventsList. The eventsList ArrayList was passed in as a parameter to be used for the createEvent() method
                         eventsList.Add(eventInformation);
 
+                        //Displaying the first event in the eventsList ArrayList
+                        Console.WriteLine(eventsList[0]);
+
                         //Displaying the list of events in chronological order based on the event's starting date and time
                         //For each event in the eventsList ArrayList, it must compare its starting date and then time (time will be compared if the two events start on the same day)
                         //To iterate through each of the event's objects in the eventsList ArrayList, a For loop will be used. This For loop will first compare the first event object
@@ -501,7 +504,32 @@ namespace Time_Management_Console_App
                         //If the event starts before the other event it is being compared to, that event will then be placed before the other event (index number of other event - 1 )
                         //Once the events have switched places to be in chronological order, the next iteration must start. To do this, Continue statement will be used.
                         //Continue will be at the end of every If/Else If statement, so when the body of these statements run, then it is time to iterate (go to the next event) in the ArrayList.
+                        //Difference between Continue and Break: https://www.w3schools.com/cs/cs_break.php 
+                        
+                        //Comparing the first element in the eventsList ArrayList (which is a class object) to the second to last event in the ArrayList
+                        for (int i=0; i<= eventsList.Count-2; i++)
+                        {
+                            //The last index number for the last event in the eventsList
+                            int lastNumber = eventsList.Count - 1;
 
+                            //Selecting the last event (class object) that is in the eventsList
+                            //This last event will be compared to the other events in the ArrayList
+                            var checkEventLast = eventsList[lastNumber];
+
+                            //The event in the eventsList that will be checked with the last event added to the eventsList (this last event is checkEventLast)
+                            var checkEventCurrent = eventsList[i];
+
+                            //Comparing the last event added to the eventsList to the first event placed (then to the second, etc.) in the evnetsList
+                            //by using If/Else If statements
+                            //Checking to see if the last added event and the event in the eventsList will start in the same year
+                            if (eventsList[lastNumber].eventInformation.eventYear <= checkEventCurrent.eventYear)
+                            {
+                                //For line 525, to correct this, might have to create a separate method outside of the Main that takes in the information from the Events Class
+                                //This is similar to what was done in the Notes method
+                            }
+                        }
+                        
+                        
                         //Asking users if they would like to see the events from the Event's List
                         Console.WriteLine("Would you like to see the events in your event list?");
                         //Obtaining the user's response to the question above. The user's response will be converted to upper case
