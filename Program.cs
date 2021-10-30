@@ -490,8 +490,14 @@ namespace Time_Management_Console_App
                         //Adding the events in the ArrayList titled eventsList. The eventsList ArrayList was passed in as a parameter to be used for the createEvent() method
                         eventsList.Add(eventInformation);
 
-                        //Displaying the first event in the eventsList ArrayList
-                        Console.WriteLine(eventsList[0]);
+                        /*
+                        Console.WriteLine("This is the first event in the event's list: ");
+                        //Displaying the first event in the eventsList ArrayList. Used casting to see the attribute (eventYear) of the event's object
+                        //Information about casting: 
+                        Console.WriteLine(((Events)eventsList[0]).eventYear);
+                        */
+
+
 
                         //Displaying the list of events in chronological order based on the event's starting date and time
                         //For each event in the eventsList ArrayList, it must compare its starting date and then time (time will be compared if the two events start on the same day)
@@ -522,7 +528,11 @@ namespace Time_Management_Console_App
                             //Comparing the last event added to the eventsList to the first event placed (then to the second, etc.) in the evnetsList
                             //by using If/Else If statements
                             //Checking to see if the last added event and the event in the eventsList will start in the same year
-                            if (eventsList[lastNumber].eventInformation.eventYear <= checkEventCurrent.eventYear)
+                            //To be able to compare the two years (Which are attributes within a class object), casting has to take place. The casting expression is seen within the If statement parenthesis.
+                            //Casting takes the object and converts it into another data type that can be used for an operation to occur
+                            //In a C# List, casting doesn't have to be done. Since an ArrayList was used to store events for the schedule, to view different object's attributes (like the year)
+                            ////casting (explicit converstions) needs to be done. Information about casting: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/casting-and-type-conversions
+                            if (((Events)eventsList[lastNumber]).eventYear <= ((Events)checkEventCurrent).eventYear) //Casting from the type object (type object in this case is Events)
                             {
                                 //For line 525, to correct this, might have to create a separate method outside of the Main that takes in the information from the Events Class
                                 //This is similar to what was done in the Notes method
