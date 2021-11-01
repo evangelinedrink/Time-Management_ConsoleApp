@@ -493,7 +493,7 @@ namespace Time_Management_Console_App
                         /*
                         Console.WriteLine("This is the first event in the event's list: ");
                         //Displaying the first event in the eventsList ArrayList. Used casting to see the attribute (eventYear) of the event's object
-                        //Information about casting: 
+                        //Information about casting: https://stackoverflow.com/questions/3669392/c-sharp-get-object-property-from-arraylist
                         Console.WriteLine(((Events)eventsList[0]).eventYear);
                         */
 
@@ -511,7 +511,7 @@ namespace Time_Management_Console_App
                         //Once the events have switched places to be in chronological order, the next iteration must start. To do this, Continue statement will be used.
                         //Continue will be at the end of every If/Else If statement, so when the body of these statements run, then it is time to iterate (go to the next event) in the ArrayList.
                         //Difference between Continue and Break: https://www.w3schools.com/cs/cs_break.php 
-                        
+
                         //Comparing the first element in the eventsList ArrayList (which is a class object) to the second to last event in the ArrayList
                         for (int i=0; i<= eventsList.Count-2; i++)
                         {
@@ -520,7 +520,7 @@ namespace Time_Management_Console_App
 
                             //Selecting the last event (class object) that is in the eventsList
                             //This last event will be compared to the other events in the ArrayList
-                            var checkEventLast = eventsList[lastNumber];
+                            var checkLastEvent = eventsList[lastNumber];
 
                             //The event in the eventsList that will be checked with the last event added to the eventsList (this last event is checkEventLast)
                             var checkEventCurrent = eventsList[i];
@@ -532,11 +532,30 @@ namespace Time_Management_Console_App
                             //Casting takes the object and converts it into another data type that can be used for an operation to occur
                             //In a C# List, casting doesn't have to be done. Since an ArrayList was used to store events for the schedule, to view different object's attributes (like the year)
                             ////casting (explicit converstions) needs to be done. Information about casting: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/casting-and-type-conversions
+                            ///The values in an ArrayList are data typed to Object. A cast to Events (which is a class) will let the computer access the attributes to the class object made from the Events class.
                             if (((Events)eventsList[lastNumber]).eventYear <= ((Events)checkEventCurrent).eventYear) //Casting from the type object (type object in this case is Events)
                             {
-                                //For line 525, to correct this, might have to create a separate method outside of the Main that takes in the information from the Events Class
-                                //This is similar to what was done in the Notes method
-                            }
+                                //Moving the last event to the other position (with index number i)
+                                //The event with index number i will be placed in a variable named placeHolder
+                                var placeHolder = checkEventCurrent;
+                                //The last event that was placed in the events list will be placed in the arraylist with index number i
+                                eventsList[i] = checkLastEvent;
+                                //The placeHolder event will then be placed in the following index number, which is i+1. This will be variable k.
+                                int k = i + 1;
+                                eventsList[k] = placeHolder;
+                            } else if (((Events)checkLastEvent).eventMonth <= ((Events)checkEventCurrent).eventMonth)
+                            {
+
+                            } else if (((Events)checkLastEvent).eventDay <= ((Events)checkEventCurrent).eventDay)
+                            {
+
+                            } else if ((((Events)checkLastEvent).eventStartAmPm =="AM") && (((Events)checkEventCurrent).eventStartAmPm=="PM")) //If the latest added event starts in the AM on the same date and the event that it is checking starts in PM, then latest event will be placed before the event it is checking
+                            {
+
+                            } else if (((Events)checkLastEvent).eventStartHour <= ((Events)checkEventCurrent).eventStartHour)
+                            {
+
+                            } 
                         }
                         
                         
