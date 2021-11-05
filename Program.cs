@@ -533,16 +533,23 @@ namespace Time_Management_Console_App
                             //In a C# List, casting doesn't have to be done. Since an ArrayList was used to store events for the schedule, to view different object's attributes (like the year)
                             ////casting (explicit converstions) needs to be done. Information about casting: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/casting-and-type-conversions
                             ///The values in an ArrayList are data typed to Object. A cast to Events (which is a class) will let the computer access the attributes to the class object made from the Events class.
-                            if (((Events)eventsList[lastNumber]).eventYear <= ((Events)checkEventCurrent).eventYear) //Casting from the type object (type object in this case is Events)
+                            if (((Events)eventsList[lastNumber]).eventYear < ((Events)checkEventCurrent).eventYear) //Casting from the type object (type object in this case is Events)
                             {
                                 //Moving the last event to the other position (with index number i)
                                 //The event with index number i will be placed in a variable named placeHolder
-                                var placeHolder = checkEventCurrent;
+                                var placeHolder = eventsList[i];
+
+                                //Assigning another variable to the last event in the event's list
+                                var lastEventHolder = eventsList[lastNumber];
+
                                 //The last event that was placed in the events list will be placed in the arraylist with index number i
-                                eventsList[i] = checkLastEvent;
-                                //The placeHolder event will then be placed in the following index number, which is i+1. This will be variable k.
-                                int k = i + 1;
-                                eventsList[k] = placeHolder;
+                                eventsList[i] = lastEventHolder;
+
+                                //The event in index number i will then switch places with the last event placed in the eventsList ArrayList
+                                //Its starting year will be compared to the starting years of the events already within the eventsList that came after it when it was in its original position.
+                                //Its starting year will no longer be compared to the last event that it switched with.
+                                eventsList[lastNumber] = placeHolder;
+
                             } else if (((Events)checkLastEvent).eventMonth <= ((Events)checkEventCurrent).eventMonth)
                             {
 
