@@ -535,6 +535,11 @@ namespace Time_Management_Console_App
                             ///The values in an ArrayList are data typed to Object. A cast to Events (which is a class) will let the computer access the attributes to the class object made from the Events class.
                             if (((Events)eventsList[lastNumber]).eventYear < ((Events)checkEventCurrent).eventYear) //Casting from the type object (type object in this case is Events)
                             {
+                                //The last event and the event that it is being compared to (with index number i) has to switch places
+                                //If the last event added starts before the event with index number i and switches to the position with index number i
+                                //and if the event with index number i is added to a position that is i+1, then the event in position i+1 will be deleted.
+                                //This is the reason why the last event added and the event with index number i have to switch places.
+
                                 //Moving the last event to the other position (with index number i)
                                 //The event with index number i will be placed in a variable named placeHolder
                                 var placeHolder = eventsList[i];
@@ -550,11 +555,39 @@ namespace Time_Management_Console_App
                                 //Its starting year will no longer be compared to the last event that it switched with.
                                 eventsList[lastNumber] = placeHolder;
 
-                            } else if (((Events)checkLastEvent).eventMonth <= ((Events)checkEventCurrent).eventMonth)
+                            } else if (((Events)checkLastEvent).eventMonth < ((Events)checkEventCurrent).eventMonth)
                             {
+                                //Moving the last event to the other position (with index number i)
+                                //The event with index number i will be placed in a variable named placeHolder
+                                var placeHolder = eventsList[i];
 
-                            } else if (((Events)checkLastEvent).eventDay <= ((Events)checkEventCurrent).eventDay)
+                                //Assigning another variable to the last event in the event's list
+                                var lastEventHolder = eventsList[lastNumber];
+
+                                //The last event that was placed in the events list will be placed in the arraylist with index number i
+                                eventsList[i] = lastEventHolder;
+
+                                //The event in index number i will then switch places with the last event placed in the eventsList ArrayList
+                                //Its starting month will be compared to the starting months of the events already within the eventsList that came after it when it was in its original position.
+                                //Its starting month will no longer be compared to the last event that it switched with.
+                                eventsList[lastNumber] = placeHolder;
+
+                            } else if (((Events)checkLastEvent).eventDay < ((Events)checkEventCurrent).eventDay)
                             {
+                                //Moving the last event to the other position (with index number i)
+                                //The event with index number i will be placed in a variable named placeHolder
+                                var placeHolder = eventsList[i];
+
+                                //Assigning another variable to the last event in the event's list
+                                var lastEventHolder = eventsList[lastNumber];
+
+                                //The last event that was placed in the events list will be placed in the arraylist with index number i
+                                eventsList[i] = lastEventHolder;
+
+                                //The event in index number i will then switch places with the last event placed in the eventsList ArrayList
+                                //Its starting day will be compared to the starting months of the events already within the eventsList that came after it when it was in its original position.
+                                //Its starting day will no longer be compared to the last event that it switched with.
+                                eventsList[lastNumber] = placeHolder;
 
                             } else if ((((Events)checkLastEvent).eventStartAmPm =="AM") && (((Events)checkEventCurrent).eventStartAmPm=="PM")) //If the latest added event starts in the AM on the same date and the event that it is checking starts in PM, then latest event will be placed before the event it is checking
                             {
