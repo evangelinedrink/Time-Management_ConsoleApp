@@ -591,6 +591,20 @@ namespace Time_Management_Console_App
 
                             } else if ((((Events)checkLastEvent).eventStartAmPm =="AM") && (((Events)checkEventCurrent).eventStartAmPm=="PM")) //If the latest added event starts in the AM on the same date and the event that it is checking starts in PM, then latest event will be placed before the event it is checking
                             {
+                                //Moving the last event to the other position (with index number i)
+                                //The event with index number i will be placed in a variable named placeHolder
+                                var placeHolder = eventsList[i];
+
+                                //Assigning another variable to the last event in the event's list
+                                var lastEventHolder = eventsList[lastNumber];
+
+                                //The last event that was placed in the events list will be placed in the arraylist with index number i
+                                eventsList[i] = lastEventHolder;
+
+                                //The event in index number i will then switch places with the last event placed in the eventsList ArrayList
+                                //Its starting hour whether it is am/pm will be compared to the starting hour of the events already within the eventsList that came after it when it was in its original position.
+                                //Its starting hour (am/pm) will no longer be compared to the last event that it switched with.
+                                eventsList[lastNumber] = placeHolder;
 
                             } else if (((Events)checkLastEvent).eventStartHour <= ((Events)checkEventCurrent).eventStartHour)
                             {
