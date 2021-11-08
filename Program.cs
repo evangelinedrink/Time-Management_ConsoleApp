@@ -606,10 +606,51 @@ namespace Time_Management_Console_App
                                 //Its starting hour (am/pm) will no longer be compared to the last event that it switched with.
                                 eventsList[lastNumber] = placeHolder;
 
-                            } else if (((Events)checkLastEvent).eventStartHour <= ((Events)checkEventCurrent).eventStartHour)
+                            } else if (((Events)checkLastEvent).eventStartHour < ((Events)checkEventCurrent).eventStartHour)
                             {
+                                //Moving the last event to the other position (with index number i)
+                                //The event with index number i will be placed in a variable named placeHolder
+                                var placeHolder = eventsList[i];
 
-                            } 
+                                //Assigning another variable to the last event in the event's list
+                                var lastEventHolder = eventsList[lastNumber];
+
+                                //The last event that was placed in the events list will be placed in the arraylist with index number i
+                                eventsList[i] = lastEventHolder;
+
+                                //The event in index number i will then switch places with the last event placed in the eventsList ArrayList
+                                //Its starting hour  will be compared to the starting hour of the events already within the eventsList that came after it when it was in its original position.
+                                //Its starting hour will no longer be compared to the last event that it switched with.
+                                eventsList[lastNumber] = placeHolder;
+
+                            } else //Within the body of the Else statement, it will convert the minutes of the last event added to the eventList and the minutes of the event it is checking to see if the last event added will be moving its position in the event's list
+                            {
+                                //Converting the eventStartMin into an integer that way it can be compared with the minutes within the eventList array
+                                string lastEventMinString= ((Events)checkLastEvent).eventStartMin;
+                                string checkEventMinString = ((Events)checkEventCurrent).eventStartMin;
+                                int lastEventMin = Convert.ToInt32(lastEventMinString);
+                                int checkEventMin = Convert.ToInt32(checkEventMinString);
+
+                                //Making sure that the minutes and the hour for the last event is less than the hour and minutes for the event already located in the ArrayList
+                                if ((lastEventMin < checkEventMin) || (((Events)checkLastEvent).eventStartHour < ((Events)checkEventCurrent).eventStartHour))
+                                {
+                                    //Moving the last event to the other position (with index number i)
+                                    //The event with index number i will be placed in a variable named placeHolder
+                                    var placeHolder = eventsList[i];
+
+                                    //Assigning another variable to the last event in the event's list
+                                    var lastEventHolder = eventsList[lastNumber];
+
+                                    //The last event that was placed in the events list will be placed in the arraylist with index number i
+                                    eventsList[i] = lastEventHolder;
+
+                                    //The event in index number i will then switch places with the last event placed in the eventsList ArrayList
+                                    //Its starting minutes will be compared to the starting minutes of the events already within the eventsList that came after it when it was in its original position.
+                                    //Its starting minutes will no longer be compared to the last event that it switched with.
+                                    eventsList[lastNumber] = placeHolder;
+                                }
+
+                            }
                         }
                         
                         
