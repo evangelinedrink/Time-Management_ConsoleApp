@@ -1456,6 +1456,23 @@ namespace Time_Management_Console_App
             Timer timer = new Timer(totalMilliseconds);
             timer.Elapsed += OnTimedEvent;
 
+            //Converting the totalMilliseconds to be used with TimeSpan FromSeconds method
+            double totalMillisecondsDouble = Convert.ToDouble(totalMilliseconds);
+            //Converting milliseconds to seconds
+            double totalSeconds = totalMillisecondsDouble / 1000;
+            //Using TimeSpan.FromSeconds method
+            TimeSpan totalMillisecondsInterval = TimeSpan.FromSeconds(totalSeconds);
+
+            //Creating a 1 second variable to be subtracted from the totalMillisecondsInterval
+            TimeSpan oneSecondInterval = TimeSpan.FromSeconds(1);
+
+            //Need to change the totalMilliseconds every second it reaches zero. Could use a For loop for this or something that is scheduled to subtract every second.
+            //Difference between the time placed by the user and one second.
+            TimeSpan interval = totalMillisecondsInterval - oneSecondInterval;
+            //Displaying in the Console the time it will take until the timer goes off
+            Console.WriteLine($"The timer will go off in: \r{interval} seconds.");
+
+
             //Creating a timer that will display the time elapsed until the timer rings
             //The time will be displayed (updated) in the Console every second (every 1000 milliseconds)
             Timer timerDisplay = new Timer(1000);
