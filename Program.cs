@@ -1442,6 +1442,11 @@ namespace Time_Management_Console_App
 
         //The total milliseconds that the user has indicated for the timer will be a global variable that can be used in all methods
         static int totalMilliseconds;
+
+        static TimeSpan interval;
+
+        //Creating a 1 second variable to be subtracted from the totalMillisecondsInterval
+        static TimeSpan oneSecondInterval;
         public static void TimerApp(int[] timerValue)
         {
             //Converting the time placed by the user to set the timer in milliseconds
@@ -1463,15 +1468,30 @@ namespace Time_Management_Console_App
             //Using TimeSpan.FromSeconds method
             TimeSpan totalMillisecondsInterval = TimeSpan.FromSeconds(totalSeconds);
 
+            //Could pass the seconds into the timer's event function and let it display its value every second
+            //Hints for this: https://stackoverflow.com/questions/54265734/how-can-i-make-a-countdown-timer-in-c-sharp-that-accounts-for-hours-minutes-and 
+
             //Creating a 1 second variable to be subtracted from the totalMillisecondsInterval
             TimeSpan oneSecondInterval = TimeSpan.FromSeconds(1);
 
             //Need to change the totalMilliseconds every second it reaches zero. Could use a For loop for this or something that is scheduled to subtract every second.
             //Difference between the time placed by the user and one second.
             TimeSpan interval = totalMillisecondsInterval - oneSecondInterval;
-            //Displaying in the Console the time it will take until the timer goes off
-            Console.WriteLine($"The timer will go off in: \r{interval} seconds.");
 
+            //Converting totalMillisecondsInterval to an integer that can be used in the while loop
+            //The While loop will run as long as totalMillisecondsInt is greater than -1
+            int totalMillisecondsInt = (int)totalMillisecondsInterval.TotalMinutes;
+
+            while(totalMillisecondsInt >= 0)
+            {
+                totalMillisecondsInterval -= oneSecondInterval;
+                //Displaying in the Console the time it will take until the timer goes off
+                Console.Write($"\rThe timer will go off in: ");
+                Console.Write($"\r{totalMillisecondsInterval} seconds.");
+            }
+
+
+            //TimeSpan.ToSeconds Property: https://docs.microsoft.com/en-us/dotnet/api/system.timespan.seconds?view=net-5.0 
 
             //Creating a timer that will display the time elapsed until the timer rings
             //The time will be displayed (updated) in the Console every second (every 1000 milliseconds)
@@ -1482,10 +1502,10 @@ namespace Time_Management_Console_App
 
             //Using DateTime to convert the user's milliseconds to DateTime's milliseconds
             //A tick represents 100 nanoseconds so multiplying by 10000 will give 1 millisecond
-            DateTime userMillisecondsDT = new DateTime((100 * 10000) * totalMilliseconds);
+            //DateTime userMillisecondsDT = new DateTime((100 * 10000) * totalMilliseconds);
             //DateTime userMillisecondsDT = new DateTime((100 * 10000) * totalMilliseconds);
             //Creating 1 second (1000 milliseconds) integer data type to a DateTime millisecond
-            DateTime oneSecDT = new DateTime((100 * 10000));
+            //DateTime oneSecDT = new DateTime((100 * 10000));
             //DateTime oneSecDT = new DateTime(100 * 10000);
             /*
             TimeSpan userMillisecondsTicks = new TimeSpan(10000000 * totalMilliseconds);
@@ -1561,6 +1581,9 @@ namespace Time_Management_Console_App
 
         public static void OnTimedEventDisplay(Object source, ElapsedEventArgs e)
         {
+            
+            
+            /*
             //Initializing the timeDifference variable
             int timerDifference= totalMilliseconds;
 
@@ -1579,7 +1602,7 @@ namespace Time_Management_Console_App
 
             //Displaying the time on the Console to show how the time until the timer goes off
             Console.WriteLine($"\rTimer will go off in {userMilliseconds} milliseconds.");
-            
+            */
         }
 
         //Variable that will get the user's input to stop the chronometer
