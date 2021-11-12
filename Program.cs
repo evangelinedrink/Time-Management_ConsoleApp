@@ -1480,13 +1480,13 @@ namespace Time_Management_Console_App
 
             //Converting totalMillisecondsInterval to an integer that can be used in the while loop
             //The While loop will run as long as totalMillisecondsInt is greater than -1
-            int totalMillisecondsInt = (int)totalMillisecondsInterval.TotalMinutes;
+            int intervalInt = (int)interval.TotalMinutes;
 
-            while(totalMillisecondsInt >= 0)
+            while(intervalInt >= 0)
             {
                 totalMillisecondsInterval -= oneSecondInterval;
                 //Displaying in the Console the time it will take until the timer goes off
-                Console.Write($"\rThe timer will go off in: ");
+                Console.WriteLine($"The timer will go off in: ");
                 Console.Write($"\r{totalMillisecondsInterval} seconds.");
             }
 
@@ -1581,7 +1581,10 @@ namespace Time_Management_Console_App
 
         public static void OnTimedEventDisplay(Object source, ElapsedEventArgs e)
         {
-            
+            //Have this function working and displaying the time one the Console.
+            //Need to place this function in a While loop and have it stop displaying once the user types something in the Console to get rid of the beeping sound
+            //This function will be placed in the While loop to keep updating and showing its values every second
+            //For this function to work, the values for the time placed by the user and the one second value need to be placed as global variables
             
             /*
             //Initializing the timeDifference variable
