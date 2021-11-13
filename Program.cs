@@ -1440,13 +1440,19 @@ namespace Time_Management_Console_App
         //appTimer.Stop();
         //appTimber.Dispose();
 
+        //The variables below: totalMilliseconds, totalSeconds, totalMillisecondsInterval, oneSecondInterval
+        //will be used in the OnTimedEventDisplay method, which is why they have to be global variables
+        //Need to have "static", data type of the variable and its name for the variable to be a global variable
         //The total milliseconds that the user has indicated for the timer will be a global variable that can be used in all methods
         static int totalMilliseconds;
-
-        static TimeSpan interval;
-
+        //totalSeconds takes the users milliseconds that they indicated for the timer
+        //and then converts them to seconds
+        static double totalSeconds;
+        //totalMillisecondsInterval is another global variable
+        public static TimeSpan totalMillisecondsInterval;
         //Creating a 1 second variable to be subtracted from the totalMillisecondsInterval
-        static TimeSpan oneSecondInterval;
+        static TimeSpan oneSecondInterval= TimeSpan.FromSeconds(1);
+
         public static void TimerApp(int[] timerValue)
         {
             //Converting the time placed by the user to set the timer in milliseconds
@@ -1455,6 +1461,9 @@ namespace Time_Management_Console_App
             int minutesToMillisec = timerValue[1] * 60 * 1000;
             int secondsToMillisec = timerValue[2] * 1000;
             //Adding all the milliseconds together
+            //Can't use the data type for the variable since it has already been initialized as a global variable
+            //If the data type is mentioned in variables that have already been initialized as global variables, then 
+            //the global variable will not change its value because the data type + variable name will be another variable.
             totalMilliseconds = hoursToMillisec + minutesToMillisec + secondsToMillisec;
 
             //Creating the timer
@@ -1464,112 +1473,36 @@ namespace Time_Management_Console_App
             //Converting the totalMilliseconds to be used with TimeSpan FromSeconds method
             double totalMillisecondsDouble = Convert.ToDouble(totalMilliseconds);
             //Converting milliseconds to seconds
-            double totalSeconds = totalMillisecondsDouble / 1000;
+            totalSeconds = totalMillisecondsDouble / 1000;
             //Using TimeSpan.FromSeconds method
-            TimeSpan totalMillisecondsInterval = TimeSpan.FromSeconds(totalSeconds);
-
-            //Could pass the seconds into the timer's event function and let it display its value every second
-            //Hints for this: https://stackoverflow.com/questions/54265734/how-can-i-make-a-countdown-timer-in-c-sharp-that-accounts-for-hours-minutes-and 
-
-            //Creating a 1 second variable to be subtracted from the totalMillisecondsInterval
-            TimeSpan oneSecondInterval = TimeSpan.FromSeconds(1);
-
-            //Need to change the totalMilliseconds every second it reaches zero. Could use a For loop for this or something that is scheduled to subtract every second.
-            //Difference between the time placed by the user and one second.
-            TimeSpan interval = totalMillisecondsInterval - oneSecondInterval;
-
-            //Converting totalMillisecondsInterval to an integer that can be used in the while loop
-            //The While loop will run as long as totalMillisecondsInt is greater than -1
-            int intervalInt = (int)interval.TotalMinutes;
-
-            while(intervalInt >= 0)
-            {
-                totalMillisecondsInterval -= oneSecondInterval;
-                //Displaying in the Console the time it will take until the timer goes off
-                Console.WriteLine($"The timer will go off in: ");
-                Console.Write($"\r{totalMillisecondsInterval} seconds.");
-            }
-
-
-            //TimeSpan.ToSeconds Property: https://docs.microsoft.com/en-us/dotnet/api/system.timespan.seconds?view=net-5.0 
+            totalMillisecondsInterval = TimeSpan.FromSeconds(totalSeconds);
 
             //Creating a timer that will display the time elapsed until the timer rings
             //The time will be displayed (updated) in the Console every second (every 1000 milliseconds)
             Timer timerDisplay = new Timer(1000);
-            timerDisplay.Elapsed += OnTimedEventDisplay; //This is the method that will display the time elapsed every second
-
-            //Will need to convert totalMilliseconds and the 1000 milliseconds to DateTime milliseconds (this way it won't be fast when displaying the time in seconds
-
-            //Using DateTime to convert the user's milliseconds to DateTime's milliseconds
-            //A tick represents 100 nanoseconds so multiplying by 10000 will give 1 millisecond
-            //DateTime userMillisecondsDT = new DateTime((100 * 10000) * totalMilliseconds);
-            //DateTime userMillisecondsDT = new DateTime((100 * 10000) * totalMilliseconds);
-            //Creating 1 second (1000 milliseconds) integer data type to a DateTime millisecond
-            //DateTime oneSecDT = new DateTime((100 * 10000));
-            //DateTime oneSecDT = new DateTime(100 * 10000);
-            /*
-            TimeSpan userMillisecondsTicks = new TimeSpan(10000000 * totalMilliseconds);
-            double userMilliseconds = userMillisecondsTicks.TotalSeconds;
-
-            TimeSpan oneSecTicks = new TimeSpan(10000000);
-            double oneSec = oneSecTicks.TotalSeconds;
-            */
-            //userMilliseconds that will be used to display the time in the Console
-            //int userMilliseconds = userMillisecondsDT.Millisecond;
-            //int userMilliseconds = Convert.ToInt32(userMillisecondsDT);
-            //One second that will be subtracted by the userMilliseconds
-            //int oneSec = oneSecDT.Millisecond;
-            //int oneSec = Convert.ToInt32(oneSecDT);
-
-            //Difference between the userMilliseconds and oneSec
-            //TimeSpan differenceSec = userMillisecondsDT - oneSecDT;
-
-            //
-            //Converting the integer of totalMilliseconds to a millisecond value
-            //TimeSpan userMilliseconds = TimeSpan.FromMilliseconds(totalMilliseconds);
-            //Using DateTime to make the user's milliseconds become subtracted together
-            //DateTime userTime = new DateTime(userMilliseconds);
-            //Creating 1 second (1000 milliseconds) integer data type to a DateTime millisecond
-            //TimeSpan oneSec = TimeSpan.FromMilliseconds(1000);
-
-
+            //This will be displayed to help the user understand how the time is changing when the timer is counting down.The actual time for the coundown is
+            //contained within the OnTimedEventDisplay method.
+            Console.WriteLine($"The timer will go off in this amount of hour(s):minute(s):second(s): ");
+            timerDisplay.Elapsed += OnTimedEventDisplay; //This is the method that will display the time elapsed every second          
 
             //This will start the Timer
             timer.Start();
 
-            //Using the TimeSpan method for subtraction
-            //TimeSpan difference = userMilliseconds.Subtract(oneSec);
-            //Console.WriteLine($"/r{difference}");
-            /*
-            while (Math.Ceiling(userMilliseconds-oneSec)!=0)
-            {
-                Math.Ceiling(userMilliseconds -= oneSec);
-
-                //Displaying the time on the Console to show how the time until the timer goes off
-                Console.WriteLine($"\rTimer will go off in {userMilliseconds} milliseconds.");
-            }
-            */
             //This will start the display time for the timer
             timerDisplay.Start();
 
-            //DateTime.se
-            //While loop to update the countdown
-            //while()
-            //Displaying the count down in the timer
-            //Console.WriteLine($"\r Countdown until timer rings (in milliseconds): ");
-
             //When the user types anything in the Console, whatever they type will stop the timer once it has gone off
             Console.ReadLine();
+            //This will stop the display from the timer from showing in the Console. By doing this, no negative numbers will be shown in the Console.
+            timerDisplay.Stop();
             //This will stop the Timer
             timer.Stop();
-
-            //This will stop the display from the timer from showing in the Console.
-            timerDisplay.Stop();
-
         }
 
         public static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
+            //Creating a new line to give space to the countdown number.
+            Console.WriteLine("\n");
             Console.WriteLine($"Time is up! Type anything in the Console and hit the \"Enter\" key to stop the timer.");
 
             //Creates a Beeping noise that beeps 10 times
@@ -1581,31 +1514,18 @@ namespace Time_Management_Console_App
 
         public static void OnTimedEventDisplay(Object source, ElapsedEventArgs e)
         {
-            //Have this function working and displaying the time one the Console.
-            //Need to place this function in a While loop and have it stop displaying once the user types something in the Console to get rid of the beeping sound
-            //This function will be placed in the While loop to keep updating and showing its values every second
+            //Have this function working and displaying the time on the Console.
+            //Need to have this function running and have it stop displaying once the user types something in the Console to get rid of the beeping sound
+            //This function will be used to keep updating and showing its values every second
             //For this function to work, the values for the time placed by the user and the one second value need to be placed as global variables
-            
-            /*
-            //Initializing the timeDifference variable
-            int timerDifference= totalMilliseconds;
+            //These variables are totalMillisecondsInterval and oneSecondInterval
 
-            TimeSpan userMillisecondsTicks = new TimeSpan(10000000 * totalMilliseconds);
-            double userMilliseconds = userMillisecondsTicks.TotalSeconds;
+            //Subtracting one second to the total milliseconds that the user indicated in the Console
+            totalMillisecondsInterval -= oneSecondInterval;
 
-            TimeSpan oneSecTicks = new TimeSpan(10000000);
-            double oneSec = oneSecTicks.TotalSeconds;
-
-            while ((userMilliseconds- oneSec) != 0)
-            {
-                //The time that the user indicated for the timer will be subtracted by 1 second (1000 milliseconds)
-                //By doing this, the difference between the times can be shown in the Console so the user will know when the timer will go off
-                userMilliseconds -= oneSec;
-            }
-
-            //Displaying the time on the Console to show how the time until the timer goes off
-            Console.WriteLine($"\rTimer will go off in {userMilliseconds} milliseconds.");
-            */
+            //Displaying in the Console the time it will take until the timer goes off
+            //Console.WriteLine($"The timer will go off in this amount of second(s): "); <-- This is placed before the OnTimedEventDisplay method starts running
+            Console.Write($"\r{totalMillisecondsInterval}");
         }
 
         //Variable that will get the user's input to stop the chronometer
