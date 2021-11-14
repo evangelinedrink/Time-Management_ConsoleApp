@@ -4,6 +4,7 @@ using System.Collections.Generic; //With this, computer is able to create Queues
 using System.Timers; //With this, the timer can be used
 using System.Diagnostics; //This lets the stopwatch be used in the application
 using System.Linq; //Let's Where() method for the Queue be usable
+using System.Text.RegularExpressions; //Ensures that Regular Expressions (Regex) can be used validate a user's input
 
 
 namespace Time_Management_Console_App
@@ -280,6 +281,11 @@ namespace Time_Management_Console_App
                                     //Removing the event from eventsList ArrayList (containing all the events that the user uploaded)
                                     eventsList.RemoveAt(userDeleteEventNumberIndex);
                                 }
+                                else
+                                {
+                                    Console.WriteLine("Please type \"view\" to see your events or \"delete\" to delete event(s)" +
+                                    " from your scheduler. If you would like to leave the scheduler, type \"quit\".");
+                                }
 
                             } while (userViewDelete != "QUIT");
 
@@ -298,25 +304,73 @@ namespace Time_Management_Console_App
                         //The Console will display the events like this: "Event number" "Date (Month Day, Year (day of week))" "Time range of the event" "Name of the event" "Location of the event" "Description of the event"
                         //User will be able to delete events based on the Event Number and will be asked if they are sure they want to delete an event (before actually deleting the event).
 
-                        //Asking the user what date they would like to create an event
-                        //Creating two new rows between the calendar and the question below using "\n\n" and concatenation.
-                        Console.WriteLine("\n\n" + "What date would you like to create an event for? Make sure to type the year, month and date in numbers. " +
-                            "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
-                        //Getting the user's input with Console.ReadLine(). It will be represented as a string.
-                        string eventDate = Console.ReadLine();
+                        //Initializing the variables eventYear, eventMonth, eventDay to make sure that these variables are integers before going to the next block of code.
+                        int eventYear=-1;
+                        int eventMonth=-1;
+                        int eventDay=-1;
 
-                        //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
-                        //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
-                        //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
-                        string[] eventDateArray = eventDate.Split(",");
+                        //Do/While loop is used to ensure that the user will type the correct date in numbers and separate the year, month and day with a comma
+                        do
+                        {
+                            //Asking the user what date they would like to create an event
+                            //Creating two new rows between the calendar and the question below using "\n\n" and concatenation.
+                            Console.WriteLine("\n\n" + "What date would you like to create an event for? Make sure to type the year, month and date in numbers. " +
+                                "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
+                            //Getting the user's input with Console.ReadLine(). It will be represented as a string.
+                            string eventDate = Console.ReadLine();
 
-                        //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
-                        //Converting the year, which was originally a string data type, into an integer data type
-                        int eventYear = Convert.ToInt32(eventDateArray[0]);
-                        //Converting the month, which was originally an string data type, into an integer data type
-                        int eventMonth = Convert.ToInt32(eventDateArray[1]);
-                        //Converting the day, which was originally an string data type, into an integer data type
-                        int eventDay = Convert.ToInt32(eventDateArray[2]);
+                            //Making sure that the user placed the correct number of numbers and separated each value with commas using Regular Expressions (Regex)
+                            //Regex.Match() method is used to check the user's input (in this case it is eventDate) and make sure that the values are numbers and separated by a comma
+                            //If the Regex.Match() expression is successful (meaning that it is true), then the code within the If statement will run. Otherwise, the Else statement will run.
+                            //Explaining the Regex expression: The ^ represents the start of the Regex expression. [0-9] means the elements for this value can be between 0 and 9 (only numbers).
+                            //{4,4} means that the first value (which is the year) has at least 4 digits, but no more than 4 digits are allowed.
+                            //The , separating [0-9]{4,4} means that the year (first value), must be separated by a comma from the month ([0-9]{1,2}) in order for this Regex expression to be True
+                            //[0-9]{1,2} corresponds to the month and day. The [0-9] means that numbers in this range can be used and the {1,2} means that at least 1 number
+                            //has to be typed by the user (match at least 1 time with the numbers in the range of 1 to 9) and the 2 represents that no more than 2 numbers can be present for the month and day.
+                            //Information about Regex can be found here: https://www.computerhope.com/unix/regex-quickref.htm      
+                            if (Regex.Match(eventDate, @"^[0-9]{4,4},[0-9]{1,2},[0-9]{1,2}").Success)
+                            {
+                                //Ensuring that the String.Split method is separating the values with a comma and there are 3 sections to separate: the year, the month and the day
+                                //The TrimStart() method gets rid of any spaces that the user places right after the comma, but before the yearh, month and date
+                                //String.Split method is used to take the date that the user would like to create an event for and split each section based on the comma separation
+                                //The items split up will be placed in an array. The array created to hold the sections that are split up is eventDateArray
+                                //eventDateArray[0]= year , eventDateArray[1]= month, eventDateArray[2]= day
+                                string[] eventDateArray = eventDate.Split(",", 3); 
+                                eventDateArray[0] = eventDateArray[0].TrimStart();
+                                eventDateArray[1] = eventDateArray[1].TrimStart();
+                                eventDateArray[2] = eventDateArray[2].TrimStart();
+
+                                //The method int.TryParse() takes in a string and determines if the string value is an integer
+                                //If the string value can be converted into an integer, then the string will be converted to an integer.
+                                bool year = int.TryParse(eventDateArray[0], out eventYear);
+                                bool month = int.TryParse(eventDateArray[1], out eventMonth);
+                                bool day = int.TryParse(eventDateArray[2], out eventDay);
+
+                                //Making sure the numbers in the eventDate can be converted to numbers
+                                if ((year == false) || (month == false) || (day == false))
+                                {
+                                    Console.WriteLine("Please make sure to type the year, month and date in numbers. " +
+                                        "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
+                                }
+                            }
+                            else //If the user forgets to separate the values with a comma
+                            {
+                                Console.WriteLine("Please separate the values with a comma. Make sure to type the year, month and date in numbers. " +
+                                "For example if you would like to create an event on May 27, 2022, you would type in the Console: 2022, 5, 27");
+                            }
+
+
+                                /*
+                            //Converting the string data values in the eventDateArray into int data values that can be used in the DateTime method
+                            //Converting the year, which was originally a string data type, into an integer data type
+                            eventYear = Convert.ToInt32(eventDateArray[0]);
+                            //Converting the month, which was originally an string data type, into an integer data type
+                            eventMonth = Convert.ToInt32(eventDateArray[1]);
+                            //Converting the day, which was originally an string data type, into an integer data type
+                            eventDay = Convert.ToInt32(eventDateArray[2]);
+                                */
+  
+                        } while ((eventYear <= 0) || (eventMonth <= 0) || (eventDay <= 0)); //Making sure that the values for event Year, Month and Day are actually integers that are above the value of zero before asking the user what time the event starts
 
 
                         //Asking the user what time the event starts 
