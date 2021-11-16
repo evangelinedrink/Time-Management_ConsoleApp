@@ -372,36 +372,58 @@ namespace Time_Management_Console_App
   
                         } while ((eventYear <= 0) || (eventMonth <= 0) || (eventDay <= 0)); //Making sure that the values for event Year, Month and Day are actually integers that are above the value of zero before asking the user what time the event starts
 
+                        //Initializing the variables eventStartHour, eventStartMinInt, and eventStartMin to make sure that these variables are integers before going to the next block of code.
+                        int eventStartHour = -1;
+                        int eventStartMinInt = -1;
+                        string eventStartMin = "00";
+                        string eventStartAmPm = "am";
 
-                        //Asking the user what time the event starts 
-                        Console.WriteLine("What time does the event start (make sure to type it in this format:  hour : minutes: am or pm)? Start time: ");
-                        //Creating the variables that will keep the start time of the event
-                        string eventStartTime = Console.ReadLine();
-                        //Splitting the time to have a section for the hour and for minutes
-                        //Hour= eventStartTimeSplit[0], Minute= eventStartTimeSplit[1], am or pm = eventStartTimeSplit[2]
-                        string[] eventStartTimeSplit = eventStartTime.Split(":");
-                        //Converting the hour and minutes into int data types to be used in the DateTime method
-                        int eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
-                        int eventStartMinInt = Convert.ToInt32(eventStartTimeSplit[1]);
-                        string eventStartMin = eventStartTimeSplit[1];
+                        //Initializing eventDateTime
+                        DateTime eventDateTime;
 
-                        //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
-                        //Declaring the variable eventStartAmPm to check if the time needs to be converted to military time (24 hours clock)
-                        //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
-                        string eventStartAmPm = eventStartTimeSplit[2].ToUpper();
-                        if ((eventStartAmPm == "PM") && (eventStartHour != 12))  //If the eventStartHour is equal to 12, there is no need to add 12 to it since 12:00 pm is equal to 12:00 in the 24 hours time.
+                        do
                         {
-                            //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
-                            //To do this, 12 hours has to be added to the eventStartHour variable
-                            eventStartHour += 12;
-                        }
+                            //Asking the user what time the event starts 
+                            Console.WriteLine("What time does the event start (make sure to type it in this format:  hour : minutes: am or pm)? Start time: ");
+                            //Creating the variables that will keep the start time of the event
+                            string eventStartTime = Console.ReadLine().ToLower();
 
-                        //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
-                        //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
-                        DateTime eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMinInt, 00);
+                            
+                            //Using Regex.Match() method to ensure that the user types in correct values for the hour, minutes and if it is am or pm
+                            //[am]{1}|[AM]{1}|[aM]{1}|[Am]{1}|[pm]{1}|[PM]{1}|[pM]{1}|[Pm]{1}
+                            if (Regex.Match(eventStartTime, @"^[0-9]{1,2}:[0-9]{1,2}:(am|pm){1}").Success)
+                            {
+                                Console.WriteLine("Regex Statement works!");
+                            }
+                            //Splitting the time to have a section for the hour and for minutes
+                            //Hour= eventStartTimeSplit[0], Minute= eventStartTimeSplit[1], am or pm = eventStartTimeSplit[2]
+                            string[] eventStartTimeSplit = eventStartTime.Split(":");
+                            //Converting the hour and minutes into int data types to be used in the DateTime method
+                            eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
+                            eventStartMinInt = Convert.ToInt32(eventStartTimeSplit[1]);
+                            eventStartMin = eventStartTimeSplit[1];
 
-                        //Testing to see if the DateTime() method works with the user's inputed information
-                        //Console.WriteLine(eventDateTime);
+                            //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
+                            //Declaring the variable eventStartAmPm to check if the time needs to be converted to military time (24 hours clock)
+                            //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
+                            eventStartAmPm = eventStartTimeSplit[2].ToUpper();
+                            if ((eventStartAmPm == "PM") && (eventStartHour != 12))  //If the eventStartHour is equal to 12, there is no need to add 12 to it since 12:00 pm is equal to 12:00 in the 24 hours time.
+                            {
+                                //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
+                                //To do this, 12 hours has to be added to the eventStartHour variable
+                                eventStartHour += 12;
+                            }
+
+                            //Taking the date that the user placed in the Console and using DateTime method to display the date and start time of the event.
+                            //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
+                            eventDateTime = new DateTime(eventYear, eventMonth, eventDay, eventStartHour, eventStartMinInt, 00);
+
+                            //Testing to see if the DateTime() method works with the user's inputed information
+                            //Console.WriteLine(eventDateTime);
+                        } while ((eventStartHour <= 0) || (eventStartMinInt <= 0));
+
+                        
+
 
 
                         //Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
