@@ -388,12 +388,14 @@ namespace Time_Management_Console_App
                             //Creating the variables that will keep the start time of the event
                             string eventStartTime = Console.ReadLine().ToLower();
 
-                            
+
                             //Using Regex.Match() method to ensure that the user types in correct values for the hour, minutes and if it is am or pm
                             //[am]{1}|[AM]{1}|[aM]{1}|[Am]{1}|[pm]{1}|[PM]{1}|[pM]{1}|[Pm]{1}
+                            //Describing Regex and how the or | symbol works: https://www.geeksforgeeks.org/what-is-regular-expression-in-c-sharp/ 
                             if (Regex.Match(eventStartTime, @"^[0-9]{1,2}:[0-9]{1,2}:(am|pm){1}").Success)
                             {
                                 Console.WriteLine("Regex Statement works!");
+                                //Check to see if this code works on Wednesday
                             }
                             //Splitting the time to have a section for the hour and for minutes
                             //Hour= eventStartTimeSplit[0], Minute= eventStartTimeSplit[1], am or pm = eventStartTimeSplit[2]
