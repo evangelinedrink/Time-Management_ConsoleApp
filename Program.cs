@@ -388,6 +388,13 @@ namespace Time_Management_Console_App
                             //Creating the variables that will keep the start time of the event
                             string eventStartTime = Console.ReadLine().ToLower();
 
+                            //Removing the white spaces from a string using Regex.Replace() Method
+                            //Information found at: https://www.delftstack.com/howto/csharp/how-to-efficiently-remove-all-whitespaces-from-a-string-in-csharp/#c%23-program-to-efficiently-remove-all-whitespaces-from-a-string-using-string.replace-method
+                            //"" represents an empty string. Regular expression for white space character is \s
+                            //For the code below, Regex.Replace() finds a white space charater that is in the eventStartTime
+                            //string and replaces it with an empty string, "".
+                            string eventStartTimeNoSpace= Regex.Replace(eventStartTime, @"\s", "");
+
 
                             //Using Regex.Match() method to ensure that the user types in correct values for the hour, minutes and if it is am or pm
                             //The Regex statement below states that the hour and minutes are between 0 and 9 (from [0,9])
@@ -397,13 +404,13 @@ namespace Time_Management_Console_App
                             //The user has to indicate whether am or pm, but not both. The \b is a word boundary where the values inside must match for the Regex expression to be true.
                             //Information about Word Boundaries and Regex: https://www.regular-expressions.info/wordboundaries.html
                             //Describing Regex and how the or | symbol works: https://www.geeksforgeeks.org/what-is-regular-expression-in-c-sharp/ 
-                            if (Regex.Match(eventStartTime, @"^[0-9]{1,2}:[0-9]{1,2}:\b(am|pm)\b").Success)
+                            if (Regex.Match(eventStartTimeNoSpace, @"^[0-9]{1,2}:[0-9]{1,2}:\b(am|pm)\b").Success)
                             {
                                 //Console.WriteLine("Regex Statement works!");
 
                                 //Splitting the time to have a section for the hour and for minutes
                                 //Hour= eventStartTimeSplit[0], Minute= eventStartTimeSplit[1], am or pm = eventStartTimeSplit[2]
-                                string[] eventStartTimeSplit = eventStartTime.Split(":");
+                                string[] eventStartTimeSplit = eventStartTimeNoSpace.Split(":");
                                 //Converting the hour and minutes into int data types to be used in the DateTime method
                                 eventStartHour = Convert.ToInt32(eventStartTimeSplit[0]);
                                 eventStartMinInt = Convert.ToInt32(eventStartTimeSplit[1]);
@@ -434,9 +441,6 @@ namespace Time_Management_Console_App
                             }
 
                         } while ((eventStartHour <= 0) || (eventStartMinInt <= 0));
-
-                       
-
 
                         //Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
                         //Ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
