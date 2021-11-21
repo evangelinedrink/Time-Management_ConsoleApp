@@ -394,10 +394,10 @@ namespace Time_Management_Console_App
                             //and it can start with one number, but have no more than 2 numbers (this is from the {1,2})
                             //The separator between hour, minutes and am/pm is with the colon, :
                             //The user has to state whether the time is in am or pm (this is specified in the Regex statement with the or, | , symbol).
-                            //The user has to indicate whether am or pm, but not both. This is made sure of in the Regex expression with {1}, which states that only one value inside of the 
-                            //parenthesis can be accepted, otherwise code within the Regex expression won't work.
+                            //The user has to indicate whether am or pm, but not both. The \b is a word boundary where the values inside must match for the Regex expression to be true.
+                            //Information about Word Boundaries and Regex: https://www.regular-expressions.info/wordboundaries.html
                             //Describing Regex and how the or | symbol works: https://www.geeksforgeeks.org/what-is-regular-expression-in-c-sharp/ 
-                            if (Regex.Match(eventStartTime, @"^[0-9]{1,2}:[0-9]{1,2}:[(am)|(pm)]{1,1}").Success)
+                            if (Regex.Match(eventStartTime, @"^[0-9]{1,2}:[0-9]{1,2}:\b(am|pm)\b").Success)
                             {
                                 //Console.WriteLine("Regex Statement works!");
 
