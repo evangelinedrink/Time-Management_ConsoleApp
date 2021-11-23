@@ -440,7 +440,7 @@ namespace Time_Management_Console_App
                                     "hour : minutes: am or pm");
                             }
 
-                        } while ((eventStartHour <= 0) || (eventStartMinInt <= 0));
+                        } while ((eventStartHour < 0) || (eventStartMinInt < 0));
 
                         //Need to consider the end date and time of the event (the event could take place for multiple days). Need to ask user if the event is on the same day or not.
                         //Ask the user if the end time for the is on the same day (if it is, use the same event year, month, day).
@@ -503,35 +503,69 @@ namespace Time_Management_Console_App
                             }
                         } while (error == "True");
 
-                        //Asking the user what time the event ends 
-                        Console.WriteLine("What time does the event end (make sure to type it in this format:  hour : minutes: am or pm)? End time: ");
-                        //Creating the variables that will keep the ending time of the event
-                        string eventEndTime = Console.ReadLine();
-                        //Splitting the time to have a section for the hour and for minutes
-                        string[] eventEndTimeSplit = eventEndTime.Split(":");
-                        //Converting the hour and minutes into int data types to be used in the DateTime method
-                        int eventEndHour = Convert.ToInt32(eventEndTimeSplit[0]);
-                        int eventEndMinInt = Convert.ToInt32(eventEndTimeSplit[1]);
-                        string eventEndMin = eventEndTimeSplit[1];
+                        //Creating a Do/While Loop to ensure that users are typing the correctin information when the event ends
+                        //Initializing the variables
+                        int eventEndHour = -1;
+                        int eventEndMinInt = -1;
+                        string eventEndMin = "00";
+                        string eventEndAmPm = "pm";
 
+                        //Initializing the eventEndDateTime to get the current date/time, that way it can be used outside of the Do/While loop
+                        DateTime eventEndDateTime = DateTime.Now;
 
-                        //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
-                        //Declaring the variable eventEndAmPm to check if the time needs to be converted to military time (24 hours clock). eventEndAmPm will either be AM or PM
-                        //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
-                        string eventEndAmPm = eventEndTimeSplit[2].ToUpper();
-                        if ((eventEndAmPm == "PM") && (eventEndHour != 12))
+                        do
                         {
-                            //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
-                            //To do this, 12 hours has to be added to the eventEndHour variable
-                            eventEndHour += 12;
-                        }
+                            //Asking the user what time the event ends 
+                            Console.WriteLine("What time does the event end (make sure to type it in this format:  hour : minutes: am or pm)? End time: ");
+                            //Creating the variables that will keep the ending time of the event
+                            string eventEndTime = Console.ReadLine().ToLower();
 
-                        //Taking the end date that the user placed in the Console and using DateTime method to display the end date and time of the event.
-                        //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
-                        DateTime eventEndDateTime = new DateTime(eventYearEnd, eventMonthEnd, eventDayEnd, eventEndHour, eventEndMinInt, 00);
+                            //Removing any white spaces that the user might have placed between the values
+                            //Using String.Replace() method to remove any white spaces from the string
+                            //String.Empty represents an empty string. 
+                            //string eventEndTimeNoSpace = eventEndTime.Replace(" ", String.Empty);
+                            //Above code only removes one empty space, if the user had two empty spaces, it wouldn't remove both
+                            //To deal with this, Regex.Replace() method was used
+                            //"" means an empty string and \s is the Regex character for a white space.
+                            string eventEndTimeNoSpace = Regex.Replace(eventEndTime, @"\s", "");
 
-                        //Checking to see if the eventEndDateTime will be displayed in the Console
-                        //Console.WriteLine(eventEndDateTime);
+                            //Using Regex.Match() method to make sure the user types in the correct values for the hour, minutes and am/pm in the Console
+                            if (Regex.Match(eventEndTimeNoSpace, @"^[0-9]{1,2}:[0-9]{1,2}:\b(am|pm)\b").Success)
+                            {
+                                //Splitting the time to have a section for the hour and for minutes
+                                string[] eventEndTimeSplit = eventEndTimeNoSpace.Split(":");
+                                //Converting the hour and minutes into int data types to be used in the DateTime method
+                                eventEndHour = Convert.ToInt32(eventEndTimeSplit[0]);
+                                eventEndMinInt = Convert.ToInt32(eventEndTimeSplit[1]);
+                                eventEndMin = eventEndTimeSplit[1];
+
+
+                                //If the user typed pm after the minutes, need to convert the time to military time that way it can be used in the DateTime method
+                                //Declaring the variable eventEndAmPm to check if the time needs to be converted to military time (24 hours clock). eventEndAmPm will either be AM or PM
+                                //ToUpper() ensures that whatever the user wrote for am or pm, it will be converted to upper case that way it can be checked within the If statement
+                                eventEndAmPm = eventEndTimeSplit[2].ToUpper();
+                                if ((eventEndAmPm == "PM") && (eventEndHour != 12))
+                                {
+                                    //Since the user indicated that the time was in pm (during the afternoon or evening), the event's starting hour needs to be converted to 24 hours time (military time)
+                                    //To do this, 12 hours has to be added to the eventEndHour variable
+                                    eventEndHour += 12;
+                                }
+
+                                //Taking the end date that the user placed in the Console and using DateTime method to display the end date and time of the event.
+                                //With the DateTime() method, the information inside of the parenthesis is in this format: year, month, day, hour, minutes, seconds (default to 00 seconds)
+                                eventEndDateTime = new DateTime(eventYearEnd, eventMonthEnd, eventDayEnd, eventEndHour, eventEndMinInt, 00);
+
+                                //Checking to see if the eventEndDateTime will be displayed in the Console
+                                //Console.WriteLine(eventEndDateTime);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Please make sure to type the ending time of the event by using this format: " +
+                                    "hour : minutes: am or pm");
+                            }
+
+                        } while ((eventEndHour < 0) || (eventEndMinInt <0)); //Don't need to specify if the user typed in am or pm correctly because if there is any problem with their input in the Console, the values for eventEndHour and eventEndMinInt will not change from -1.
+
 
                         //Asking the user the name of the event using Console.WriteLine
                         Console.WriteLine("What is the name of the event?");
