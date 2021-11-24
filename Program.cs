@@ -266,20 +266,56 @@ namespace Time_Management_Console_App
                                         }
                                     }
 
-                                    //Indicate which event you would like to delete from your scheduler
-                                    Console.WriteLine("Type the event number in the Console that you would like to delete.");
-                                    //Obtaining the user's response to the question above
-                                    string userDeleteEventString = Console.ReadLine();
-                                    //Converting the value that the user typed in the Console to the event number symbol
-                                    string userDeleteEvent = $"Event #{userDeleteEventString}";
+                                    //Creating a Do/While loop that ensures that the user types in a number and a number that corresponds to an event in the eventsList ArrayList (Edge Case)
+                                    //Determining the number of events in the eventsList ArrayList
+                                    int totalEvents = eventsList.Count;
 
-                                    //Converting the user's number to an integer
-                                    int userDeleteEventNumber = Convert.ToInt32(userDeleteEventString);
-                                    //Index number for that event's value
-                                    int userDeleteEventNumberIndex = userDeleteEventNumber - 1;
+                                    //Initializing the userDeleteEventNumber variable which will be tested in the While code to ensure that it is a number
+                                    //and a number equal to or below totalEvents
+                                    int userDeleteEventNumber = -1;
 
-                                    //Removing the event from eventsList ArrayList (containing all the events that the user uploaded)
-                                    eventsList.RemoveAt(userDeleteEventNumberIndex);
+                                    do
+                                    {
+                                        //Indicate which event you would like to delete from your scheduler
+                                        Console.WriteLine("Type the event number in the Console that you would like to delete.");
+                                        //Obtaining the user's response to the question above
+                                        string userDeleteEventString = Console.ReadLine();
+                                        //Removing white spaces from the userDeleteEventString by using Regex.Replace() Method
+                                        //\s is the regex for a whitespace character. "" represents an empty string
+                                        string userDeleteEventStringNoSpaces = Regex.Replace(userDeleteEventString, @"\s", "");
+
+                                        //Using Regex to determine if what the user typed is a number and is equal to or below the totalEvents (total number of events) in the events ArrayList
+                                        if (Regex.Match(userDeleteEventStringNoSpaces, @"^[0-9]{1}").Success)
+                                        {
+                                            //Converting the value that the user typed in the Console to the event number symbol
+                                            string userDeleteEvent = $"Event #{userDeleteEventStringNoSpaces}";
+
+                                            //Converting the user's number to an integer
+                                            userDeleteEventNumber = Convert.ToInt32(userDeleteEventStringNoSpaces);
+
+                                            //Ensuring that the number the user typed corresponds to an event in the event list
+                                            if ((userDeleteEventNumber>=1) && (userDeleteEventNumber <= totalEvents))
+                                            {
+                                                //Index number for that event's value
+                                                int userDeleteEventNumberIndex = userDeleteEventNumber - 1;
+
+                                                //Removing the event from eventsList ArrayList (containing all the events that the user uploaded)
+                                                eventsList.RemoveAt(userDeleteEventNumberIndex);
+                                            } else
+                                            {
+                                                Console.WriteLine("The event's number is not in the events list. Please type the correct number of the event that you'd like to delete.");
+                                            }
+
+
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Please type the correct number of the event that you'd like to delete.");
+                                        }
+
+
+                                    } while ((userDeleteEventNumber < 0) || (userDeleteEventNumber > totalEvents));
+                                    
                                 }
                                 else
                                 {
