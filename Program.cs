@@ -914,18 +914,38 @@ namespace Time_Management_Console_App
         //Method for opening the Calendar Component
         public static void Calendar()
         {
-            
+
             /*Creating a calendar that will appear in the Console.
             This calendar will help the user see the days of the week based on the month and year they provide*/
-     
-            //Asking the user what year they would like to view
-            Console.WriteLine("Enter the year that you would like to schedule the event. Make sure to type it in numbers, like 2022.");
-            //Letting the user type in the date (using Console.ReadLine()) and setting that date as an integer (originally a string) using Convert.ToInt32. It will equal the variable named year.
-            int year = Convert.ToInt32(Console.ReadLine());
 
-            //Asking the user the month using Console.WriteLine
-            Console.WriteLine("Enter the month (make sure to place the number, so the month of May is 5).");
-            int month = Convert.ToInt32(Console.ReadLine());
+            //Edge Case: Creating the Do/While loop to ensure that the user will type type the year (in numbers) and the month (in numbers)
+            //Initializing the variables (year and month) that will be used in the Do/While loop
+            int year = 2021;
+            int month = 10;
+
+            do
+            {
+                //Asking the user what year they would like to view
+                Console.WriteLine("Enter the year that you would like to schedule the event. Make sure to type it in numbers, like 2022.");
+                string yearString = Console.ReadLine();
+
+                if (Regex.Match())
+                {
+
+                }
+                //Letting the user type in the date (using Console.ReadLine()) and setting that date as an integer (originally a string) using Convert.ToInt32. It will equal the variable named year.
+                year = Convert.ToInt32(Console.ReadLine());
+
+                //Asking the user the month using Console.WriteLine
+                Console.WriteLine("Enter the month (make sure to place the number, so the month of May is 5).");
+                month = Convert.ToInt32(Console.ReadLine());
+
+            } while ();
+
+
+
+
+
 
 
             //Setting the date with DateTime() method. 
