@@ -937,6 +937,8 @@ namespace Time_Management_Console_App
                     //"" means an empty string and \s is the Regex character for a white space
                     string yearStringNoSpace = Regex.Replace(yearString, @"\s", "");
 
+                    //Will need to use int.TryParse method to convert the year to an integer and then use greater than/less than to set a bounds to which years the user can see the calendar for.
+
                     //Ensuring that the user types in a number that is 4 digits long and is between the numbers 0 and 9.
                     //If the user types in a number that follows this criteria, the code within the If statement will work, otherwise the code in the Else statement will work.
                     if (Regex.Match(yearStringNoSpace, @"^[0-9]{4,4}").Success)
@@ -953,7 +955,7 @@ namespace Time_Management_Console_App
                 }
 
                 //Ensuring that the user will type the correct month, if not the code will continue to run in the While loop
-                //Since the value for month will continue to be -1
+                //since the value for month will continue to be -1
                 while(month == -1)
                 {
                     //In this section, the user will then be asked for the month that they would like to see the calendar for.
@@ -968,18 +970,27 @@ namespace Time_Management_Console_App
                     //This variable will be used to see if the user placed a number above 12 (above the month of December)
                     //To do this, int.TryParse method will be used to test if the monthStringNoSpace is an integer
                     //If it can be an integer, it will be converted into an integer with the name "monthNoSpaceCheck".
-                    
+                    //If the value placed in the Console by the user is not an integer, numberResult1 will be False and the value for monthStringNoSpace will not be converted
+                    //to the integer variable monthNoSpaceCheck.
+                    int monthNoSpaceCheck = 0;
+                    bool numberResult1 = int.TryParse(monthStringNoSpace, out monthNoSpaceCheck);
                     //int monthNoSpaceCheck = Convert.ToInt32(monthStringNoSpace);
 
                     //Ensuring that the user types in a number corresponding to a month between 1 and 12
                     //The user can type a month between 1 and 9 for a maximum of one time
                     //The [0-2] corresponds to the end parts of the months, like 10,11 and 12 (October to December)
                     //This is why we have {0,1} because the number doesn't need to be there (which corresponds to zero) or it can be a maximum of 1 number.
-                    if (Regex.Match(monthStringNoSpace, @"^([1-9]{1})([0-2]{0,1})").Success)
+                    //if (Regex.Match(monthStringNoSpace, @"^([1-9]{1})([0-2]{0,1})").Success)
+                    //The above code didn't work for the number 13 or above, which is why int.TryParse method was used to make the value typed by the user an integer if the value can be
+                    //converted to an integer.  
+                    //Below the If/Else statement will check to see that the integer value is 1 or greater and below the value 13
+                    //If the monthNoSpaceCheck value is not 1 or greater and less than 13, the code in the Else statement will then start running.
+                    if((monthNoSpaceCheck>=1) && (monthNoSpaceCheck < 13))
                     {
                         //Converts the monthString string to an integer
-                        month = Convert.ToInt32(monthStringNoSpace);
-                    } //else if ((monthStringNoSpace > "12"))
+                        //month = Convert.ToInt32(monthStringNoSpace);
+                        month = monthNoSpaceCheck;
+                    } 
                     else //If the user doesn't type in a month between 1 to 12, the code in the Else section will be displayed
                     {
                         Console.WriteLine("Please type in the month that you'd like to see the calendar for.  The months are between 1 (which corresponds to January)" +
