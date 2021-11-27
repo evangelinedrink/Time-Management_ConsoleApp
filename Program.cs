@@ -920,31 +920,77 @@ namespace Time_Management_Console_App
 
             //Edge Case: Creating the Do/While loop to ensure that the user will type type the year (in numbers) and the month (in numbers)
             //Initializing the variables (year and month) that will be used in the Do/While loop
-            int year = 2021;
-            int month = 10;
+            int year = -1;
+            int month = -1;
 
             do
             {
-                //Asking the user what year they would like to view
-                Console.WriteLine("Enter the year that you would like to schedule the event. Make sure to type it in numbers, like 2022.");
-                string yearString = Console.ReadLine();
-
-                if (Regex.Match())
+                //Ensuring that the user will type the correct year, if not the code will continue to run in the While loop
+                //Since the value for year will continue to be -1
+                while(year == -1)
                 {
+                    //Asking the user what year they would like to view
+                    Console.WriteLine("Enter the year that you would like to see the calendar for. Make sure to type it in numbers, like 2022. " +
+                        "You will be asked to type in the month that you'd like to see the calendar for after this prompt.");
+                    string yearString = Console.ReadLine();
+                    //How to get rid of the spaces that the user might add when typing in the year using the Regex.Replace() method
+                    //"" means an empty string and \s is the Regex character for a white space
+                    string yearStringNoSpace = Regex.Replace(yearString, @"\s", "");
 
+                    //Ensuring that the user types in a number that is 4 digits long and is between the numbers 0 and 9.
+                    //If the user types in a number that follows this criteria, the code within the If statement will work, otherwise the code in the Else statement will work.
+                    if (Regex.Match(yearStringNoSpace, @"^[0-9]{4,4}").Success)
+                    {
+                        //Letting the user type in the date (placed in the yearString variable) and setting that date as an integer (originally a string) using Convert.ToInt32. It will equal the variable named year.
+                        year = Convert.ToInt32(yearStringNoSpace);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please type in the year that you'd like to to see the calendar for.  Make sure to type it in numbers, like 2022.");
+                        //Placing a space after the phrase before
+                        Console.WriteLine("\n");
+                    }
                 }
-                //Letting the user type in the date (using Console.ReadLine()) and setting that date as an integer (originally a string) using Convert.ToInt32. It will equal the variable named year.
-                year = Convert.ToInt32(Console.ReadLine());
 
-                //Asking the user the month using Console.WriteLine
-                Console.WriteLine("Enter the month (make sure to place the number, so the month of May is 5).");
-                month = Convert.ToInt32(Console.ReadLine());
+                //Ensuring that the user will type the correct month, if not the code will continue to run in the While loop
+                //Since the value for month will continue to be -1
+                while(month == -1)
+                {
+                    //In this section, the user will then be asked for the month that they would like to see the calendar for.
+                    //Asking the user the month using Console.WriteLine
+                    Console.WriteLine("Enter the month (make sure to place the number, so the month of May is 5).");
+                    string monthString = Console.ReadLine();
+                    //How to get rid of the spaces that the user might add when typing in the month using the Regex.Replace() method
+                    //"" means an empty string and \s is the Regex character for a white space
+                    string monthStringNoSpace = Regex.Replace(monthString, @"\s", "");
 
-            } while ();
+                    //Creating a variable that will get the monthStringNoSpace and convert it to an integer
+                    //This variable will be used to see if the user placed a number above 12 (above the month of December)
+                    //To do this, int.TryParse method will be used to test if the monthStringNoSpace is an integer
+                    //If it can be an integer, it will be converted into an integer with the name "monthNoSpaceCheck".
+                    
+                    //int monthNoSpaceCheck = Convert.ToInt32(monthStringNoSpace);
 
-
-
-
+                    //Ensuring that the user types in a number corresponding to a month between 1 and 12
+                    //The user can type a month between 1 and 9 for a maximum of one time
+                    //The [0-2] corresponds to the end parts of the months, like 10,11 and 12 (October to December)
+                    //This is why we have {0,1} because the number doesn't need to be there (which corresponds to zero) or it can be a maximum of 1 number.
+                    if (Regex.Match(monthStringNoSpace, @"^([1-9]{1})([0-2]{0,1})").Success)
+                    {
+                        //Converts the monthString string to an integer
+                        month = Convert.ToInt32(monthStringNoSpace);
+                    } //else if ((monthStringNoSpace > "12"))
+                    else //If the user doesn't type in a month between 1 to 12, the code in the Else section will be displayed
+                    {
+                        Console.WriteLine("Please type in the month that you'd like to see the calendar for.  The months are between 1 (which corresponds to January)" +
+                            " and 12 (which corresponds to December). Make sure to type the month's number in the Console.");
+                        //Placing a space after the phrase before
+                        Console.WriteLine("\n");
+                    }
+                }
+                
+            
+            } while ((month == -1) || (year == -1)); //When the year and month variable are equal to or less than zero, then the code within the Do/While loop will continue to work
 
 
 
