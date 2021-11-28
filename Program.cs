@@ -938,10 +938,14 @@ namespace Time_Management_Console_App
                     string yearStringNoSpace = Regex.Replace(yearString, @"\s", "");
 
                     //Will need to use int.TryParse method to convert the year to an integer and then use greater than/less than to set a bounds to which years the user can see the calendar for.
+                    //If the yearStringNoSpace can be converted into an integer, yearCheck will be True and the value of yearStringNoSpace will become an integer and be stored in the yearIntNoSpace variable
+                    int yearIntNoSpace = -1;
+                    bool yearCheck = int.TryParse(yearStringNoSpace, out yearIntNoSpace);
 
                     //Ensuring that the user types in a number that is 4 digits long and is between the numbers 0 and 9.
                     //If the user types in a number that follows this criteria, the code within the If statement will work, otherwise the code in the Else statement will work.
-                    if (Regex.Match(yearStringNoSpace, @"^[0-9]{4,4}").Success)
+                    //if (Regex.Match(yearStringNoSpace, @"^[0-9]{4,4}").Success)
+                    if (yearIntNoSpace >= 1800)
                     {
                         //Letting the user type in the date (placed in the yearString variable) and setting that date as an integer (originally a string) using Convert.ToInt32. It will equal the variable named year.
                         year = Convert.ToInt32(yearStringNoSpace);
