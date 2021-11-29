@@ -1543,6 +1543,9 @@ namespace Time_Management_Console_App
             //Using a Do/While Loop to run the code for the check list as long as the user does not type "Quit" in the Console.
             do
             {
+                //Adding a blank line to space out the lines
+                Console.WriteLine("\n");
+
                 //Asking the user if they would like to create/add/view/delete an item to the check list
                 Console.WriteLine("Would you like to create a check list (type \"Create\"), add an item to the check list (type \"Add\"), view an item in the check list (type \"View\"), " +
                     "or delete item(s) from the check list (type \"Delete\"). If you would like to leave the check list section, type \"Quit\".");
@@ -1556,6 +1559,9 @@ namespace Time_Management_Console_App
                     string userCreate = "ITEM";
                     do
                     {
+                        //Creating space between the lines
+                        Console.WriteLine("\n");
+
                         //Prompting the user to write their items in the check list
                         Console.WriteLine("Please type the item to be placed in your check list. When you are done typing an item, hit enter on your keyboard to be asked to type another item to your list. " +
                             "If you are finished creating your check list, type \"Done\".");
@@ -1577,6 +1583,9 @@ namespace Time_Management_Console_App
                     string userCreate = "ITEM";
                     do
                     {
+                        //Creating space between the lines
+                        Console.WriteLine("\n");
+
                         //Prompting the user to write their items in the check list
                         Console.WriteLine("Add the item(s) to your check list. When you are done typing an item, hit enter on your keyboard to be asked to type another item to your list." +
                             "If you are finished creating your check list, type \"Done\".");
@@ -1624,22 +1633,45 @@ namespace Time_Management_Console_App
                     }
 
                     //Initializing the variable that the user will type the item that they would like to delete from their check list
-                    string deleteItem = "some value";
+                    string deleteItemStringNoSpace = "nospace";
 
                     //Using a Do/While loop to make sure that the user can continue deleting items from the list until they type "Stop" in the Console.
                     do
                     {
+                        //Creating space between the lines
+                        Console.WriteLine("\n");
+
+                        //Ask the user to type the item's number, not the exact wording for the item that they would like to delete.
                         //Asking the user to delete item(s) from their check list
-                        Console.WriteLine("Type the item (not the number, just the item's exact wording) that you'd like to delete from your check list. " +
+                        Console.WriteLine("Type the item's number that you'd like to delete from your check list. " +
                             "Hit the enter key to delete another item from the list. To stop deleting from the check list, type \"Stop\".");
 
                         //User's input to the above question. Since the check list has all upper case letters, the user's input also has to be upper case for the Containts() method to verify it is there
                         //This is why ToUpper() method is used.
-                        deleteItem = Console.ReadLine().ToUpper();
+                        string deleteItemString = Console.ReadLine().ToUpper();
+
+                        //Using Regex.Replace() method to delete any white spaces that the user might have entered in the Console.
+                        //"" means an empty string, \s stands for white spaces in Regex
+                        deleteItemStringNoSpace = Regex.Replace(deleteItemString, @"\s", "");
+
+                        //Pseudocode: Convert deleteItemStringNoSpace into an integer using TryParse method
+                        //Once an integer, check to see how many items are in the list and then check to see if the number the user typed is between 1 and the number of items in the list
+                        //IF the number typed by the user is between 1 and the total number of items, delete the value in the index that is 1 below that number (since the first item starts at array number 0)
+                        //Make sure to use an If/Else statement to ensure that if the user doesn't type a number, then the computer will tell the user to type in a number within the list's range.
+
+
+                        //Old Code below asking the user to type in the exact wording of the item that they'd like to remove from the check list
+                        //Asking the user to delete item(s) from their check list
+                        //Console.WriteLine("Type the item (not the number, just the item's exact wording) that you'd like to delete from your check list. " +
+                        //    "Hit the enter key to delete another item from the list. To stop deleting from the check list, type \"Stop\".");
+
+                        //User's input to the above question. Since the check list has all upper case letters, the user's input also has to be upper case for the Containts() method to verify it is there
+                        //This is why ToUpper() method is used.
+                        //deleteItem = Console.ReadLine().ToUpper();
 
                         //Checking to see if the item is contained within the check list (checkListArray) by using an If statement
                         //If the item is in the check list, it will then be deleted from the checklist using the Remove() method
-                        if (checkListArray.Contains(deleteItem))
+                        /*if (checkListArray.Contains(deleteItem))
                         {
                             checkListArray.Remove(deleteItem);
                         } else
@@ -1647,8 +1679,9 @@ namespace Time_Management_Console_App
                             Console.WriteLine("The item that you'd like to delete is not in your check list. Please make sure to type the item that you'd like to delete. " +
                                 "To exit deleting items from the check list, type \"Stop\".");
                         }
+                        */
 
-                    } while (deleteItem != "STOP");
+                    } while (deleteItemStringNoSpace != "STOP");
 
                     //Telling the user that the items that they would like removed from their check list has been removed by using Console.WriteLine()
                     Console.WriteLine("The items that you'd like removed from your check list have been removed from the list. Here is your revised check list: ");
