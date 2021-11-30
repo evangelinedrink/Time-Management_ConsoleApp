@@ -1653,12 +1653,37 @@ namespace Time_Management_Console_App
                         //Using Regex.Replace() method to delete any white spaces that the user might have entered in the Console.
                         //"" means an empty string, \s stands for white spaces in Regex
                         deleteItemStringNoSpace = Regex.Replace(deleteItemString, @"\s", "");
+                        //Determining if the value in deleteItemStringNoSpace can be converted into an integer by using int.TryParse() method
+                        //If the boolean of checkeDeleteItem is True, then deleteItemStringNoSpace will become an integer and be in the variable deleteItemInt
+                        int deleteItemInt = -1; //Iniitializing the deleteItemInt variable. Making it equal -1 since there is no -1 index number and if bool checkDeleteItem is False, then deleteItemInt will stay at -1 and not let the code run inside of the If statement 
+                        bool checkDeleteItem = int.TryParse(deleteItemStringNoSpace, out deleteItemInt); //If checkDeleteItem is False, then deleteItemInt will become 0 for some reason.
 
                         //Pseudocode: Convert deleteItemStringNoSpace into an integer using TryParse method
                         //Once an integer, check to see how many items are in the list and then check to see if the number the user typed is between 1 and the number of items in the list
                         //IF the number typed by the user is between 1 and the total number of items, delete the value in the index that is 1 below that number (since the first item starts at array number 0)
                         //Make sure to use an If/Else statement to ensure that if the user doesn't type a number, then the computer will tell the user to type in a number within the list's range.
+                        int numberOfItems = checkListArray.Count;
 
+                        if ((deleteItemInt > 0) && (deleteItemInt <= numberOfItems)) //deleteItemInt has to be greater than 0 because the first item in the To Do List starts at 1
+                        {
+                            //Removing the item that the user would like to delete
+                            //Since the index number starts at 0, that means the deleteItemInt needs to be one less its value
+                            checkListArray.RemoveAt(deleteItemInt - 1);
+                        }
+                        else if (deleteItemStringNoSpace == "STOP")
+                        {
+                            break; //The computer will get out of this Do/While Loop
+                        }
+                        else
+                        {
+                            //Creating space between the lines
+                            Console.WriteLine("\n");
+
+                            Console.WriteLine("The item that you'd like to delete is not on the To Do List. Please make sure to type the correct number.");
+
+                            //Creating space between the lines
+                            Console.WriteLine("\n");
+                        }
 
                         //Old Code below asking the user to type in the exact wording of the item that they'd like to remove from the check list
                         //Asking the user to delete item(s) from their check list
