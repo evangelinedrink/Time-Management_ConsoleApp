@@ -1321,8 +1321,8 @@ namespace Time_Management_Console_App
             while(answerNotes != "QUIT")
             {
                 //Asking user if they would like to create a new Note or see their list of notes
-                Console.WriteLine("Would you like to create a new note or see your list of notes? Type \"Create\" to create a new note or \"List\" to view the list of notes." +
-                    "If you would like to delete notes, type \"Delete\"."+ 
+                Console.WriteLine("Would you like to create a new note or see your list of notes? Type \"Create\" to create a new note or \"List\" to view the list of notes. " +
+                    "If you would like to delete notes, type \"Delete\". "+ 
                     "To exit the Notes section, type \"Quit\".");
 
                 //Obtaining the user's input to the question and making their answer all capital letters with ToUpper();
@@ -1341,6 +1341,10 @@ namespace Time_Management_Console_App
                     DateTime currentDateTime = DateTime.Now;
                     //Converting the currentDateTime to a string using ToString() method
                     currentDateTimeString = currentDateTime.ToString();
+
+                    //Creating a new line for spacing
+                    Console.WriteLine("\n");
+
                     //Displaying the current date and time on the Console.
                     Console.WriteLine(currentDateTime);
 
@@ -1485,7 +1489,15 @@ namespace Time_Management_Console_App
                     //Telling the user to delete a note by typing in the notes number
                     Console.WriteLine("To delete a note, type the note's number below and hit the Enter key.");
                     //User's input to delete the note
-                    string deleteNoteNumber= Console.ReadLine();
+                    string deleteNoteNumberOriginal= Console.ReadLine();
+                    //Getting rid of any spacing placed by the user using Regex.
+                    //The \s+ means all white spaces, the + means match one or more whitespaces within the string of deleteNoteNumberOriginal
+                    string deleteNoteNumber = Regex.Replace(deleteNoteNumberOriginal, @"\s+", "");
+                    
+                    //Pseudocode: Create a Do/While loop that will verify if the user has typed in the note's number correctly in the console
+                    //Use If/Else statements to Check to see the number of notes within the note's list and the note number should be between 1 and the total number of notes
+                    //To exit the delete section of the Note section, the user has to type "Done" to exit out of it.
+                    
 
                     //Initializing the string that will contain the Note # part that will be added to the
                     //user's number that they typed in deleteNoteNumber
