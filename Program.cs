@@ -1485,44 +1485,74 @@ namespace Time_Management_Console_App
                         Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
                     }
 
+                    //Initializing the deleteNoteNumber variable
+                    string deleteNoteNumber = "placeholder";
 
-                    //Telling the user to delete a note by typing in the notes number
-                    Console.WriteLine("To delete a note, type the note's number below and hit the Enter key.");
-                    //User's input to delete the note
-                    string deleteNoteNumberOriginal= Console.ReadLine();
-                    //Getting rid of any spacing placed by the user using Regex.
-                    //The \s+ means all white spaces, the + means match one or more whitespaces within the string of deleteNoteNumberOriginal
-                    string deleteNoteNumber = Regex.Replace(deleteNoteNumberOriginal, @"\s+", "");
-                    
                     //Pseudocode: Create a Do/While loop that will verify if the user has typed in the note's number correctly in the console
                     //Use If/Else statements to Check to see the number of notes within the note's list and the note number should be between 1 and the total number of notes
                     //To exit the delete section of the Note section, the user has to type "Done" to exit out of it.
-                    
-
-                    //Initializing the string that will contain the Note # part that will be added to the
-                    //user's number that they typed in deleteNoteNumber
-                    string deleteNoteNumberInfo = $"Note #{deleteNoteNumber}";
-
-
-                    //Exists() method for C# Lists checks to see if a certain element is in the C# list (it will either be True or False)
-                    //Want to verify that the note the user would like to delete has the same number number as a note in the list
-                    //This is why the object's element (noteNumberValue) is being compared to what the user typed in the Console.
-                    //Console.WriteLine("Checking to see if the note is in the list: {0}", noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo));
-
-                    //Using a For loop to check and see if deleteNoteNumberInfo is in one of the class object's values that are contained in the noteList
-                    for(int i=0; i<=noteList.Count -1; i++)
+                    do
                     {
-                        //Checking each of the Note class objects that are in the noteList
-                        NoteDetails checkInfo = noteList[i];
+                        //Creating space between the lines
+                        Console.WriteLine("\n");
 
-                        //If the noteNumberValue in the Note class object is the same as the user's defined deleteNoteNumberInfo
-                        //then this Note class object will be deleted
-                        if (checkInfo.noteNumberValue == deleteNoteNumberInfo)
+                        //Telling the user to delete a note by typing in the notes number
+                        Console.WriteLine("To delete a note, type the note's number below and hit the Enter key. If you do not want to delete a note, type Quit to exit this section.");
+                        //User's input to delete the note and making it capitalize if it is not a number
+                        string deleteNoteNumberOriginal = Console.ReadLine().ToUpper();
+                        //Getting rid of any spacing placed by the user using Regex.
+                        //The \s+ means all white spaces, the + means match one or more whitespaces within the string of deleteNoteNumberOriginal
+                        deleteNoteNumber = Regex.Replace(deleteNoteNumberOriginal, @"\s+", "");
+
+                        //Converting the deleteNoteNumber to an integer if it can be converted into a number, otherwise the user will have to type in a number
+                        int deleteNoteNumberInt = 0;
+                        bool checkNoteNumber = int.TryParse(deleteNoteNumber, out deleteNoteNumberInt);
+
+                        //Determining the number of notes in the note list
+                        int totalNotes = noteList.Count;
+
+                        //Checking to see if the number indicated by the user is within 1 and the total number of notes
+                        if ((deleteNoteNumberInt >= 1) && (deleteNoteNumberInt <= totalNotes))
                         {
-                            //This will remove the Note class object containing the note number that the user would like to delete
-                            noteList.Remove(checkInfo);
+                            //Initializing the string that will contain the Note # part that will be added to the
+                            //user's number that they typed in deleteNoteNumber
+                            string deleteNoteNumberInfo = $"Note #{deleteNoteNumber}";
+
+
+                            //Exists() method for C# Lists checks to see if a certain element is in the C# list (it will either be True or False)
+                            //Want to verify that the note the user would like to delete has the same number number as a note in the list
+                            //This is why the object's element (noteNumberValue) is being compared to what the user typed in the Console.
+                            //Console.WriteLine("Checking to see if the note is in the list: {0}", noteList.Exists(x => x.noteNumberValue == deleteNoteNumberInfo));
+
+                            //Using a For loop to check and see if deleteNoteNumberInfo is in one of the class object's values that are contained in the noteList
+                            for (int i = 0; i <= noteList.Count - 1; i++)
+                            {
+                                //Checking each of the Note class objects that are in the noteList
+                                NoteDetails checkInfo = noteList[i];
+
+                                //If the noteNumberValue in the Note class object is the same as the user's defined deleteNoteNumberInfo
+                                //then this Note class object will be deleted
+                                if (checkInfo.noteNumberValue == deleteNoteNumberInfo)
+                                {
+                                    //This will remove the Note class object containing the note number that the user would like to delete
+                                    noteList.Remove(checkInfo);
+                                }
+                            }
+                        } else if (deleteNoteNumber == "QUIT")
+                        {
+                            break; //This will let the computer leave this If/Else If/ Else statement
                         }
-                    }
+                        else //If checkNoteNumber is False, then deleteNoteNumberInt will be zero and the code within the Else statement will be seen in the Console.
+                        {
+                            //Creating space between the lines
+                            Console.WriteLine("\n");
+
+                            Console.WriteLine("Please enter the number of the note that you would like to delete. For example, if you would like to delete Note #1, "
+                                + "you would type 1 in the Console.");
+                        }
+
+                    } while (deleteNoteNumber != "QUIT");
+                    
                 } 
                 else if (answerNotes=="QUIT")
                 {
