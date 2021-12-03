@@ -105,6 +105,11 @@ namespace Time_Management_Console_App
 
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
+                    //Pseudocode to ensure that the user will type numbers for the timer
+                    //Use a Do/While loop. Make sure to remove any white spaces from the user's input to make sure no errors will occur. Use Regex for this.
+                    //Check to make sure that the values that the user typed in are numbers. Use int.TryParse() method to check if the value is True (it is a number). If/Else If/ Else statement to run the corresponding code if int.TryParse() is True or False
+                    //If it is True, use the For loop to to place each value in the timerValue array (lines 124-130). Let the value be placed in the TimerApp method
+
                     //Asking the user what time would they like to set up the timer
                     Console.WriteLine("What time would you like to set up the timer to? " +
                     "Use this format to type out the time: hours:minutes:seconds");
@@ -1320,6 +1325,9 @@ namespace Time_Management_Console_App
             //If user types "Quit" in the Console, the Notes section will stop running
             while(answerNotes != "QUIT")
             {
+                //Creating space between the lines
+                Console.WriteLine("\n");
+
                 //Asking user if they would like to create a new Note or see their list of notes
                 Console.WriteLine("Would you like to create a new note or see your list of notes? Type \"Create\" to create a new note or \"List\" to view the list of notes. " +
                     "If you would like to delete notes, type \"Delete\". "+ 
