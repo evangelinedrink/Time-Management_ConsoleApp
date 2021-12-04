@@ -110,27 +110,55 @@ namespace Time_Management_Console_App
                     //Check to make sure that the values that the user typed in are numbers. Use int.TryParse() method to check if the value is True (it is a number). If/Else If/ Else statement to run the corresponding code if int.TryParse() is True or False
                     //If it is True, use the For loop to to place each value in the timerValue array (lines 124-130). Let the value be placed in the TimerApp method
 
-                    //Asking the user what time would they like to set up the timer
-                    Console.WriteLine("What time would you like to set up the timer to? " +
-                    "Use this format to type out the time: hours:minutes:seconds");
+                    //Initializing the userTimerValue variable
+                    string userTimerValueOriginal = "value";
 
-                    //Getting the user's input
-                    string userTimerValue = Console.ReadLine();
-                    //Using the Split() method to separate the hours, minutes and seconds
-                    string[] timerValueString = userTimerValue.Split(":");
-                    //The Split() method separates all the inputs that are separated by : into an array
-                    //Converting all the string values in timerValueString into integers using Convert.ToInt32
-                    //First going to create an array that will hold the integer values. It will have the same length as the timerValueString array
-                    int[] timerValue = new int[timerValueString.Length];
-                    //Using For loop to convert string values in timerValueString into integers
-                    for (int i = 0; i <= timerValueString.Length - 1; i++)
+                    do
                     {
-                        timerValue[i] = Convert.ToInt32(timerValueString[i]);
-                    }
+                        //Asking the user what time would they like to set up the timer
+                        Console.WriteLine("What time would you like to set up the timer to? " +
+                        "Use this format to type out the time: hours:minutes:seconds" + "\n" + "Place a 0 (zero) for values that you would not need. For example, to set the timer to 30 minutes, you would type this: 0:30:0" + 
+                        "\n" + "If you would like to leave the timer, type Quit in the Console.");
 
-                    //Running the timer method. Passing in the timerValue array containing the hours, minutes and seconds that 
-                    //the user would like to set the timer for. 
-                    TimerApp(timerValue); //Need to create the timer app method
+                        //Getting the user's input
+                        userTimerValueOriginal = Console.ReadLine().ToUpper();
+
+                        //Removing all white spaces that the user might have placed using Regex.Replace method
+                        //\s corresponds to white spaces in Regex, the + means to remove one or more white spaces (not just one white space)
+                        //"" corresponds to removing the white spaces and placing nothing in its place
+                        string userTimerValue = Regex.Replace(userTimerValueOriginal, @"\s+", "");
+
+                        //Ensuring that the user typed numbers to represent the hours, minutes and seconds and used a colon, :, to separate each of these values
+                        //This verification is done by using Regex.Match and seeing if the values within the Regex symbols are succesfully in the variable, otherwise the .Success will fail
+                        if (Regex.Match(userTimerValue, @"^[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}").Success)
+                        {
+                            //Using the Split() method to separate the hours, minutes and seconds
+                            string[] timerValueString = userTimerValue.Split(":");
+                            //The Split() method separates all the inputs that are separated by : into an array
+                            //Converting all the string values in timerValueString into integers using Convert.ToInt32
+                            //First going to create an array that will hold the integer values. It will have the same length as the timerValueString array
+                            int[] timerValue = new int[timerValueString.Length];
+                            //Using For loop to convert string values in timerValueString into integers
+                            for (int i = 0; i <= timerValueString.Length - 1; i++)
+                            {
+                                timerValue[i] = Convert.ToInt32(timerValueString[i]);
+                            }
+
+                            //Running the timer method. Passing in the timerValue array containing the hours, minutes and seconds that 
+                            //the user would like to set the timer for. 
+                            TimerApp(timerValue); //Need to create the timer app method
+                        } else if (userTimerValue == "QUIT")
+                        {
+                            break; //This will leave the Do/While loop
+                        }
+                        else //If the user doesn't correctly type the time to be used in the timer, does not follow the correct syntax for entering the time and separating using colons, or type random things in the Console 
+                        {
+                            Console.WriteLine("Please use the correct format to enter the time to be used in the timer. " + "Use this format to type out the time: hours:minutes:seconds" 
+                                + "\n" + "Place a 0 (zero) for values that you would not need. For example, to set the timer to 30 minutes, you would type this: 0:30:0");
+                        }
+
+                    } while (userTimerValueOriginal != "QUIT");
+                    
                 }
                 else if (selectedApplication == "CHRONOMETER")
                 {
@@ -286,8 +314,8 @@ namespace Time_Management_Console_App
                                         //Obtaining the user's response to the question above
                                         string userDeleteEventString = Console.ReadLine();
                                         //Removing white spaces from the userDeleteEventString by using Regex.Replace() Method
-                                        //\s is the regex for a whitespace character. "" represents an empty string
-                                        string userDeleteEventStringNoSpaces = Regex.Replace(userDeleteEventString, @"\s", "");
+                                        //\s is the regex for a whitespace character and the + means to remove one or more white spaces (not just one white space). "" represents an empty string
+                                        string userDeleteEventStringNoSpaces = Regex.Replace(userDeleteEventString, @"\s+", "");
 
                                         //Using Regex to determine if what the user typed is a number and is equal to or below the totalEvents (total number of events) in the events ArrayList
                                         if (Regex.Match(userDeleteEventStringNoSpaces, @"^[0-9]{1}").Success)
@@ -431,10 +459,10 @@ namespace Time_Management_Console_App
 
                             //Removing the white spaces from a string using Regex.Replace() Method
                             //Information found at: https://www.delftstack.com/howto/csharp/how-to-efficiently-remove-all-whitespaces-from-a-string-in-csharp/#c%23-program-to-efficiently-remove-all-whitespaces-from-a-string-using-string.replace-method
-                            //"" represents an empty string. Regular expression for white space character is \s
+                            //"" represents an empty string. Regular expression for white space character is \s and the + means to remove one or more white spaces (not just one white space)
                             //For the code below, Regex.Replace() finds a white space charater that is in the eventStartTime
                             //string and replaces it with an empty string, "".
-                            string eventStartTimeNoSpace= Regex.Replace(eventStartTime, @"\s", "");
+                            string eventStartTimeNoSpace = Regex.Replace(eventStartTime, @"\s+", "");
 
 
                             //Using Regex.Match() method to ensure that the user types in correct values for the hour, minutes and if it is am or pm
@@ -567,8 +595,8 @@ namespace Time_Management_Console_App
                             //string eventEndTimeNoSpace = eventEndTime.Replace(" ", String.Empty);
                             //Above code only removes one empty space, if the user had two empty spaces, it wouldn't remove both
                             //To deal with this, Regex.Replace() method was used
-                            //"" means an empty string and \s is the Regex character for a white space.
-                            string eventEndTimeNoSpace = Regex.Replace(eventEndTime, @"\s", "");
+                            //"" means an empty string and \s is the Regex character for a white space. The + means to remove one or more white spaces (not just one white space)
+                            string eventEndTimeNoSpace = Regex.Replace(eventEndTime, @"\s+", "");
 
                             //Using Regex.Match() method to make sure the user types in the correct values for the hour, minutes and am/pm in the Console
                             if (Regex.Match(eventEndTimeNoSpace, @"^[0-9]{1,2}:[0-9]{1,2}:\b(am|pm)\b").Success)
@@ -939,8 +967,8 @@ namespace Time_Management_Console_App
                         "You will be asked to type in the month that you'd like to see the calendar for after this prompt.");
                     string yearString = Console.ReadLine();
                     //How to get rid of the spaces that the user might add when typing in the year using the Regex.Replace() method
-                    //"" means an empty string and \s is the Regex character for a white space
-                    string yearStringNoSpace = Regex.Replace(yearString, @"\s", "");
+                    //"" means an empty string, \s is the Regex character for a white space and the + means to remove one or more white spaces (not just one white space)
+                    string yearStringNoSpace = Regex.Replace(yearString, @"\s+", "");
 
                     //Will need to use int.TryParse method to convert the year to an integer and then use greater than/less than to set a bounds to which years the user can see the calendar for.
                     //If the yearStringNoSpace can be converted into an integer, yearCheck will be True and the value of yearStringNoSpace will become an integer and be stored in the yearIntNoSpace variable
@@ -972,8 +1000,8 @@ namespace Time_Management_Console_App
                     Console.WriteLine("Enter the month (make sure to place the number, so the month of May is 5).");
                     string monthString = Console.ReadLine();
                     //How to get rid of the spaces that the user might add when typing in the month using the Regex.Replace() method
-                    //"" means an empty string and \s is the Regex character for a white space
-                    string monthStringNoSpace = Regex.Replace(monthString, @"\s", "");
+                    //"" means an empty string, \s is the Regex character for a white space, and the + means to remove one or more white spaces (not just one white space)
+                    string monthStringNoSpace = Regex.Replace(monthString, @"\s+", "");
 
                     //Creating a variable that will get the monthStringNoSpace and convert it to an integer
                     //This variable will be used to see if the user placed a number above 12 (above the month of December)
@@ -1701,8 +1729,8 @@ namespace Time_Management_Console_App
                         string deleteItemString = Console.ReadLine().ToUpper();
 
                         //Using Regex.Replace() method to delete any white spaces that the user might have entered in the Console.
-                        //"" means an empty string, \s stands for white spaces in Regex
-                        deleteItemStringNoSpace = Regex.Replace(deleteItemString, @"\s", "");
+                        //"" means an empty string, \s stands for white spaces in Regex, and the + means to remove one or more white spaces (not just one white space)
+                        deleteItemStringNoSpace = Regex.Replace(deleteItemString, @"\s+", "");
                         //Determining if the value in deleteItemStringNoSpace can be converted into an integer by using int.TryParse() method
                         //If the boolean of checkeDeleteItem is True, then deleteItemStringNoSpace will become an integer and be in the variable deleteItemInt
                         int deleteItemInt = -1; //Iniitializing the deleteItemInt variable. Making it equal -1 since there is no -1 index number and if bool checkDeleteItem is False, then deleteItemInt will stay at -1 and not let the code run inside of the If statement 
