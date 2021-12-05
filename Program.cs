@@ -115,6 +115,9 @@ namespace Time_Management_Console_App
 
                     do
                     {
+                        //Adding an extra line to help with the reader's visibility
+                        Console.WriteLine("\n");
+
                         //Asking the user what time would they like to set up the timer
                         Console.WriteLine("What time would you like to set up the timer to? " +
                         "Use this format to type out the time: hours:minutes:seconds" + "\n" + "Place a 0 (zero) for values that you would not need. For example, to set the timer to 30 minutes, you would type this: 0:30:0" + 
@@ -122,6 +125,9 @@ namespace Time_Management_Console_App
 
                         //Getting the user's input
                         userTimerValueOriginal = Console.ReadLine().ToUpper();
+
+                        //Adding an extra line to help with the reader's visibility
+                        Console.WriteLine("\n");
 
                         //Removing all white spaces that the user might have placed using Regex.Replace method
                         //\s corresponds to white spaces in Regex, the + means to remove one or more white spaces (not just one white space)
@@ -153,8 +159,14 @@ namespace Time_Management_Console_App
                         }
                         else //If the user doesn't correctly type the time to be used in the timer, does not follow the correct syntax for entering the time and separating using colons, or type random things in the Console 
                         {
+                            //Adding an extra line to help with the reader's visibility
+                            Console.WriteLine("\n");
+
                             Console.WriteLine("Please use the correct format to enter the time to be used in the timer. " + "Use this format to type out the time: hours:minutes:seconds" 
                                 + "\n" + "Place a 0 (zero) for values that you would not need. For example, to set the timer to 30 minutes, you would type this: 0:30:0");
+
+                            //Adding an extra line to help with the reader's visibility
+                            Console.WriteLine("\n");
                         }
 
                     } while (userTimerValueOriginal != "QUIT");
