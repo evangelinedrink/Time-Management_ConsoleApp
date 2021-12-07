@@ -2014,11 +2014,24 @@ namespace Time_Management_Console_App
         //Creating an alarm component in the Time Management Application
         public static void Alarm()
         {
-            //Asking the user what time would they like the alarm to go off
-            Console.WriteLine("What time would you like to set the alarm? Use this format to set the alarm:\n hour:minutes:am/pm (make sure to separate each item with a colon).");
-            //Getting the user's input for what time they would like to set the alarm
-            //ToLower() makes sure that pm or am is lower cased
-            string settingAlarmString = Console.ReadLine().ToLower();
+            
+            //Initializing the seetingAlarmString variable
+            string settingAlarmString = "placeholder";
+
+            //Do/While Loop that ensures that the user will type in correct values that the Alarm method can be used
+            do
+            {
+                //Asking the user what time would they like the alarm to go off
+                Console.WriteLine("What time would you like to set the alarm? Use this format to set the alarm:\n hour:minutes:am/pm (make sure to separate each item with a colon).");
+
+                //Getting the user's input for what time they would like to set the alarm
+                //ToLower() makes sure that pm or am is lower cased
+                settingAlarmString = Console.ReadLine().ToLower();
+
+                //Use Regex to check to see if the user typed in the correct values in the Console.
+            } while ();
+
+
 
             //Splitting the hour and minutes using the Split() method
             string[] settingAlarmStringArray = settingAlarmString.Split(":");
