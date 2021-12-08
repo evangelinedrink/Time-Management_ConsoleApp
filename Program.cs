@@ -2018,112 +2018,136 @@ namespace Time_Management_Console_App
             //Initializing the seetingAlarmString variable
             string settingAlarmString = "placeholder";
 
-            //Do/While Loop that ensures that the user will type in correct values that the Alarm method can be used
-            do
+            //While Loop that ensures that will verify if the user typed in correct values that the Alarm method can use
+            //If the settingAlarmString variable is not equal to "quit", then the code within the While loop will continue to work.
+            while (settingAlarmString != "quit")
             {
                 //Asking the user what time would they like the alarm to go off
-                Console.WriteLine("What time would you like to set the alarm? Use this format to set the alarm:\n hour:minutes:am/pm (make sure to separate each item with a colon).");
+                Console.WriteLine("What time would you like to set the alarm? Use this format to set the alarm:\n hour:minutes:am/pm (make sure to separate each item with a colon)." + "\n" + "To leave the Alarm, type Quit.");
 
                 //Getting the user's input for what time they would like to set the alarm
                 //ToLower() makes sure that pm or am is lower cased
                 settingAlarmString = Console.ReadLine().ToLower();
 
                 //Use Regex to check to see if the user typed in the correct values in the Console.
-            } while ();
-
-
-
-            //Splitting the hour and minutes using the Split() method
-            string[] settingAlarmStringArray = settingAlarmString.Split(":");
-
-            //Creating the array that will keep the hour and minutes as integer data types
-            //It will have the same length as the settingAlarmString array minus one because am/pm will not be converted to an integer
-            int[] settingAlarmArray = new int[settingAlarmStringArray.Length-1];
-
-            //Using a For loop to convert the settingAlarmStringArray's string values to integer values
-            //i<= settingAlarmStringArray.Length-2 because am/pm will not be converted to an integer
-            for (int i=0; i<= settingAlarmStringArray.Length-2; i++)
-            {
-                //Converting the string values for hours and minutes to integers using the Convert.ToInt32() method
-                //Placing the integer values to the settingAlarmArray
-                settingAlarmArray[i] = Convert.ToInt32(settingAlarmStringArray[i]);
-            }
-
-            //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
-            if (settingAlarmStringArray[2] == "pm")
-            {
-                //Adding 12 to the hour
-                settingAlarmArray[0] += 12;
-            }
-
-            //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
-            //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
-            //User's alarm that corresponds to the hour
-            int userAlarmHour = settingAlarmArray[0];
-
-            //User's alarm that corresponds to the minutes
-            int userAlarmMinutes = settingAlarmArray[1];
-            
-             //Time and Date for right now obtained by using DateTime.Now
-             DateTime currentTimeDate = DateTime.Now;
-
-             //Using an If statement to compare the alarm time and the current time
-             //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-
-             //Hour that is for the current time using DateTime.Now
-             int currentHour = currentTimeDate.Hour;
-
-             //Differences between the hours. Getting the absolute value with Math.Abs()
-             int hourDifference = Math.Abs(userAlarmHour - currentHour);
-
-             //Hour that is for the current time using DateTime.Now
-             int currentMinutes = currentTimeDate.Minute;
-
-             //Differences between the minutes. Getting the absolute value with Math.Abs()
-             int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
-
-            //Showing the line with the amount of hours and minutes left
-            Console.WriteLine($"The amount of hours: minutes: seconds left until alarm goes off: ");
-
-            //Using a While loop to refresh the DateTime values
-            //The || (or) will ensure that While loop will work if one of them is true
-            while ((hourDifference != 0) || (minutesDifference != 0))
-            {
-                //Refreshing the values for DateTime, currentHour and currentMinutes
-                currentTimeDate = DateTime.Now;
-                currentHour = currentTimeDate.Hour;
-                currentMinutes = currentTimeDate.Minute;
-
-                //Differences between the hours. Getting the absolute value with Math.Abs()
-                hourDifference = Math.Abs(userAlarmHour - currentHour);
-
-                //Differences between the minutes. Getting the absolute value with Math.Abs()
-                minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
-
-                //Seconds difference
-                int secondsDifference = (60 - currentTimeDate.Second);
-
-                //Showing the user how long it will take until the alarm goes off
-                //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
-                Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
-            }
-
-            //Using an If statement to compare the alarm time and the current time
-            //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-            if ((hourDifference == 0) && (minutesDifference == 0))
-            {
-                Console.WriteLine("\n"); //Creates an extra space
-                Console.WriteLine("Time is up! The alarm is going off!"); //Displays that the alarm is going off.
-
-                //The timer will stop updating DateTime.Now every 5 seconds
-                //timerAlarm.Stop();
-
-                //Creates a Beeping noise that beeps 10 times
-                for (int i=0; i<10; i++)
+                //Making sure that the hours and minutes are between the numbers 0 and 9 by using [0-9]
+                //The user can place up to 2 digits for the hours and minutes and at minimum they don't have to place any number. This is indicated with the {0,2}
+                //The user has to indicate if the time is in am or pm. The Regex checks this with the word boundary that has to be am or pm, otherwise the Regex Match will be false.
+                //To verify that am or pm is placed, the Regex.Match code contains the word boundary between am or pm: \b(am|pm)\b
+                //If the user correctly places the time to be used in the alarm with the correct colons to separate the hours, minutes and whether the time is between am and pm, the code within the If statement will work
+                if (Regex.Match(settingAlarmString, @"^[0-9]{0,2}:[0-9]{0,2}:\b(am|pm)\b").Success)
                 {
-                    Console.Beep();
-                }    
-            }
+                    //Splitting the hour and minutes using the Split() method
+                    string[] settingAlarmStringArray = settingAlarmString.Split(":");
+
+                    //Creating the array that will keep the hour and minutes as integer data types
+                    //It will have the same length as the settingAlarmString array minus one because am/pm will not be converted to an integer
+                    int[] settingAlarmArray = new int[settingAlarmStringArray.Length - 1];
+
+                    //Using a For loop to convert the settingAlarmStringArray's string values to integer values
+                    //i<= settingAlarmStringArray.Length-2 because am/pm will not be converted to an integer
+                    for (int i = 0; i <= settingAlarmStringArray.Length - 2; i++)
+                    {
+                        //Converting the string values for hours and minutes to integers using the Convert.ToInt32() method
+                        //Placing the integer values to the settingAlarmArray
+                        settingAlarmArray[i] = Convert.ToInt32(settingAlarmStringArray[i]);
+                    }
+
+                    //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
+                    if (settingAlarmStringArray[2] == "pm")
+                    {
+                        //Adding 12 to the hour
+                        settingAlarmArray[0] += 12;
+                    }
+
+                    //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
+                    //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
+                    //User's alarm that corresponds to the hour
+                    int userAlarmHour = settingAlarmArray[0];
+
+                    //User's alarm that corresponds to the minutes
+                    int userAlarmMinutes = settingAlarmArray[1];
+
+                    //Time and Date for right now obtained by using DateTime.Now
+                    DateTime currentTimeDate = DateTime.Now;
+
+                    //Using an If statement to compare the alarm time and the current time
+                    //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+
+                    //Hour that is for the current time using DateTime.Now
+                    int currentHour = currentTimeDate.Hour;
+
+                    //Differences between the hours. Getting the absolute value with Math.Abs()
+                    int hourDifference = Math.Abs(userAlarmHour - currentHour);
+
+                    //Hour that is for the current time using DateTime.Now
+                    int currentMinutes = currentTimeDate.Minute;
+
+                    //Differences between the minutes. Getting the absolute value with Math.Abs()
+                    int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+
+                    //Showing the line with the amount of hours and minutes left
+                    Console.WriteLine($"The amount of hours: minutes: seconds left until alarm goes off: ");
+
+                    //Using a While loop to refresh the DateTime values
+                    //The || (or) will ensure that While loop will work if one of them is true
+                    while ((hourDifference != 0) || (minutesDifference != 0))
+                    {
+                        //Refreshing the values for DateTime, currentHour and currentMinutes
+                        currentTimeDate = DateTime.Now;
+                        currentHour = currentTimeDate.Hour;
+                        currentMinutes = currentTimeDate.Minute;
+
+                        //Differences between the hours. Getting the absolute value with Math.Abs()
+                        hourDifference = Math.Abs(userAlarmHour - currentHour);
+
+                        //Differences between the minutes. Getting the absolute value with Math.Abs()
+                        minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+
+                        //Seconds difference
+                        int secondsDifference = (60 - currentTimeDate.Second);
+
+                        //Showing the user how long it will take until the alarm goes off
+                        //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
+                        Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
+                    }
+
+                    //Using an If statement to compare the alarm time and the current time
+                    //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+                    if ((hourDifference == 0) && (minutesDifference == 0))
+                    {
+                        Console.WriteLine("\n"); //Creates an extra space
+                        Console.WriteLine("Time is up! The alarm is going off!"); //Displays that the alarm is going off.
+
+                        //The timer will stop updating DateTime.Now every 5 seconds
+                        //timerAlarm.Stop();
+
+                        //Creates a Beeping noise that beeps 10 times
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Console.Beep();
+                        }
+                    }
+                } else if (settingAlarmString == "quit")
+                {
+                    break;
+                }
+                else
+                {
+                    //Extra line of space that will help with the reading of the text
+                    Console.WriteLine("\n");
+
+                    Console.WriteLine("Please enter the correct format to use the alarm. This is the format to use for the alarm:\n hour:minutes:am/pm (make sure to separate each item with a colon).");
+
+                    //Extra line of space that will help with the reading of the text
+                    Console.WriteLine("\n");
+                }
+
+            } 
+
+
+
+
            
         } 
 
