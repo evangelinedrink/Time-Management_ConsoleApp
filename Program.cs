@@ -2035,7 +2035,7 @@ namespace Time_Management_Console_App
                 //The user has to indicate if the time is in am or pm. The Regex checks this with the word boundary that has to be am or pm, otherwise the Regex Match will be false.
                 //To verify that am or pm is placed, the Regex.Match code contains the word boundary between am or pm: \b(am|pm)\b
                 //If the user correctly places the time to be used in the alarm with the correct colons to separate the hours, minutes and whether the time is between am and pm, the code within the If statement will work
-                if (Regex.Match(settingAlarmString, @"^[0-9]{0,2}:[0-9]{0,2}:\b(am|pm)\b").Success)
+                if (Regex.Match(settingAlarmString, @"^[0-9]{1,2}:[0-9]{2}:\b(am|pm)\b").Success)
                 {
                     //Splitting the hour and minutes using the Split() method
                     string[] settingAlarmStringArray = settingAlarmString.Split(":");
@@ -2099,7 +2099,8 @@ namespace Time_Management_Console_App
                         currentMinutes = currentTimeDate.Minute;
 
                         //Differences between the hours. Getting the absolute value with Math.Abs()
-                        hourDifference = Math.Abs(userAlarmHour - currentHour);
+                        //hourDifference = Math.Abs(userAlarmHour - currentHour);
+                        hourDifference = Math.Abs(currentHour - userAlarmHour);
 
                         //Differences between the minutes. Getting the absolute value with Math.Abs()
                         minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
