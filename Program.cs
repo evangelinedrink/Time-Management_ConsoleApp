@@ -2108,9 +2108,25 @@ namespace Time_Management_Console_App
                         //Seconds difference
                         int secondsDifference = (60 - currentTimeDate.Second);
 
-                        //Showing the user how long it will take until the alarm goes off
-                        //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
-                        Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
+                        //Making sure the seconds below 10 seconds are one digit (before 9 seconds showed up as 90)
+                        if (secondsDifference > 60)
+                        {
+                            //secondsDifference = 100 - secondsDifference;
+                            secondsDifference = secondsDifference % 10;
+
+                            Console.WriteLine(secondsDifference.ToString("000"));
+                            //Showing the user how long it will take until the alarm goes off
+                            //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
+                            Console.Write($"\r {hourDifference}:{minutesDifference}" + ":" + String.Format("{ 0:000}", secondsDifference));
+
+                        } else
+                        {
+                            //Showing the user how long it will take until the alarm goes off
+                            //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
+                            Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
+                        }
+
+                        
                     }
 
                     //Using an If statement to compare the alarm time and the current time
