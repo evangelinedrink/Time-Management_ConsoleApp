@@ -2108,8 +2108,31 @@ namespace Time_Management_Console_App
                         //Seconds difference
                         int secondsDifference = (60 - currentTimeDate.Second);
 
+                        //If the quotient is 0.85 and above, this would mean that the secondsDifference would be from 9 until 0, meaning that we only need to see 09 until 0 in the Console and not 90.
+                        //This would mean that the currentTimeDate.Second is 51 seconds ( 51 / 60 = 0.85)
+                        int quotientTime = currentTimeDate.Second / 60;
+
+
+                        /*
+                        //One second in TimeSpan that will be substracted by the currentTimeDate.Second
+                        TimeSpan oneSecondTS = new TimeSpan(0, 0, 0, 1);
+
+                        //Current seconds with DateTime being converted to TimeSpan
+                        TimeSpan currentSecondTS = TimeSpan.FromSeconds(currentTimeDate.Second);
+
+                        //Seconds difference with TimeSpan.
+                        //Need to find a way to get only the seconds from the DateTime.Now 
+                        TimeSpan secondsDifference = currentSecondTS.Substract(oneSecondTS);
+                        */
+
+                        //Testing what the value of secondsDifference will look like in the Console
+                        //secondsDifference = 100 - secondsDifference;
+                        int secondsDifference1 = secondsDifference % 10;
+                        //Console.WriteLine("The module of secondsDifference and 10 is: ");
+                        Console.WriteLine($"\r {secondsDifference1}");
+
                         //Making sure the seconds below 10 seconds are one digit (before 9 seconds showed up as 90)
-                        if (secondsDifference > 60)
+                        if (quotientTime >= 0.85)
                         {
                             //secondsDifference = 100 - secondsDifference;
                             secondsDifference = secondsDifference % 10;
@@ -2117,16 +2140,23 @@ namespace Time_Management_Console_App
                             Console.WriteLine(secondsDifference.ToString("000"));
                             //Showing the user how long it will take until the alarm goes off
                             //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
-                            Console.Write($"\r {hourDifference}:{minutesDifference}" + ":" + String.Format("{ 0:000}", secondsDifference));
+                            Console.Write($"\r {hourDifference}:{minutesDifference}" + ":" + secondsDifference.ToString("ss.ff"));
 
                         } else
                         {
                             //Showing the user how long it will take until the alarm goes off
                             //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
                             Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
-                        }
 
+                            //Use TimeSpan to get the secondsDifference that way it can be used with the ToString "ss.ff" below
+                            //Console.Write($"\r {hourDifference}:{minutesDifference}" + ":" + secondsDifference.ToString("ss.ff"));
+                        }
                         
+
+                        //Showing the user how long it will take until the alarm goes off
+                        //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
+                        //Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
+
                     }
 
                     //Using an If statement to compare the alarm time and the current time
