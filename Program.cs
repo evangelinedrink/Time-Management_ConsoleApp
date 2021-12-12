@@ -2051,6 +2051,12 @@ namespace Time_Management_Console_App
                         //Converting the string values for hours and minutes to integers using the Convert.ToInt32() method
                         //Placing the integer values to the settingAlarmArray
                         settingAlarmArray[i] = Convert.ToInt32(settingAlarmStringArray[i]);
+
+                        //To fix the error with the difference in time, the values for the hour and minutes will be converted to DateTime values.
+                        //The user will also need to indicate if the time they would like the alarm to ring is for today or tomorrow
+                        //(this will be done with them responding to the question, "Will the alarm be ringing today? Please answer with Yes or No)."
+                        //If the user responds with No, the date for DateTime will then be placed for the next day, not the the DateTime.Now's day.
+                        //This will then help with the problem of showing the difference in time between the time the alarm will ring and the current time (the alarm's timer display)
                     }
 
                     //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
@@ -2127,20 +2133,37 @@ namespace Time_Management_Console_App
 
                         //Testing what the value of secondsDifference will look like in the Console
                         //secondsDifference = 100 - secondsDifference;
-                        int secondsDifference1 = secondsDifference % 10;
+                        int secondsDifference1 = secondsDifference % 60;
                         //Console.WriteLine("The module of secondsDifference and 10 is: ");
-                        Console.WriteLine($"\r {secondsDifference1}");
+                        //Console.WriteLine($"\r {secondsDifference1}");
 
                         //Making sure the seconds below 10 seconds are one digit (before 9 seconds showed up as 90)
-                        if (quotientTime >= 0.85)
+                        //if ((quotientTime >= 0.85))
+                        if ((currentTimeDate.Second>=51) && (currentTimeDate.Second <= 59))
                         {
-                            //secondsDifference = 100 - secondsDifference;
-                            secondsDifference = secondsDifference % 10;
+                            double secondsDifferenceLowSec = (60 - currentTimeDate.Second) / 10;
+                            //double secondsDifferenceLowSec = secondsDifference / 10;
 
-                            Console.WriteLine(secondsDifference.ToString("000"));
+                            //One second in TimeSpan that will be substracted by the currentTimeDate.Second
+                            TimeSpan sixtySecondsTS = new TimeSpan(0, 0, 0, 60);
+
+                            //Current seconds with DateTime being converted to TimeSpan
+                            TimeSpan currentSecondTS = TimeSpan.FromSeconds(currentTimeDate.Second);
+
+                            //Seconds difference with TimeSpan.
+                            //Need to find a way to get only the seconds from the DateTime.Now 
+                            TimeSpan secondsDifferenceTS = sixtySecondsTS - currentSecondTS;
+
                             //Showing the user how long it will take until the alarm goes off
                             //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
-                            Console.Write($"\r {hourDifference}:{minutesDifference}" + ":" + secondsDifference.ToString("ss.ff"));
+                            //Might want to use a String.Format to help ensure that the second doesn't change position when the seconds isn't less than 10
+                            //Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifferenceTS}");
+                            Console.Write($"\r {0}:{1}:{2}", hourDifference, minutesDifference, secondsDifferenceTS);
+
+                            //Console.WriteLine(secondsDifference.ToString("000"));
+                            //Showing the user how long it will take until the alarm goes off
+                            //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
+                            //Console.Write($"\r {hourDifference}:{minutesDifference}" + ":" + secondsDifference.ToString("ss.ff"));
 
                         } else
                         {
