@@ -2052,12 +2052,33 @@ namespace Time_Management_Console_App
                         //Placing the integer values to the settingAlarmArray
                         settingAlarmArray[i] = Convert.ToInt32(settingAlarmStringArray[i]);
 
-                        //To fix the error with the difference in time, the values for the hour and minutes will be converted to DateTime values.
-                        //The user will also need to indicate if the time they would like the alarm to ring is for today or tomorrow
-                        //(this will be done with them responding to the question, "Will the alarm be ringing today? Please answer with Yes or No)."
-                        //If the user responds with No, the date for DateTime will then be placed for the next day, not the the DateTime.Now's day.
-                        //This will then help with the problem of showing the difference in time between the time the alarm will ring and the current time (the alarm's timer display)
                     }
+
+                    //To fix the error with the difference in time, the values for the hour and minutes will be converted to DateTime values.
+                    //The user will also need to indicate if the time they would like the alarm to ring is for today or tomorrow
+                    //(this will be done with them responding to the question, "Will the alarm be ringing today? Please answer with Yes or No)."
+                    //If the user responds with No, the date for DateTime will then be placed for the next day, not the the DateTime.Now's day.
+                    //This will then help with the problem of showing the difference in time between the time the alarm will ring and the current time (the alarm's timer display)
+
+                    //Initializing the ringingToday variable
+                    string ringingToday = "PLACEHOLDER";
+
+                    //Do/While loop to ensure that the user correctly answers the question on whether the alarm will ring today
+                    do
+                    {
+                        //Asking the user if the alarm is going to ring today or tomorrow, this will help with the date to be placed in DateTime
+                        Console.WriteLine("Will the alarm be ringing today? Please answer with Yes or No.");
+                        //Getting the user's response
+                        string ringingToday = Console.ReadLine().ToUpper();
+                    } while ();
+                    
+
+
+                    //Converting the 
+                    //DateTime dayTimeOfAlarm = DateTime.Now;
+
+                    //Converting the hour that the user indicated to the dayTimeOfAlarm for DateTime
+                    dayTimeOfAlarm.Hour = settingAlarmArray[0];
 
                     //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
                     if (settingAlarmStringArray[2] == "pm")
