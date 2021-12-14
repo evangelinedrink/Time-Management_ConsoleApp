@@ -2069,16 +2069,109 @@ namespace Time_Management_Console_App
                         //Asking the user if the alarm is going to ring today or tomorrow, this will help with the date to be placed in DateTime
                         Console.WriteLine("Will the alarm be ringing today? Please answer with Yes or No.");
                         //Getting the user's response
-                        string ringingToday = Console.ReadLine().ToUpper();
+                        ringingToday = Console.ReadLine().ToUpper();
+
+                        if (ringingToday == "YES")
+                        {
+                            //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
+                            if (settingAlarmStringArray[2] == "pm")
+                            {
+                                //Adding 12 to the hour
+                                settingAlarmArray[0] += 12;
+                            }
+
+                            //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
+                            //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
+                            //User's alarm that corresponds to the hour
+                            int userAlarmHour = settingAlarmArray[0];
+
+                            //User's alarm that corresponds to the minutes
+                            int userAlarmMinutes = settingAlarmArray[1];
+
+                            //Time and Date for right now obtained by using DateTime.Now
+                            DateTime currentTimeDate = DateTime.Now;
+
+                            //Using an If statement to compare the alarm time and the current time
+                            //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+
+                            //Hour that is for the current time using DateTime.Now
+                            int currentHour = currentTimeDate.Hour;
+
+                            //Differences between the hours. Getting the absolute value with Math.Abs()
+                            int hourDifference = Math.Abs(userAlarmHour - currentHour);
+
+                            //Hour that is for the current time using DateTime.Now
+                            int currentMinutes = currentTimeDate.Minute;
+
+                            //Differences between the minutes. Getting the absolute value with Math.Abs()
+                            int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+
+                            //Using a While loop to refresh the DateTime values
+                            //The || (or) will ensure that While loop will work if one of them is true
+                            while ((hourDifference != 0) || (minutesDifference != 0))
+                            {
+                                //Refreshing the values for DateTime, currentHour and currentMinutes
+                                currentTimeDate = DateTime.Now;
+                                currentHour = currentTimeDate.Hour;
+                                currentMinutes = currentTimeDate.Minute;
+
+                                //Differences between the hours. Getting the absolute value with Math.Abs()
+                                //hourDifference = Math.Abs(userAlarmHour - currentHour);
+                                hourDifference = Math.Abs(currentHour - userAlarmHour);
+
+                                //Differences between the minutes. Getting the absolute value with Math.Abs()
+                                minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+
+                                //Seconds difference
+                                int secondsDifference = (60 - currentTimeDate.Second);
+
+                                //Showing the user how long it will take until the alarm goes off
+                                //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
+                                Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
+
+                            }
+
+                            //Using an If statement to compare the alarm time and the current time
+                            //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
+                            if ((hourDifference == 0) && (minutesDifference == 0))
+                            {
+                                Console.WriteLine("\n"); //Creates an extra space
+                                Console.WriteLine("Time is up! The alarm is going off!"); //Displays that the alarm is going off.
+
+                                //The timer will stop updating DateTime.Now every 5 seconds
+                                //timerAlarm.Stop();
+
+                                //Creates a Beeping noise that beeps 10 times
+                                for (int i = 0; i < 10; i++)
+                                {
+                                    Console.Beep();
+                                }
+                            }
+
+
+                            
+
+                        } else if (ringingToday == "NO")
+                        {
+                            //This will get the current date that the user is asking the alarm to ring without the time attached to it
+                            string dateSettingAlarm = DateTime.Today.ToString("d"); //Will display the date as month/day/year
+
+                            //The date will be in this format: month/day/year
+                            //To values for the month, day and year will be split up and placed into an array 
+                            //Split method will be used to separate each value
+                            string[] dateSettingAlarmStringArray = dateSettingAlarm.Split("/");
+
+                            //The date will need to be split in order to add a day to when the alarm will be ringing.
+                            //The date and actual time of the alarm will be placed in its own array, which will then be added to its own DateTime variable
+                            //The current date and time will be created using DateTime.Now method.
+                            //To show the countdown until the timer goes off, the DateTime dateAndTimeOfActualAlarm will be substracted with the DateTime.Now 
+                        }
+
                     } while ();
                     
 
-
-                    //Converting the 
-                    //DateTime dayTimeOfAlarm = DateTime.Now;
-
-                    //Converting the hour that the user indicated to the dayTimeOfAlarm for DateTime
-                    dayTimeOfAlarm.Hour = settingAlarmArray[0];
+                    /*
+                    
 
                     //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
                     if (settingAlarmStringArray[2] == "pm")
@@ -2152,6 +2245,7 @@ namespace Time_Management_Console_App
                         TimeSpan secondsDifference = currentSecondTS.Substract(oneSecondTS);
                         */
 
+                    /*
                         //Testing what the value of secondsDifference will look like in the Console
                         //secondsDifference = 100 - secondsDifference;
                         int secondsDifference1 = secondsDifference % 60;
@@ -2219,6 +2313,7 @@ namespace Time_Management_Console_App
                             Console.Beep();
                         }
                     }
+                    */
                 } else if (settingAlarmString == "quit")
                 {
                     break;
