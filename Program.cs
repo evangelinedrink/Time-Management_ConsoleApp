@@ -2022,6 +2022,9 @@ namespace Time_Management_Console_App
             //If the settingAlarmString variable is not equal to "quit", then the code within the While loop will continue to work.
             while (settingAlarmString != "quit")
             {
+                //Creating some space for easy visibility
+                Console.WriteLine("\n");
+
                 //Asking the user what time would they like the alarm to go off
                 Console.WriteLine("What time would you like to set the alarm? Use this format to set the alarm:\n hour:minutes:am/pm (make sure to separate each item with a colon)." + "\n" + "To leave the Alarm, type Quit.");
 
@@ -2094,49 +2097,74 @@ namespace Time_Management_Console_App
                             //Time and Date for right now obtained by using DateTime.Now
                             DateTime currentTimeDate = DateTime.Now;
 
-                            //Using an If statement to compare the alarm time and the current time
-                            //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-
                             //Hour that is for the current time using DateTime.Now
                             int currentHour = currentTimeDate.Hour;
+
+                            //Minutes that is for the current time using DateTime.Now
+                            int currentMinutes = currentTimeDate.Minute;
 
                             //Differences between the hours. Getting the absolute value with Math.Abs()
                             int hourDifference = Math.Abs(userAlarmHour - currentHour);
 
-                            //Hour that is for the current time using DateTime.Now
-                            int currentMinutes = currentTimeDate.Minute;
-
                             //Differences between the minutes. Getting the absolute value with Math.Abs()
                             int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
 
+                            //Initializing the secondsDifference variable. This has to be a double, otherwise, the alarm will go off a minute earlier before its actual time.
+                            double secondsDifference = 10;
+
+                            //Initializing the TimeSpand and DateTime variables
+                            TimeSpan alarmTime = TimeSpan.FromMinutes(1);
+                            DateTime currentTimeDateUpdate = DateTime.Now;
+
+
                             //Using a While loop to refresh the DateTime values
                             //The || (or) will ensure that While loop will work if one of them is true
-                            while ((hourDifference != 0) || (minutesDifference != 0))
+                            //Having the secondsDifference !=0 ensures that the alarm will ring on its scheduled time and not ring a minute in advance (because the minutes and hours are 0, but seconds are not 0).
+                            while ((hourDifference != 0) || (minutesDifference != 0) || (secondsDifference != 0))
                             {
-                                //Refreshing the values for DateTime, currentHour and currentMinutes
+                                //Refreshing the values for DateTime, currentTimeDate to get the latest time and date
                                 currentTimeDate = DateTime.Now;
-                                currentHour = currentTimeDate.Hour;
-                                currentMinutes = currentTimeDate.Minute;
 
-                                //Differences between the hours. Getting the absolute value with Math.Abs()
-                                //hourDifference = Math.Abs(userAlarmHour - currentHour);
-                                hourDifference = Math.Abs(currentHour - userAlarmHour);
+                                //Getting the year, month and day that the alarm was set because TimeSpan Subtract() method will be used to subtract the time difference
+                                //between the alarm and the current time
+                                int currentYear = currentTimeDate.Year;
+                                int currentMonth = currentTimeDate.Month;
+                                int currentDay = currentTimeDate.Day;
 
-                                //Differences between the minutes. Getting the absolute value with Math.Abs()
-                                minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
+                                //Placing the user's indicated time for the alarm to ring in DateTime. The zero corresponds to the seconds
+                                DateTime userAlarmTime = new DateTime(currentYear, currentMonth, currentDay, userAlarmHour, userAlarmMinutes, 0);
 
-                                //Seconds difference
-                                int secondsDifference = (60 - currentTimeDate.Second);
+                                //Creating the current time and date that can be used to subtract with the indicated alarm time
+                                //The alarm goes off a minute before the actual time showing on the computer, this is why one minute has to be added to the currentTimeDate.Minutes
+                                currentTimeDateUpdate = DateTime.Now;
+                                    //new DateTime(currentYear, currentMonth, currentDay, currentTimeDate.Hour, currentTimeDate.Minute);
+
+                                //Subtracting the user's alarm time with the current time using TimeSpan Subtract() method
+                                alarmTime = userAlarmTime.Subtract(currentTimeDateUpdate);
+
+                                //Converting the hours, minutes and seconds from TimeSpan to String values that can be seen on the Console.
+                                //This is done by using the .ToString() method
+                                string alarmHourDifference = alarmTime.Hours.ToString();
+                                string alarmMinutesDifference = alarmTime.Minutes.ToString();
+                                string alarmSecondsDifference = alarmTime.Seconds.ToString();
+                                string alarmSecondsDifferenceCalculation = alarmTime.Seconds.ToString();
 
                                 //Showing the user how long it will take until the alarm goes off
                                 //\r refreshes the values and Console.Write makes sure the refreshed values are on the same line
-                                Console.Write($"\r {hourDifference}:{minutesDifference}:{secondsDifference}");
+                                Console.Write($"\r {alarmHourDifference}:{alarmMinutesDifference}:{alarmSecondsDifference}");
+
+                                //Differences between the hours and minutes, since if they are different, the code within this While loop will continue to run
+                                //Using Int32.Parse() to convert the string for the hour and minutes differences to integer data types
+                                hourDifference = Int32.Parse(alarmHourDifference);
+                                minutesDifference = Int32.Parse(alarmMinutesDifference);
+                                secondsDifference = Double.Parse(alarmSecondsDifferenceCalculation);
+                                //secondsDifference = Double.Parse(alarmSecondsDifference);
 
                             }
 
                             //Using an If statement to compare the alarm time and the current time
                             //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-                            if ((hourDifference == 0) && (minutesDifference == 0))
+                            if ((hourDifference == 0) && (minutesDifference == 0) && (secondsDifference ==0))
                             {
                                 Console.WriteLine("\n"); //Creates an extra space
                                 Console.WriteLine("Time is up! The alarm is going off!"); //Displays that the alarm is going off.
@@ -2150,9 +2178,7 @@ namespace Time_Management_Console_App
                                     Console.Beep();
                                 }
                             }
-
-
-                            
+                           
 
                         } else if (ringingToday == "NO")
                         {
@@ -2222,10 +2248,12 @@ namespace Time_Management_Console_App
                             //Differences between the minutes. Getting the absolute value with Math.Abs()
                             int minutesDifference = Math.Abs(userAlarmMinutes - currentMinutes);
 
-                         
+                            //Initializing the secondsDifference variable. This has to be a double, otherwise, the alarm will go off a minute earlier before its actual time.
+                            double secondsDifference = 10;
+
                             //Using a While loop to refresh the DateTime values
                             //The || (or) will ensure that While loop will work if one of them is true
-                            while ((hourDifference != 0) || (minutesDifference != 0))
+                            while ((hourDifference != 0) || (minutesDifference != 0) || (secondsDifference != 0))
                             {
                                 //Refreshing the values for DateTime, currentHour and currentMinutes
                                 currentTimeDate = DateTime.Now;
@@ -2240,6 +2268,7 @@ namespace Time_Management_Console_App
                                 string differenceInHours = differenceUntilAlarmRings.Hours.ToString();
                                 string differenceInMinutes = differenceUntilAlarmRings.Minutes.ToString();
                                 string differenceInSeconds = differenceUntilAlarmRings.Seconds.ToString();
+                                string differenceInSecondsCalculation= differenceUntilAlarmRings.Seconds.ToString(); //This variable makes sure that the alarm will not ring a minute ahead of its scheduled time. Since the seconds is a double and not an integer
 
                                 //Displaying the difference in hours, minutes and seconds that refreshes everytime the computer goes through the While loop
                                 //Showing the user how long it will take until the alarm goes off
@@ -2250,6 +2279,7 @@ namespace Time_Management_Console_App
                                 //Converting the string, which is used to show in the Console, into integers that way these variables can be evaluated in the While loop.
                                 hourDifference = Int32.Parse(differenceInHours);
                                 minutesDifference = Int32.Parse(differenceInMinutes);
+                                secondsDifference = Double.Parse(differenceInSecondsCalculation);
 
                                 /* Old Code
                                 //Differences between the hours. Getting the absolute value with Math.Abs()
@@ -2297,7 +2327,7 @@ namespace Time_Management_Console_App
 
                             //Using an If statement to compare the alarm time and the current time
                             //If the user's alarm input for the hour and minutes is substracted by the current time and the difference is zero, the alarm will go off
-                            if ((hourDifference == 0) && (minutesDifference == 0))
+                            if ((hourDifference == 0) && (minutesDifference == 0) && (secondsDifference == 0))
                             {
                                 Console.WriteLine("\n"); //Creates an extra space
                                 Console.WriteLine("Time is up! The alarm is going off!"); //Displays that the alarm is going off.
@@ -2311,6 +2341,15 @@ namespace Time_Management_Console_App
                                     Console.Beep();
                                 }
                             }
+                        } else if(ringingToday == "QUIT")
+                        {
+                            return; //This will leave the entire Alarm method and take the user back to the Home Screen page asking them which application they would like to open.
+                        }
+                        else //If the user doesn't answer with Yes or No if the alarm is going to ring today.
+                        {
+                            Console.WriteLine("Please answer the question with a Yes or No.");
+                            //Extra space that will be placed between the above statement and the question if the alarm is going to ring
+                            Console.WriteLine("\n");
                         }
 
                     } while (ringingToday != "QUIT");
