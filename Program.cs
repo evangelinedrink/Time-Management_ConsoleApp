@@ -2077,14 +2077,41 @@ namespace Time_Management_Console_App
                         //Getting the user's response
                         ringingToday = Console.ReadLine().ToUpper();
 
-                        if (ringingToday == "YES")
+                        //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
+                        if (settingAlarmStringArray[2] == "pm")
                         {
-                            //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
-                            if (settingAlarmStringArray[2] == "pm")
-                            {
-                                //Adding 12 to the hour
-                                settingAlarmArray[0] += 12;
-                            }
+                            //Adding 12 to the hour
+                            settingAlarmArray[0] += 12;
+                        }
+
+                        //Getting the current time to check and see if the user indicated hour and minutes will occur after the current time
+                        DateTime checkHourAndMinutes = DateTime.Now;
+                        //Getting the hour and minutes from the above variable
+                        int checkHour = checkHourAndMinutes.Hour;
+                        int checkMinutes = checkHourAndMinutes.Minute;
+                        //Also getting the date that will be used for the DateTime comparison
+                        int checkYear= checkHourAndMinutes.Year;
+                        int checkMonth = checkHourAndMinutes.Month;
+                        int checkDay = checkHourAndMinutes.Day;
+
+                        //Placing the user's indicated alarm time into DateTime to check to see if the time is after the current date and time
+                        DateTime userAlarmTimeInitial = new DateTime(checkYear, checkMonth, checkDay, settingAlarmArray[0], settingAlarmArray[1], 0);
+                        //Verifying that the user's indicated alarm time is after the current time that the alarm was set
+                        //If the alarmTimeCheck is greater than 0, then this means that the user's indicated time for the alarm to go off is after the time that they set it
+                        //If alarmTimecheck is less than 0, then this means that the user's indicated time for the alarm to ring has already passed for today, so the alarm should ring tomorrow and not today
+                        TimeSpan alarmTimeCheck = userAlarmTimeInitial.Subtract(checkHourAndMinutes);
+                        //Converting the TimeSpan to an integer that way it can be used in the If/Else If statements below
+                        int alarmTimeCheckSecondsInt = int.Parse(alarmTimeCheck.Seconds.ToString());
+                        int alarmTimeCheckMinutesInt = int.Parse(alarmTimeCheck.Minutes.ToString());
+                        int alarmTimeCheckHoursInt = int.Parse(alarmTimeCheck.Hours.ToString());
+                        //Converting the minutes and hours into seconds and then adding the values together to get the total difference in time from the time now and when the alarm is going to ring
+                        int alarmTimeCheckMinutesIntSec = alarmTimeCheckMinutesInt * 60;
+                        int alarmTimeCheckHoursIntSec = alarmTimeCheckHoursInt * 60 * 60;
+                        int alarmTimeCheckInt = alarmTimeCheckSecondsInt + alarmTimeCheckMinutesIntSec + alarmTimeCheckHoursIntSec;
+
+                        if ((ringingToday == "YES") && (alarmTimeCheckInt > 0))
+                        {
+
 
                             //Taking the user's indicated alarm time and comparing it with the the current DateTime.Now's hour and minutes
                             //If the user's indicated alarm time minus the current DateTime.Now's hours and minutes are equal to zero, the alarm will go off
@@ -2180,7 +2207,7 @@ namespace Time_Management_Console_App
                             }
                            
 
-                        } else if (ringingToday == "NO")
+                        } else if ((ringingToday == "NO") || (alarmTimeCheckInt < 0)) //This ensures that if the time for the alarm has already passed for today, it will be able to ring for tomorrow
                         {
                             //This will get the current date that the user is asking the alarm to ring without the time attached to it
                             //DateTime dateSettingAlarm = DateTime.Today;
@@ -2213,12 +2240,14 @@ namespace Time_Management_Console_App
                             //User's alarm that corresponds to the hour
                             int userAlarmHour = settingAlarmArray[0];
 
+                            /* This is already done before the If/Else If statements
                             //If the time is set for pm, the hour will need to be converted to 24 hours clock (military time) since DateTime uses the 24 hours clock
                             if (settingAlarmStringArray[2] == "pm")
                             {
                                 //Adding 12 to the hour
                                 userAlarmHour += 12;
                             }
+                            */
 
                             //User's alarm that corresponds to the minutes
                             int userAlarmMinutes = settingAlarmArray[1];
@@ -2344,6 +2373,9 @@ namespace Time_Management_Console_App
                         } else if(ringingToday == "QUIT")
                         {
                             return; //This will leave the entire Alarm method and take the user back to the Home Screen page asking them which application they would like to open.
+                        } else if((ringingToday == "YES") && (alarmTimeCheckInt < 0)) //If the user tries to let the alarm ring for today, but the time for the alarm has already passed, the warning below will appear
+                        {
+                            Console.WriteLine("The time that you would like the alarm to ring today has already passed. Please answer No to the question asking if the alarm will ring today. The alarm will be set to ring tomorrow.");
                         }
                         else //If the user doesn't answer with Yes or No if the alarm is going to ring today.
                         {
