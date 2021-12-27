@@ -2207,7 +2207,7 @@ namespace Time_Management_Console_App
                             }
                            
 
-                        } else if ((ringingToday == "NO") || (alarmTimeCheckInt < 0)) //This ensures that if the time for the alarm has already passed for today, it will be able to ring for tomorrow
+                        } else if ((ringingToday == "NO") && (alarmTimeCheckInt < 0)) //This ensures that if the time for the alarm has already passed for today, it will be able to ring for tomorrow
                         {
                             //This will get the current date that the user is asking the alarm to ring without the time attached to it
                             //DateTime dateSettingAlarm = DateTime.Today;
@@ -2375,10 +2375,19 @@ namespace Time_Management_Console_App
                             return; //This will leave the entire Alarm method and take the user back to the Home Screen page asking them which application they would like to open.
                         } else if((ringingToday == "YES") && (alarmTimeCheckInt < 0)) //If the user tries to let the alarm ring for today, but the time for the alarm has already passed, the warning below will appear
                         {
+                            //Extra space that will be placed between the previous statement and the statement below
+                            Console.WriteLine("\n");
+
                             Console.WriteLine("The time that you would like the alarm to ring today has already passed. Please answer No to the question asking if the alarm will ring today. The alarm will be set to ring tomorrow.");
+
+                            //Extra space that will be placed
+                            Console.WriteLine("\n");
                         }
                         else //If the user doesn't answer with Yes or No if the alarm is going to ring today.
                         {
+                            //Extra space that will be placed
+                            Console.WriteLine("\n");
+
                             Console.WriteLine("Please answer the question with a Yes or No.");
                             //Extra space that will be placed between the above statement and the question if the alarm is going to ring
                             Console.WriteLine("\n");
