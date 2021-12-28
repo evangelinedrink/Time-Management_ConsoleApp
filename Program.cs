@@ -5,7 +5,8 @@ using System.Timers; //With this, the timer can be used
 using System.Diagnostics; //This lets the stopwatch be used in the application
 using System.Linq; //Let's Where() method for the Queue be usable
 using System.Text.RegularExpressions; //Ensures that Regular Expressions (Regex) can be used validate a user's input
-
+using System.IO; //This ensures that StreamWriter can be used (System.IO namepsace allows reading and writing to files)
+//using System.Threading.Tasks;
 
 namespace Time_Management_Console_App
 {
@@ -1625,10 +1626,15 @@ namespace Time_Management_Console_App
         //Once items in the Check List are completed, the user can delete completed tasks by typing "Remove" to the question (if they would like to remove item(s) from the list).
         //After typing in "Remove", a new Console.WriteLine will ask what items in the Check List that they would like to remove. The user will have to type in the item number for each item they would like to delete, separating each by commas (using string.Split(",") to separate each item).
         //Remove.At(index number) will be used to delete each item from the List. Remember: First item in the Check List will have item number 1. To refer to its index number, it will be 1 (its item number) - 1
+        
+        //Creating a method that can be used for storing the items in the checklist
         public static void CheckList(ArrayList checkListArray, ArrayList checkListArrayNoNumbers)
         {
             //Initializing the variable that will get the user's response
             string userAnswer = "CREATE";
+
+            //Using StreamWriter to create the text file that will be used to save the checklist items
+            using StreamWriter checkListFile = new("CheckListFile.txt");
 
             //Using a Do/While Loop to run the code for the check list as long as the user does not type "Quit" in the Console.
             do
@@ -1663,6 +1669,13 @@ namespace Time_Management_Console_App
                             //Adding the user's item for the check list into the Array List containing the items in the check list
                             checkListArray.Add(userCreate);
 
+                        }
+
+
+                        //Adding the user's items from the check list to a text file that can be saved with their items
+                        foreach(string item in checkListArray)
+                        {
+                            await checkListFile.WriteLineAsync(checkListArray);
                         }
 
                     } while (userCreate != "DONE");
