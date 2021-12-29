@@ -1628,13 +1628,12 @@ namespace Time_Management_Console_App
         //Remove.At(index number) will be used to delete each item from the List. Remember: First item in the Check List will have item number 1. To refer to its index number, it will be 1 (its item number) - 1
         
         //Creating a method that can be used for storing the items in the checklist
+
+
         public static void CheckList(ArrayList checkListArray, ArrayList checkListArrayNoNumbers)
         {
             //Initializing the variable that will get the user's response
             string userAnswer = "CREATE";
-
-            //Using StreamWriter to create the text file that will be used to save the checklist items
-            using StreamWriter checkListFile = new("CheckListFile.txt");
 
             //Using a Do/While Loop to run the code for the check list as long as the user does not type "Quit" in the Console.
             do
@@ -1653,6 +1652,10 @@ namespace Time_Management_Console_App
                 {
                     //Initializing the variable that the user will use to add item's in their check list
                     string userCreate = "ITEM";
+
+                    //Initializing the counter that will be displayed next to the item
+                    int counterItemCreate = 1;
+
                     do
                     {
                         //Creating space between the lines
@@ -1664,19 +1667,40 @@ namespace Time_Management_Console_App
                         //Getting the user's response which will decide which code runs
                         userCreate = Console.ReadLine().ToUpper();
 
-                        if((userCreate != "CREATE") && (userCreate != "ADD") && (userCreate != "VIEW") && (userCreate != "DELETE") && (userCreate != "QUIT") && (userCreate != "DONE"))
+                        if ((userCreate != "CREATE") && (userCreate != "ADD") && (userCreate != "VIEW") && (userCreate != "DELETE") && (userCreate != "QUIT") && (userCreate != "DONE"))
                         {
                             //Adding the user's item for the check list into the Array List containing the items in the check list
                             checkListArray.Add(userCreate);
 
+                            //Using StreamWriter to create the text file that will be used to save the checklist items
+                            //The syntax of StreamWriter is the following: StreamWriter(string path, bool append)
+                            //If the file inside of the StreamWriter exists, it can either be overwritten or appended.
+                            //To save to an existing file and to not override the file, the second parameter has to be set to true. This means bool append= true, which will append (not override the data)
+                            //The file will be saved in the following location and when new items are added to it, it will not delete the previous data.
+                            //using (StreamWriter checkListFile = new StreamWriter("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt", true))
+                            using (StreamWriter checkListFile = new StreamWriter("CheckListFile.txt", true))
+                            {
+                                //Adding the user's items from the check list to a text file that can be saved with their items
+                                //The counter item number will be displayed first, then the item that the user wants to add will be shown next
+                                //The counterItemCreate++ will increase the counter number for the next item displayed, so the second item will be 2) and not 1)
+                                //The numbering and the item will be saved in the CheckListFile.txt file.
+                                checkListFile.WriteLine("{0}) {1}", counterItemCreate++, userCreate);
+                            }
                         }
 
-
-                        //Adding the user's items from the check list to a text file that can be saved with their items
-                        foreach(string item in checkListArray)
+                        //Using StreamWriter to create the text file that will be used to save the checklist items
+                        //The syntax of StreamWriter is the following: StreamWriter(string path, bool append)
+                        //If the file inside of the StreamWriter exists, it can either be overwritten or appended.
+                        //To save to an existing file and to not override the file, the second parameter has to be set to true. This means bool append= true, which will append (not override the data)
+                        //The file will be saved in the following location and when new items are added to it, it will not delete the previous data.
+                       /* using (StreamWriter checkListFile = new StreamWriter("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt", true))
                         {
-                            await checkListFile.WriteLineAsync(checkListArray);
-                        }
+                            //Adding the user's items from the check list to a text file that can be saved with their items
+                            foreach (string item in checkListArray)
+                            {
+                                checkListFile.WriteLine(item);
+                            }
+                        }*/
 
                     } while (userCreate != "DONE");
 
@@ -1704,6 +1728,26 @@ namespace Time_Management_Console_App
                 }
                 else if (userAnswer == "VIEW")
                 {
+                    //StreamReader will be used to read the text file that contains the user's items in their To Do List
+
+                    //Create an extra line for easier viewing
+                    Console.WriteLine("\n");
+
+                    //line variable is equal to an empty string
+                    string line = "";
+                    //Reading and showing each line from the CheckListFile.text by using StreamReader
+                    //using initiates (starts) the StreamReader
+                    //using (StreamReader checkListFileRead= new StreamReader("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt"))
+                    using (StreamReader checkListFileRead = new StreamReader("CheckListFile.txt"))
+                    {
+                        //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
+                        while ((line = checkListFileRead.ReadLine()) != null)
+                        {
+                            Console.WriteLine(line);
+                        }
+                    }
+
+                    /*Code below was used when CheckListFile.txt wasn't created
                     //Counter that will Display the number of each item in the check list
                     int counterItem = 1;
                     //Viewing the items in the ArrayList using foreach
@@ -1714,6 +1758,7 @@ namespace Time_Management_Console_App
                         //The counter to be displayed before the item in the checklist will be increased by 1 every time the foreach loop runs
                         Console.WriteLine("{0}) {1}", counterItem++,item);
                     }
+                    */
                 }
                 else if (userAnswer == "DELETE")
                 {
