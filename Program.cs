@@ -79,6 +79,11 @@ namespace Time_Management_Console_App
                     //Variable that will ask if the user would like to create/add an item in the Check List
                     string createCheckList = "YES";
 
+                    //Initializing the counter that will be displayed next to the item
+                    //The counter has to be here so that it will be updated in either the Create, Add, and Delete sections for the CheckList
+                    //If the counter is placed within the Main and passed into the CheckList method, it should not change as long as the program is running
+                    int counterItemCreate = 1;
+
                     Console.WriteLine("\n"); //Creates a new line for easy viewing of the next section of the application
 
                     //Using Do/While loop to let the code be read multiple times
@@ -92,7 +97,7 @@ namespace Time_Management_Console_App
                         //Using an If/Else IF statement to run the CheckList method
                         if (createCheckList == "YES")
                         {
-                            CheckList(checkListArray, checkListArrayNoNumbers);
+                            CheckList(checkListArray, checkListArrayNoNumbers, counterItemCreate);
                         }
                         else if ((createCheckList != "YES") && (createCheckList != "NO")) //IF the user types in a word that is not YES or NO
                         {
@@ -1630,10 +1635,14 @@ namespace Time_Management_Console_App
         //Creating a method that can be used for storing the items in the checklist
 
 
-        public static void CheckList(ArrayList checkListArray, ArrayList checkListArrayNoNumbers)
+        public static void CheckList(ArrayList checkListArray, ArrayList checkListArrayNoNumbers, int counterItemCreate)
         {
             //Initializing the variable that will get the user's response
             string userAnswer = "CREATE";
+
+            //Initializing the counter that will be displayed next to the item
+            //The counter has to be here so that it will be updated in either the Create, Add, and Delete sections for the CheckList
+            //int counterItemCreate = 1;
 
             //Using a Do/While Loop to run the code for the check list as long as the user does not type "Quit" in the Console.
             do
@@ -1654,7 +1663,7 @@ namespace Time_Management_Console_App
                     string userCreate = "ITEM";
 
                     //Initializing the counter that will be displayed next to the item
-                    int counterItemCreate = 1;
+                    //int counterItemCreate = 1;
 
                     do
                     {
@@ -1722,6 +1731,21 @@ namespace Time_Management_Console_App
                         if ((userCreate != "CREATE") && (userCreate != "ADD") && (userCreate != "VIEW") && (userCreate != "DELETE") && (userCreate != "QUIT") && (userCreate != "DONE"))
                         {
                             checkListArray.Add(userCreate);
+
+                            //Using StreamWriter to create the text file that will be used to save the checklist items
+                            //The syntax of StreamWriter is the following: StreamWriter(string path, bool append)
+                            //If the file inside of the StreamWriter exists, it can either be overwritten or appended.
+                            //To save to an existing file and to not override the file, the second parameter has to be set to true. This means bool append= true, which will append (not override the data)
+                            //The file will be saved in the following location and when new items are added to it, it will not delete the previous data.
+                            //using (StreamWriter checkListFile = new StreamWriter("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt", true))
+                            using (StreamWriter checkListFile = new StreamWriter("CheckListFile.txt", true))
+                            {
+                                //Adding the user's items from the check list to a text file that can be saved with their items
+                                //The counter item number will be displayed first, then the item that the user wants to add will be shown next
+                                //The counterItemCreate++ will increase the counter number for the next item displayed, so the second item will be 2) and not 1)
+                                //The numbering and the item will be saved in the CheckListFile.txt file.
+                                checkListFile.WriteLine("{0}) {1}", counterItemCreate++, userCreate);
+                            }
                         }
 
                     } while (userCreate != "DONE");
