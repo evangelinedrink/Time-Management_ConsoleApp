@@ -1631,18 +1631,33 @@ namespace Time_Management_Console_App
         //Once items in the Check List are completed, the user can delete completed tasks by typing "Remove" to the question (if they would like to remove item(s) from the list).
         //After typing in "Remove", a new Console.WriteLine will ask what items in the Check List that they would like to remove. The user will have to type in the item number for each item they would like to delete, separating each by commas (using string.Split(",") to separate each item).
         //Remove.At(index number) will be used to delete each item from the List. Remember: First item in the Check List will have item number 1. To refer to its index number, it will be 1 (its item number) - 1
-        
-        //Creating a method that can be used for storing the items in the checklist
-
-
         public static void CheckList(ArrayList checkListArray, ArrayList checkListArrayNoNumbers, int counterItemCreate)
         {
             //Initializing the variable that will get the user's response
             string userAnswer = "CREATE";
 
-            //Initializing the counter that will be displayed next to the item
-            //The counter has to be here so that it will be updated in either the Create, Add, and Delete sections for the CheckList
-            //int counterItemCreate = 1;
+            //Increasing the counter based on how many items are in the checkListArray
+            //Since there is a text file that has the number of items that were placed in the check list, that number will be used to update the counter
+            //Since the counter is in the text file, it doesn't matter if the user closes the application or not
+            //Since this file is created when the user creates a new check list, an If statement is needed for the code to run if the CheckListItemNumber.txt file is present
+            //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
+            if(File.Exists("CheckListItemNumber.txt")== true)
+            {
+                //Find a way to not count the line spaces that are blank.
+
+                //String array that will read all the lines in the text file by using File.ReadAllLines method
+                string[] readLine = File.ReadAllLines("CheckListItemNumber.txt");
+                //Since readLine is a string array, the index number will start at 0, which is why the variable below is minus 1 to get the value of the last line from the text document
+                int lastLineNumber = readLine.Length - 1;
+                //Reading the last value from the CheckListItemNumber.txt file since it is the last item in the readLine string array
+                string lastLineNumberDisplay = readLine[lastLineNumber];
+                //Converting the last value (which is a number) from the CheckListItemNumber.txt file using Int32.Parse() method
+                int lastLineNumberInt = Int32.Parse(lastLineNumberDisplay);
+                //The counter will now have an updated number based on how many items are already in the check list array
+                //Since the counter number is increased after the item has been added to the list, 1 doesn't need to be added to lastLineNumberInt.
+                counterItemCreate = lastLineNumberInt;
+            }
+
 
             //Using a Do/While Loop to run the code for the check list as long as the user does not type "Quit" in the Console.
             do
@@ -1662,8 +1677,17 @@ namespace Time_Management_Console_App
                     //Initializing the variable that the user will use to add item's in their check list
                     string userCreate = "ITEM";
 
-                    //Initializing the counter that will be displayed next to the item
-                    //int counterItemCreate = 1;
+                    //Using StreamWriter to create the text file that will be used to save the checklist items
+                    //The syntax of StreamWriter is the following: StreamWriter(string path, bool append)
+                    //If the file inside of the StreamWriter exists, it can either be overwritten or appended.
+                    //To save to an existing file and to not override the file, the second parameter has to be set to true. This means bool append= true, which will append (not override the data)
+                    //The file will be saved in the following location and when new items are added to it, it will not delete the previous data.
+                    //using (StreamWriter checkListFile = new StreamWriter("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt", true))
+                    using (StreamWriter checkListFile = new StreamWriter("CheckListFile.txt", true))
+                    {
+                        //Creating a new blank line whenever the user would like to create a new To Do List section
+                        checkListFile.WriteLine("\n");
+                    }
 
                     do
                     {
@@ -1694,6 +1718,28 @@ namespace Time_Management_Console_App
                                 //The counterItemCreate++ will increase the counter number for the next item displayed, so the second item will be 2) and not 1)
                                 //The numbering and the item will be saved in the CheckListFile.txt file.
                                 checkListFile.WriteLine("{0}) {1}", counterItemCreate++, userCreate);
+                            }
+
+                            /*
+                            //Creating a new file that will have no spaces between each item within the file
+                            //This text file will be called CheckListFileCopy.txt
+                            using (StreamWriter checkListCopy= new StreamWriter("CheckListFileCopy.txt", true))
+                            {
+                                //Copying the CheckListFile.txt to CheckListFileCopy.txt
+                                //CheckListFileCopy.txt can be overwritten because the Boolean is set to false.
+                                File.Copy("CheckListFile.txt", "CheckListFileCopy.txt", false);
+
+                                //This will remove the line spaces that are blank in the CheckListFileCopy.txt file. Regex.Replace method will be used for this
+                                string removeSpacesInFile = Regex.Replace("CheckListFileCopy.txt", @"^\s*", "");
+                            }
+                            */
+
+                            //This will create a new file that contains the number of the items within the check list
+                            using (StreamWriter checkListItemNumber= new StreamWriter("CheckListItemNumber.txt", true))
+                            {
+                                //The item number will be placed in a line
+                                //The latest number for the items in the check list will be on the last line in the CheckListItemNumber.txt file
+                                checkListItemNumber.WriteLine(counterItemCreate);
                             }
                         }
 
