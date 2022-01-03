@@ -1641,7 +1641,8 @@ namespace Time_Management_Console_App
             //Since the counter is in the text file, it doesn't matter if the user closes the application or not
             //Since this file is created when the user creates a new check list, an If statement is needed for the code to run if the CheckListItemNumber.txt file is present
             //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
-            if(File.Exists("CheckListItemNumber.txt")== true)
+            //FileInfo.Length method will check to see if the file is empty or not. In this case, it is checking to make sure that CheckListItemNumber.txt is not empty
+            if((File.Exists("CheckListItemNumber.txt")== true) && (new FileInfo("CheckListItemNumber.txt").Length !=0))
             {
                 //Find a way to not count the line spaces that are blank.
 
@@ -1815,6 +1816,12 @@ namespace Time_Management_Console_App
                         {
                             Console.WriteLine(line);
                         }
+
+                        //Displays to the user that the file doesn't have anything in it
+                        if ((line = checkListFileRead.ReadLine()) == null)
+                        {
+                            Console.WriteLine("Your To Do List / Check List is empty.");
+                        }
                     }
 
                     /*Code below was used when CheckListFile.txt wasn't created
@@ -1832,6 +1839,28 @@ namespace Time_Management_Console_App
                 }
                 else if (userAnswer == "DELETE")
                 {
+                    //Adding a new line to make it easier to read the text
+                    Console.WriteLine("\n");
+
+                    Console.WriteLine("Would you like to delete all the items in the Check List/ To Do List or selected items? Type All to delete all the items or type Selected to delete certain items from the check list.");
+                    //User's response
+                    string deleteSelection = Console.ReadLine().ToUpper();
+
+                    //Creating a Delete All that will delete everything in the CheckListFile.txt, delete all the numbers from the CheckListItemNumber.txt and deleting everything from the checklist list
+                    if (deleteSelection== "ALL")
+                    {
+                        //lineValue variable that will be used to check if the line in CheckListFile.txt is empty or not
+                        //string lineValue = "placeholder";
+
+                        //This will clear the CheckListFile.txt. The False will override the file
+                        //File.WriteAllText() method will be used to delete the content within the text files.
+                        //String.Empty will remove all the strings within the file
+                        File.WriteAllText("CheckListFile.txt", String.Empty);
+
+                        //The numbering for each item in the CheckListItemNumber.txt file needs to be deleted since all the items in the check list are now deleted
+                        File.WriteAllText("CheckListItemNumber.txt", String.Empty);
+                    }
+                    
                     //Copying the values of the checkListArray to checkListArrayNoNumbers
                     //This will make sure that the copy doesn't contain numbers which can be helpful when user starts deleting items from the check list 
                     for (int i = 0; i < checkListArray.Count - 1; i++)
