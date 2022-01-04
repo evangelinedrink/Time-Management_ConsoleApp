@@ -1859,8 +1859,111 @@ namespace Time_Management_Console_App
 
                         //The numbering for each item in the CheckListItemNumber.txt file needs to be deleted since all the items in the check list are now deleted
                         File.WriteAllText("CheckListItemNumber.txt", String.Empty);
-                    }
-                    
+                    } else if (deleteSelection== "SELECTED")
+                    {
+                        //Display the check list to the user so they will be able to determine which items they would like to delete
+                        //Create an extra line for easier viewing
+                        Console.WriteLine("\n");
+
+                        //line variable is equal to an empty string
+                        string line = "";
+                        //Reading and showing each line from the CheckListFile.text by using StreamReader
+                        //using initiates (starts) the StreamReader
+                        //using (StreamReader checkListFileRead= new StreamReader("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt"))
+                        using (StreamReader checkListFileRead = new StreamReader("CheckListFile.txt"))
+                        {
+                            //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
+                            while ((line = checkListFileRead.ReadLine()) != null)
+                            {
+                                Console.WriteLine(line);
+                            }
+
+                            //Displays to the user that the file doesn't have anything in it
+                            if ((line = checkListFileRead.ReadLine()) == null)
+                            {
+                                Console.WriteLine("Your To Do List / Check List is empty.");
+                            }
+                        }
+
+                        //Initializing the variable that the user will type the item that they would like to delete from their check list
+                        string deleteItemStringNoSpace = "nospace";
+
+
+                        //Using a Do/While loop to make sure that the user can continue deleting items from the list until they type "Stop" in the Console.
+                        do
+                        {
+                            //Creating space between the lines
+                            Console.WriteLine("\n");
+
+                            //Ask the user to type the item's number, not the exact wording for the item that they would like to delete.
+                            //Asking the user to delete item(s) from their check list
+                            Console.WriteLine("Type the item's number that you'd like to delete from your check list. " +
+                                "Hit the enter key to delete another item from the list. To stop deleting from the check list, type \"Stop\".");
+
+                            //User's input to the above question. Since the check list has all upper case letters, the user's input also has to be upper case for the Containts() method to verify it is there
+                            //This is why ToUpper() method is used.
+                            string deleteItemString = Console.ReadLine().ToUpper();
+
+                            //Using Regex.Replace() method to delete any white spaces that the user might have entered in the Console.
+                            //"" means an empty string, \s stands for white spaces in Regex, and the + means to remove one or more white spaces (not just one white space)
+                            deleteItemStringNoSpace = Regex.Replace(deleteItemString, @"\s+", "");
+
+                            //Since each item in the check list has the number), the ) must also be included. This is done with concatenation
+                            string deleteItemStringNoSpaceParenthesis = deleteItemStringNoSpace + ")";
+
+                            //Initializing lineValue that will be used to check each line in CheckListFile.txt.
+                            string lineValue = "";
+                            //Use StreamReader to determine if the CheckListFile.txt file contains what the user typed in.
+                            using (StreamReader checkFile= new StreamReader("CheckListFile.txt"))
+                            {
+                                //As long as the line in the CheckListFile.txt has a value in it, this While loop will run
+                                while ((lineValue= checkFile.ReadLine()) != null)
+                                {
+                                    //If the line in the text file contains the number and the parenthesis, this line will then be deleted
+                                    if (lineValue.Contains(deleteItemStringNoSpaceParenthesis))
+                                    {
+                                        //Need to find a way to delete the line that should be deleted 
+                                        //Might create a new file and then delete the items and put them back into the file
+                                        //Or might delete just that line and have that line be moved up
+
+                                    }
+                                }
+                            }
+                            /* Might use this code someday
+                            //Determining if the value in deleteItemStringNoSpace can be converted into an integer by using int.TryParse() method
+                            //If the boolean of checkeDeleteItem is True, then deleteItemStringNoSpace will become an integer and be in the variable deleteItemInt
+                            int deleteItemInt = -1; //Iniitializing the deleteItemInt variable. Making it equal -1 since there is no -1 index number and if bool checkDeleteItem is False, then deleteItemInt will stay at -1 and not let the code run inside of the If statement 
+                            bool checkDeleteItem = int.TryParse(deleteItemStringNoSpace, out deleteItemInt); //If checkDeleteItem is False, then deleteItemInt will become 0 for some reason.
+
+                            //Pseudocode: Convert deleteItemStringNoSpace into an integer using TryParse method
+                            //Once an integer, check to see how many items are in the list and then check to see if the number the user typed is between 1 and the number of items in the list
+                            //IF the number typed by the user is between 1 and the total number of items, delete the value in the index that is 1 below that number (since the first item starts at array number 0)
+                            //Make sure to use an If/Else statement to ensure that if the user doesn't type a number, then the computer will tell the user to type in a number within the list's range.
+                            int numberOfItems = checkListArray.Count;
+
+                            if ((deleteItemInt > 0) && (deleteItemInt <= numberOfItems)) //deleteItemInt has to be greater than 0 because the first item in the To Do List starts at 1
+                            {
+                                //Removing the item that the user would like to delete
+                                //Since the index number starts at 0, that means the deleteItemInt needs to be one less its value
+                                checkListArray.RemoveAt(deleteItemInt - 1);
+                            }
+                            else if (deleteItemStringNoSpace == "STOP")
+                            {
+                                break; //The computer will get out of this Do/While Loop
+                            }
+                            else
+                            {
+                                //Creating space between the lines
+                                Console.WriteLine("\n");
+
+                                Console.WriteLine("The item that you'd like to delete is not on the To Do List. Please make sure to type the correct number.");
+
+                                //Creating space between the lines
+                                Console.WriteLine("\n");
+                            }
+                            */
+                        } while (deleteItemStringNoSpace != "STOP");
+
                     //Copying the values of the checkListArray to checkListArrayNoNumbers
                     //This will make sure that the copy doesn't contain numbers which can be helpful when user starts deleting items from the check list 
                     for (int i = 0; i < checkListArray.Count - 1; i++)
