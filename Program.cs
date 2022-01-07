@@ -1919,14 +1919,26 @@ namespace Time_Management_Console_App
                                 //As long as the line in the CheckListFile.txt has a value in it, this While loop will run
                                 while ((lineValue= checkFile.ReadLine()) != null)
                                 {
+                                    //Create a check list array list that will contain the items from the checlistfile.txt
+                                    //The check list array could be the array that was passed into this method. Make sure to not add any items to the list in the create and add section
+                                    //Make sure that the check list array contains the number system (number with ) ) that way when the code is looking for it in the List, it can be deleted 
+                                    //Once the item(s) is/are removed from the List, add the remaining items back into the CheckListFile.txt
+                                    //Find a way to place text from a text file into the check list array list
+                                    //Placing the value in the text file into a string variable
+                                    string informationInFile = lineValue;
+                                    //Adding the information from the CheckListFile.txt into the checkListArray List
+                                    checkListArray.Add(informationInFile);
+
+                                    /*
                                     //If the line in the text file contains the number and the parenthesis, this line will then be deleted
                                     if (lineValue.Contains(deleteItemStringNoSpaceParenthesis))
                                     {
                                         //Need to find a way to delete the line that should be deleted 
                                         //Might create a new file and then delete the items and put them back into the file
                                         //Or might delete just that line and have that line be moved up
-
+                                        
                                     }
+                                    */
                                 }
                             }
                             /* Might use this code someday
