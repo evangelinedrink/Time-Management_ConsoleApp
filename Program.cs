@@ -1684,11 +1684,11 @@ namespace Time_Management_Console_App
                     //To save to an existing file and to not override the file, the second parameter has to be set to true. This means bool append= true, which will append (not override the data)
                     //The file will be saved in the following location and when new items are added to it, it will not delete the previous data.
                     //using (StreamWriter checkListFile = new StreamWriter("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt", true))
-                    using (StreamWriter checkListFile = new StreamWriter("CheckListFile.txt", true))
+                    /*using (StreamWriter checkListFile = new StreamWriter("CheckListFile.txt", true))
                     {
                         //Creating a new blank line whenever the user would like to create a new To Do List section
                         checkListFile.WriteLine("\n");
-                    }
+                    }*/
 
                     do
                     {
@@ -1704,7 +1704,7 @@ namespace Time_Management_Console_App
                         if ((userCreate != "CREATE") && (userCreate != "ADD") && (userCreate != "VIEW") && (userCreate != "DELETE") && (userCreate != "QUIT") && (userCreate != "DONE"))
                         {
                             //Adding the user's item for the check list into the Array List containing the items in the check list
-                            checkListArray.Add(userCreate);
+                            //checkListArray.Add(userCreate); <--This was used in the old code
 
                             //Using StreamWriter to create the text file that will be used to save the checklist items
                             //The syntax of StreamWriter is the following: StreamWriter(string path, bool append)
@@ -1736,7 +1736,7 @@ namespace Time_Management_Console_App
                             */
 
                             //This will create a new file that contains the number of the items within the check list
-                            using (StreamWriter checkListItemNumber= new StreamWriter("CheckListItemNumber.txt", true))
+                            using (StreamWriter checkListItemNumber = new StreamWriter("CheckListItemNumber.txt", true))
                             {
                                 //The item number will be placed in a line
                                 //The latest number for the items in the check list will be on the last line in the CheckListItemNumber.txt file
@@ -1749,18 +1749,19 @@ namespace Time_Management_Console_App
                         //If the file inside of the StreamWriter exists, it can either be overwritten or appended.
                         //To save to an existing file and to not override the file, the second parameter has to be set to true. This means bool append= true, which will append (not override the data)
                         //The file will be saved in the following location and when new items are added to it, it will not delete the previous data.
-                       /* using (StreamWriter checkListFile = new StreamWriter("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt", true))
-                        {
-                            //Adding the user's items from the check list to a text file that can be saved with their items
-                            foreach (string item in checkListArray)
-                            {
-                                checkListFile.WriteLine(item);
-                            }
-                        }*/
+                        /* using (StreamWriter checkListFile = new StreamWriter("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt", true))
+                         {
+                             //Adding the user's items from the check list to a text file that can be saved with their items
+                             foreach (string item in checkListArray)
+                             {
+                                 checkListFile.WriteLine(item);
+                             }
+                         }*/
 
                     } while (userCreate != "DONE");
 
-                } else if (userAnswer == "ADD")
+                }
+                else if (userAnswer == "ADD")
                 {
                     //Initializing the variable that the user will use to add item's in their check list
                     string userCreate = "ITEM";
@@ -1777,7 +1778,8 @@ namespace Time_Management_Console_App
 
                         if ((userCreate != "CREATE") && (userCreate != "ADD") && (userCreate != "VIEW") && (userCreate != "DELETE") && (userCreate != "QUIT") && (userCreate != "DONE"))
                         {
-                            checkListArray.Add(userCreate);
+                            
+                            //checkListArray.Add(userCreate); <-Adding the item into the checkListArray (this was used in the old code)
 
                             //Using StreamWriter to create the text file that will be used to save the checklist items
                             //The syntax of StreamWriter is the following: StreamWriter(string path, bool append)
@@ -1816,12 +1818,18 @@ namespace Time_Management_Console_App
                         {
                             Console.WriteLine(line);
                         }
+                    }
 
-                        //Displays to the user that the file doesn't have anything in it
-                        if ((line = checkListFileRead.ReadLine()) == null)
-                        {
-                            Console.WriteLine("Your To Do List / Check List is empty.");
-                        }
+                    //If the CheckListFile.txt exists, but it is empty, the following code will run
+                    //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
+                    //FileInfo.Length method will check to see if the file is empty or not. If the Length is empty, it means that the file has nothing inside of it
+                    //
+                    if ((File.Exists("CheckListItemNumber.txt") == true) && (new FileInfo("CheckListItemNumber.txt").Length == 0))
+                    {
+                        Console.WriteLine("Your To Do List / Check List is empty.");
+                    } else if (File.Exists("CheckListItemNumber.txt") == false)
+                    {
+                        Console.WriteLine("Your To Do List has not yet been created.");
                     }
 
                     /*Code below was used when CheckListFile.txt wasn't created
@@ -1839,15 +1847,47 @@ namespace Time_Management_Console_App
                 }
                 else if (userAnswer == "DELETE")
                 {
+                    //Showing the items that are in the To Do List
+                    //StreamReader will be used to read the text file that contains the user's items in their To Do List
+                    //Create an extra line for easier viewing
+                    Console.WriteLine("\n");
+
+                    //Letting the user know that these are the items in their To Do List
+                    Console.WriteLine("Here are the items in your To Do List: ");
+                    //line variable is equal to an empty string
+                    string line = "";
+                    //Reading and showing each line from the CheckListFile.text by using StreamReader
+                    //using initiates (starts) the StreamReader
+                    //using (StreamReader checkListFileRead= new StreamReader("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt"))
+                    using (StreamReader checkListFileRead = new StreamReader("CheckListFile.txt"))
+                    {
+                        //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
+                        while ((line = checkListFileRead.ReadLine()) != null)
+                        {
+                            Console.WriteLine(line);
+                        }
+                    }
+                    //If the CheckListFile.txt exists, but it is empty, the following code will run
+                    //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
+                    //FileInfo.Length method will check to see if the file is empty or not. If the Length is empty, it means that the file has nothing inside of it
+                    if ((File.Exists("CheckListItemNumber.txt") == true) && (new FileInfo("CheckListItemNumber.txt").Length == 0))
+                    {
+                        Console.WriteLine("Your To Do List / Check List is empty.");
+                    }
+                    else if (File.Exists("CheckListItemNumber.txt") == false)
+                    {
+                        Console.WriteLine("Your To Do List has not yet been created.");
+                    }
+
                     //Adding a new line to make it easier to read the text
                     Console.WriteLine("\n");
 
-                    Console.WriteLine("Would you like to delete all the items in the Check List/ To Do List or selected items? Type All to delete all the items or type Selected to delete certain items from the check list.");
+                    Console.WriteLine("Would you like to delete all the items in the Check List/ To Do List or selected items? Type All to delete all the items or type SELECTED to delete certain items from the check list.");
                     //User's response
                     string deleteSelection = Console.ReadLine().ToUpper();
 
                     //Creating a Delete All that will delete everything in the CheckListFile.txt, delete all the numbers from the CheckListItemNumber.txt and deleting everything from the checklist list
-                    if (deleteSelection== "ALL")
+                    if (deleteSelection == "ALL")
                     {
                         //lineValue variable that will be used to check if the line in CheckListFile.txt is empty or not
                         //string lineValue = "placeholder";
@@ -1859,33 +1899,178 @@ namespace Time_Management_Console_App
 
                         //The numbering for each item in the CheckListItemNumber.txt file needs to be deleted since all the items in the check list are now deleted
                         File.WriteAllText("CheckListItemNumber.txt", String.Empty);
-                    } else if (deleteSelection== "SELECTED")
+
+                        //Making the counter go back to 1, that way the first value added in the check list will start at 1
+                        counterItemCreate = 1;
+                        //Placing the counterItemCreate into the CheckListItemNumber.txt
+                        using (StreamWriter newCounter= new StreamWriter("CheckListItemNumber.txt"))
+                        {
+                            //Adding the new value into the text file
+                            newCounter.WriteLine(counterItemCreate);
+                        }
+
+                        string lineValue = "";
+                        using (StreamReader counterValue= new StreamReader("CheckListItemNumber.txt"))
+                        {
+                            while((lineValue= counterValue.ReadLine()) != null)
+                            {
+                                Console.WriteLine(lineValue);
+                            }
+                        }
+                    }
+                    else if (deleteSelection == "SELECTED")
                     {
                         //Display the check list to the user so they will be able to determine which items they would like to delete
                         //Create an extra line for easier viewing
                         Console.WriteLine("\n");
 
-                        //line variable is equal to an empty string
-                        string line = "";
-                        //Reading and showing each line from the CheckListFile.text by using StreamReader
-                        //using initiates (starts) the StreamReader
-                        //using (StreamReader checkListFileRead= new StreamReader("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt"))
-                        using (StreamReader checkListFileRead = new StreamReader("CheckListFile.txt"))
+                        //Initializing the variable that the user will type the item that they would like to delete from their check list
+                        string deleteItemStringNoSpace = "nospace";
+
+                        //Using a Do/While loop to make sure that the user can continue deleting items from the list until they type "Stop" in the Console.
+                        do
                         {
-                            //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
-                            while ((line = checkListFileRead.ReadLine()) != null)
+                            //Ask the user to type the item's number, not the exact wording for the item that they would like to delete.
+                            //Asking the user to delete item(s) from their check list
+                            Console.WriteLine("Type the item's number that you'd like to delete from your check list. " +
+                            "Hit the enter key to delete another item from the list. To stop deleting from the check list, type \"Stop\".");
+
+                            //User's input to the above question. Since the check list has all upper case letters, the user's input also has to be upper case for the Containts() method to verify it is there
+                            //This is why ToUpper() method is used.
+                            string deleteItemString = Console.ReadLine().ToUpper();
+
+                            //Using Regex.Replace() method to delete any white spaces that the user might have entered in the Console.
+                            //"" means an empty string, \s stands for white spaces in Regex, and the + means to remove one or more white spaces (not just one white space)
+                            deleteItemStringNoSpace = Regex.Replace(deleteItemString, @"\s+", "");
+
+                            //Since each item in the check list has the number), the ) must also be included. This is done with concatenation
+                            string deleteItemStringNoSpaceParenthesis = deleteItemStringNoSpace + ")";
+
+                            //line variable is equal to an empty string
+                            string lineValue = "";
+                            //Reading and showing each line from the CheckListFile.text by using StreamReader
+                            //using initiates (starts) the StreamReader
+                            //using (StreamReader checkListFileRead= new StreamReader("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt"))
+                            using (StreamReader checkListFileRead = new StreamReader("CheckListFile.txt"))
                             {
-                                Console.WriteLine(line);
+
+                                //Displays to the user that the file doesn't have anything in it
+                                if ((lineValue = checkListFileRead.ReadLine()) == null)
+                                {
+                                    Console.WriteLine("Your To Do List / Check List is empty.");
+                                }
+
+                                //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
+                                while ((lineValue = checkListFileRead.ReadLine()) != null)
+                                {
+                                    //Create a check list array list that will contain the items from the checlistfile.txt
+                                    //The check list array could be the array that was passed into this method. Make sure to not add any items to the list in the create and add section
+                                    //Make sure that the check list array contains the number system (number with ) ) that way when the code is looking for it in the List, it can be deleted 
+                                    //Once the item(s) is/are removed from the List, add the remaining items back into the CheckListFile.txt
+                                    //Find a way to place text from a text file into the check list array list
+                                    //Placing the value in the text file into a string variable
+                                    string informationInFile = lineValue;
+                                    //Adding the information from the CheckListFile.txt into the checkListArray List
+                                    checkListArray.Add(informationInFile);
+                                }
+
+                                /* The values in the text file are being placed in the checkListArray. This means that hte code in 1955 works
+                                //View items in the check list array
+                                foreach (string value in checkListArray)
+                                {
+                                    Console.WriteLine(value);
+                                }
+                                */
                             }
 
-                            //Displays to the user that the file doesn't have anything in it
-                            if ((line = checkListFileRead.ReadLine()) == null)
+                            //Determining if the value in deleteItemStringNoSpace can be converted into an integer by using int.TryParse() method
+                            //If the boolean of checkeDeleteItem is True, then deleteItemStringNoSpace will become an integer and be in the variable deleteItemInt
+                            int deleteItemInt = -1; //Iniitializing the deleteItemInt variable. Making it equal -1 since there is no -1 index number and if bool checkDeleteItem is False, then deleteItemInt will stay at -1 and not let the code run inside of the If statement 
+                            bool checkDeleteItem = int.TryParse(deleteItemStringNoSpace, out deleteItemInt); //If checkDeleteItem is False, then deleteItemInt will become 0 for some reason.
+
+                            //Pseudocode: Convert deleteItemStringNoSpace into an integer using TryParse method
+                            //Once an integer, check to see how many items are in the list and then check to see if the number the user typed is between 1 and the number of items in the list
+                            //IF the number typed by the user is between 1 and the total number of items, delete the value in the index that is 1 below that number (since the first item starts at array number 0)
+                            //Make sure to use an If/Else statement to ensure that if the user doesn't type a number, then the computer will tell the user to type in a number within the list's range.
+                            int numberOfItems = checkListArray.Count;
+
+                            if ((deleteItemInt > 0) && (deleteItemInt <= numberOfItems)) //deleteItemInt has to be greater than 0 because the first item in the To Do List starts at 1
                             {
-                                Console.WriteLine("Your To Do List / Check List is empty.");
+                                //Removing the item that the user would like to delete
+                                //Since the index number starts at 0, that means the deleteItemInt needs to be one less its value
+                                //checkListArray.RemoveAt(deleteItemInt - 1);
+
+                                //Using the Remove method to find what needs to be removed in the checkListArray
+                                //checkListArray.Remove(deleteItemStringNoSpaceParenthesis);
+
+                                for (int i=0; i<numberOfItems; i++)
+                                {
+
+                                    if (checkListArray.Contains(deleteItemStringNoSpaceParenthesis))
+                                    {
+                                        checkListArray.RemoveAt(i);
+                                    }
+                                }
+                            }
+                            else if (deleteItemStringNoSpace == "STOP")
+                            {
+                                break; //The computer will get out of this Do/While Loop
+                            }
+                            else
+                            {
+                                //Creating space between the lines
+                                Console.WriteLine("\n");
+
+                                Console.WriteLine("The item that you'd like to delete is not on the To Do List. Please make sure to type the correct number.");
+
+                                //Creating space between the lines
+                                Console.WriteLine("\n");
+                            }
+
+                            //The values in the text file are being placed in the checkListArray. This means that the code in 1955 works
+                            //View items in the check list array
+                            foreach (string value in checkListArray)
+                            {
+                                Console.WriteLine(value);
+                            }
+
+
+                        } while (deleteItemStringNoSpace != "STOP");
+
+                    
+                        /*
+                        //Displaying the revised check list by first placing the remaining items in the check list back into the CheckListFile.txt by using StreamWriter
+                        using (StreamWriter writeRevisedList= new StreamWriter("CheckListFile.txt"))
+                        {
+                            foreach(string item in checkListArray)
+                            {
+                                writeRevisedList.WriteLine(item);
                             }
                         }
+                        */
 
-                        //Initializing the variable that the user will type the item that they would like to delete from their check list
+                        /*
+                        //Letting the user see their revised To Do List
+                        //Displaying each line in the CheckListFile.txt to the user in the Console
+                        string newLine = "";
+                        using (StreamReader showItems= new StreamReader("CheckListFile.txt"))
+                        {
+                            while ((newLine= showItems.ReadLine()) != null)
+                            {
+                                Console.WriteLine(newLine);
+                            }
+                        }
+                        */
+                    }
+                } else
+                {
+                    Console.WriteLine("\n"); //Extra space for easy viewing
+                    Console.WriteLine("Please answer the question with the following choices: Create, View, Add, Delete. If you would like to leave the To Do List application, type QUIT.");
+                    Console.WriteLine("\n"); //Extra space for easy viewing
+                }
+
+                    /*Old Code
+                    //Initializing the variable that the user will type the item that they would like to delete from their check list
                         string deleteItemStringNoSpace = "nospace";
 
 
@@ -1938,9 +2123,11 @@ namespace Time_Management_Console_App
                                         //Or might delete just that line and have that line be moved up
                                         
                                     }
-                                    */
+                                    
                                 }
                             }
+                    */
+                    
                             /* Might use this code someday
                             //Determining if the value in deleteItemStringNoSpace can be converted into an integer by using int.TryParse() method
                             //If the boolean of checkeDeleteItem is True, then deleteItemStringNoSpace will become an integer and be in the variable deleteItemInt
@@ -1974,8 +2161,8 @@ namespace Time_Management_Console_App
                                 Console.WriteLine("\n");
                             }
                             */
-                        } while (deleteItemStringNoSpace != "STOP");
-
+                        //} while (deleteItemStringNoSpace != "STOP");
+            /*
                     //Copying the values of the checkListArray to checkListArrayNoNumbers
                     //This will make sure that the copy doesn't contain numbers which can be helpful when user starts deleting items from the check list 
                     for (int i = 0; i < checkListArray.Count - 1; i++)
@@ -2068,8 +2255,9 @@ namespace Time_Management_Console_App
                         }
                         */
 
-                    } while (deleteItemStringNoSpace != "STOP");
+                  //  } while (deleteItemStringNoSpace != "STOP");
 
+                /*
                     //Telling the user that the items that they would like removed from their check list has been removed by using Console.WriteLine()
                     Console.WriteLine("The items that you'd like removed from your check list have been removed from the list. Here is your revised check list: ");
 
@@ -2083,7 +2271,7 @@ namespace Time_Management_Console_App
                         //The counter to be displayed before the item in the checklist will be increased by 1 every time the foreach loop runs
                         Console.WriteLine("{0}) {1}", counterItem2++, item);
                     }
-                }
+                */
 
             } while (userAnswer != "QUIT");
 
