@@ -1920,6 +1920,15 @@ namespace Time_Management_Console_App
                     }
                     else if (deleteSelection == "SELECTED")
                     {
+                        //Placing all the items in the CheckListFile.txt to the checkListArray
+                        //File.ReadLines() method will read the text file containing the checklist items
+                        //foreach loop ensures that all the lines in the CheckListFile.txt will be added to the checkListArray
+                        foreach(string lineValue2 in File.ReadLines("CheckListFile.txt"))
+                        {
+                            //Adding the information from the CheckListFile.txt into the checkListArray List
+                            checkListArray.Add(lineValue2);
+                        }
+                            
                         //Display the check list to the user so they will be able to determine which items they would like to delete
                         //Create an extra line for easier viewing
                         Console.WriteLine("\n");
@@ -1945,43 +1954,6 @@ namespace Time_Management_Console_App
 
                             //Since each item in the check list has the number), the ) must also be included. This is done with concatenation
                             string deleteItemStringNoSpaceParenthesis = deleteItemStringNoSpace + ")";
-
-                            //line variable is equal to an empty string
-                            string lineValue = "";
-                            //Reading and showing each line from the CheckListFile.text by using StreamReader
-                            //using initiates (starts) the StreamReader
-                            //using (StreamReader checkListFileRead= new StreamReader("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt"))
-                            using (StreamReader checkListFileRead = new StreamReader("CheckListFile.txt"))
-                            {
-
-                                //Displays to the user that the file doesn't have anything in it
-                                if ((lineValue = checkListFileRead.ReadLine()) == null)
-                                {
-                                    Console.WriteLine("Your To Do List / Check List is empty.");
-                                }
-
-                                //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
-                                while ((lineValue = checkListFileRead.ReadLine()) != null)
-                                {
-                                    //Create a check list array list that will contain the items from the checlistfile.txt
-                                    //The check list array could be the array that was passed into this method. Make sure to not add any items to the list in the create and add section
-                                    //Make sure that the check list array contains the number system (number with ) ) that way when the code is looking for it in the List, it can be deleted 
-                                    //Once the item(s) is/are removed from the List, add the remaining items back into the CheckListFile.txt
-                                    //Find a way to place text from a text file into the check list array list
-                                    //Placing the value in the text file into a string variable
-                                    string informationInFile = lineValue;
-                                    //Adding the information from the CheckListFile.txt into the checkListArray List
-                                    checkListArray.Add(informationInFile);
-                                }
-
-                                /* The values in the text file are being placed in the checkListArray. This means that hte code in 1955 works
-                                //View items in the check list array
-                                foreach (string value in checkListArray)
-                                {
-                                    Console.WriteLine(value);
-                                }
-                                */
-                            }
 
                             //Determining if the value in deleteItemStringNoSpace can be converted into an integer by using int.TryParse() method
                             //If the boolean of checkeDeleteItem is True, then deleteItemStringNoSpace will become an integer and be in the variable deleteItemInt
