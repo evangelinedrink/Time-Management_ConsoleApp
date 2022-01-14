@@ -1953,7 +1953,7 @@ namespace Time_Management_Console_App
                             deleteItemStringNoSpace = Regex.Replace(deleteItemString, @"\s+", "");
 
                             //Since each item in the check list has the number), the ) must also be included. This is done with concatenation
-                            string deleteItemStringNoSpaceParenthesis = deleteItemStringNoSpace + ")";
+                            //string deleteItemStringNoSpaceParenthesis = deleteItemStringNoSpace + ")";
 
                             //Determining if the value in deleteItemStringNoSpace can be converted into an integer by using int.TryParse() method
                             //If the boolean of checkeDeleteItem is True, then deleteItemStringNoSpace will become an integer and be in the variable deleteItemInt
@@ -1970,19 +1970,8 @@ namespace Time_Management_Console_App
                             {
                                 //Removing the item that the user would like to delete
                                 //Since the index number starts at 0, that means the deleteItemInt needs to be one less its value
-                                //checkListArray.RemoveAt(deleteItemInt - 1);
+                                checkListArray.RemoveAt(deleteItemInt - 1);
 
-                                //Using the Remove method to find what needs to be removed in the checkListArray
-                                //checkListArray.Remove(deleteItemStringNoSpaceParenthesis);
-
-                                for (int i=0; i<numberOfItems; i++)
-                                {
-
-                                    if (checkListArray.Contains(deleteItemStringNoSpaceParenthesis))
-                                    {
-                                        checkListArray.RemoveAt(i);
-                                    }
-                                }
                             }
                             else if (deleteItemStringNoSpace == "STOP")
                             {
@@ -1999,6 +1988,12 @@ namespace Time_Management_Console_App
                                 Console.WriteLine("\n");
                             }
 
+                            //Create an extra line for easier viewing
+                            Console.WriteLine("\n");
+
+                            //Letting the users know what the items are in their check list
+                            Console.WriteLine("The items in your To Do List are the following: ");
+
                             //The values in the text file are being placed in the checkListArray. This means that the code in 1955 works
                             //View items in the check list array
                             foreach (string value in checkListArray)
@@ -2006,6 +2001,14 @@ namespace Time_Management_Console_App
                                 Console.WriteLine(value);
                             }
 
+                            
+                            //Pseudocode Ideas for the following Problem:  When items are deleted, the number of the item doesn't change
+                                //Let the items go into the text file without number (fix this in the Create and Add section)
+                                //Display the items to the user by getting the values from the text tile and howing them in an Array List
+                                //When displaying the array list, that is when the numbering will be displayed
+                                    //Numbering is based on the lingth of the array list (not with a counter variable)
+                                    //The numbering for each item will be its index number +1
+                                    //The display for each item will be shown by a For loop
 
                         } while (deleteItemStringNoSpace != "STOP");
 
