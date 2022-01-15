@@ -1718,7 +1718,10 @@ namespace Time_Management_Console_App
                                 //The counter item number will be displayed first, then the item that the user wants to add will be shown next
                                 //The counterItemCreate++ will increase the counter number for the next item displayed, so the second item will be 2) and not 1)
                                 //The numbering and the item will be saved in the CheckListFile.txt file.
-                                checkListFile.WriteLine("{0}) {1}", counterItemCreate++, userCreate);
+                                //checkListFile.WriteLine("{0}) {1}", counterItemCreate++, userCreate);
+
+                                //The user's information will be stored in the CheckListFile.txt without the numbering
+                                checkListFile.WriteLine("{0}", userCreate);
                             }
 
                             /*
@@ -1793,7 +1796,10 @@ namespace Time_Management_Console_App
                                 //The counter item number will be displayed first, then the item that the user wants to add will be shown next
                                 //The counterItemCreate++ will increase the counter number for the next item displayed, so the second item will be 2) and not 1)
                                 //The numbering and the item will be saved in the CheckListFile.txt file.
-                                checkListFile.WriteLine("{0}) {1}", counterItemCreate++, userCreate);
+                                //checkListFile.WriteLine("{0}) {1}", counterItemCreate++, userCreate);
+
+                                //The user's information will be stored in the CheckListFile.txt without the numbering
+                                checkListFile.WriteLine("{0}", userCreate);
                             }
                         }
 
@@ -2003,7 +2009,7 @@ namespace Time_Management_Console_App
 
                             
                             //Pseudocode Ideas for the following Problem:  When items are deleted, the number of the item doesn't change
-                                //Let the items go into the text file without number (fix this in the Create and Add section)
+                                //Let the items go into the text file without number (fix this in the Create and Add section) <--finished
                                 //Display the items to the user by getting the values from the text tile and howing them in an Array List
                                 //When displaying the array list, that is when the numbering will be displayed
                                     //Numbering is based on the lingth of the array list (not with a counter variable)
