@@ -1636,13 +1636,18 @@ namespace Time_Management_Console_App
             //Initializing the variable that will get the user's response
             string userAnswer = "CREATE";
 
+            //Creating a new array list that will be used to view the contents in the checklist
+            //The items within the CheckListFile.txt will be added to this viewCheckList and then displayed to the user
+            //This is done to help with the number for each item, so if an item gets removed, then the number of each will be adjusted based on its position in the ArrayList
+            ArrayList viewCheckList = new ArrayList();
+
             //Increasing the counter based on how many items are in the checkListArray
             //Since there is a text file that has the number of items that were placed in the check list, that number will be used to update the counter
             //Since the counter is in the text file, it doesn't matter if the user closes the application or not
             //Since this file is created when the user creates a new check list, an If statement is needed for the code to run if the CheckListItemNumber.txt file is present
             //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
             //FileInfo.Length method will check to see if the file is empty or not. In this case, it is checking to make sure that CheckListItemNumber.txt is not empty
-            if((File.Exists("CheckListItemNumber.txt")== true) && (new FileInfo("CheckListItemNumber.txt").Length !=0))
+            if ((File.Exists("CheckListItemNumber.txt")== true) && (new FileInfo("CheckListItemNumber.txt").Length !=0))
             {
                 //Find a way to not count the line spaces that are blank.
 
@@ -1806,10 +1811,7 @@ namespace Time_Management_Console_App
                     } while (userCreate != "DONE");
                 }
                 else if (userAnswer == "VIEW")
-                {
-                    //Creating a new array list that will be used to view the contents in the checklist
-                    ArrayList viewCheckList = new ArrayList();
-                    
+                {                   
                     //StreamReader will be used to read the text file that contains the user's items in their To Do List
 
                     //Create an extra line for easier viewing
@@ -1844,18 +1846,22 @@ namespace Time_Management_Console_App
                     {
                         for(int i=0; i< viewCheckList.Count; i++)
                         {
+                            //Since the first value in the check list has array number 0, it needs to have +1 to show us its value starting at 1
+                            int counterValueForArray = i + 1;
 
-                            foreach (string item in viewCheckList)
-                            {
-                                Console.WriteLine("{0}) {1}", , item);
-                            }
+                            //Displaying the item in the CheckList in the Console
+                            Console.WriteLine("{0}) {1}", counterValueForArray, viewCheckList[i]);                        
                         }
-
                     }
+                    else
+                    {
+                        Console.WriteLine("Your To Do List is empty.");
+                    }
+
                     //If the CheckListFile.txt exists, but it is empty, the following code will run
                     //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
                     //FileInfo.Length method will check to see if the file is empty or not. If the Length is empty, it means that the file has nothing inside of it
-                    //
+                    /*
                     if ((File.Exists("CheckListItemNumber.txt") == true) && (new FileInfo("CheckListItemNumber.txt").Length == 0))
                     {
                         Console.WriteLine("Your To Do List / Check List is empty.");
@@ -1863,6 +1869,7 @@ namespace Time_Management_Console_App
                     {
                         Console.WriteLine("Your To Do List has not yet been created.");
                     }
+                    */
 
                     /*Code below was used when CheckListFile.txt wasn't created
                     //Counter that will Display the number of each item in the check list
@@ -1896,9 +1903,34 @@ namespace Time_Management_Console_App
                         //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
                         while ((line = checkListFileRead.ReadLine()) != null)
                         {
-                            Console.WriteLine(line);
+                            //Ensuring that the arraylist named viewCheckList does not contain the item in the line in the CheckListFile.txt
+                            //If the item on the line being evaluated (stored in the variable named "line") is not in the ArrayList, add the item into the ArrayList
+                            if (viewCheckList.Contains(line) != true)
+                            {
+                                //This will add what is in the CheckListFile.txt into the viewCheckList ArrayList
+                                viewCheckList.Add(line);
+                            }
                         }
                     }
+
+                    //Making sure that the ArrayList containing the values of from the checklist will display in the Console if it is not empty
+                    if (viewCheckList.Count > 0)
+                    {
+                        for (int i = 0; i < viewCheckList.Count; i++)
+                        {
+                            //Since the first value in the check list has array number 0, it needs to have +1 to show us its value starting at 1
+                            int counterValueForArray = i + 1;
+
+                            //Displaying the item in the CheckList in the Console
+                            Console.WriteLine("{0}) {1}", counterValueForArray, viewCheckList[i]);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Your To Do List is empty.");
+                    }
+
+                    /*Might delete this once this section is working properly
                     //If the CheckListFile.txt exists, but it is empty, the following code will run
                     //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
                     //FileInfo.Length method will check to see if the file is empty or not. If the Length is empty, it means that the file has nothing inside of it
@@ -1910,6 +1942,8 @@ namespace Time_Management_Console_App
                     {
                         Console.WriteLine("Your To Do List has not yet been created.");
                     }
+                    */
+
 
                     //Adding a new line to make it easier to read the text
                     Console.WriteLine("\n");
@@ -1932,6 +1966,12 @@ namespace Time_Management_Console_App
                         //The numbering for each item in the CheckListItemNumber.txt file needs to be deleted since all the items in the check list are now deleted
                         File.WriteAllText("CheckListItemNumber.txt", String.Empty);
 
+                        //This will clear all the items in the viewCheckList ArrayList
+                        //The Clear() method deletes all items in the ArrayList
+                        viewCheckList.Clear();
+
+                        
+                        /*Old code when the counter variable was being used
                         //Making the counter go back to 1, that way the first value added in the check list will start at 1
                         counterItemCreate = 1;
                         //Placing the counterItemCreate into the CheckListItemNumber.txt
@@ -1949,6 +1989,8 @@ namespace Time_Management_Console_App
                                 Console.WriteLine(lineValue);
                             }
                         }
+                        */
+
                     }
                     else if (deleteSelection == "SELECTED")
                     {
