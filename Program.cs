@@ -1807,6 +1807,9 @@ namespace Time_Management_Console_App
                 }
                 else if (userAnswer == "VIEW")
                 {
+                    //Creating a new array list that will be used to view the contents in the checklist
+                    ArrayList viewCheckList = new ArrayList();
+                    
                     //StreamReader will be used to read the text file that contains the user's items in their To Do List
 
                     //Create an extra line for easier viewing
@@ -1819,13 +1822,36 @@ namespace Time_Management_Console_App
                     //using (StreamReader checkListFileRead= new StreamReader("/Users/EvangelineDrink.000/source/repos/Portfolio Project_Time Management App/CheckListFile.txt"))
                     using (StreamReader checkListFileRead = new StreamReader("CheckListFile.txt"))
                     {
-                        //When a line in the CheckListFile.txt is not an empty string, display the values in the Console.
+                        //When a line in the CheckListFile.txt is not an empty string, run the code within this block.
                         while ((line = checkListFileRead.ReadLine()) != null)
                         {
-                            Console.WriteLine(line);
+                            //This will display one line in the checklist file in the Console.
+                            //Console.WriteLine(line);
+
+                            //Ensuring that the arraylist named viewCheckList does not contain the item in the line in the CheckListFile.txt
+                            //If the item on the line being evaluated (stored in the variable named "line") is not in the ArrayList, add the item into the ArrayList
+                            if(viewCheckList.Contains(line) != true)
+                            {
+                                //This will add what is in the CheckListFile.txt into the viewCheckList ArrayList
+                                viewCheckList.Add(line);
+                            }
+                            
                         }
                     }
 
+                    //Making sure that the ArrayList containing the values of from the checklist will display in the Console if it is not empty
+                    if(viewCheckList.Count > 0)
+                    {
+                        for(int i=0; i< viewCheckList.Count; i++)
+                        {
+
+                            foreach (string item in viewCheckList)
+                            {
+                                Console.WriteLine("{0}) {1}", , item);
+                            }
+                        }
+
+                    }
                     //If the CheckListFile.txt exists, but it is empty, the following code will run
                     //File.Exists(string) method is used to determine if the text file exists. This method returns a Boolean value
                     //FileInfo.Length method will check to see if the file is empty or not. If the Length is empty, it means that the file has nothing inside of it
