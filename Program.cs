@@ -2054,7 +2054,7 @@ namespace Time_Management_Console_App
                                 //String.Empty will remove all the strings within the file
                                 File.WriteAllText("CheckListFile.txt", String.Empty);
 
-                                //Once the user types STOP, the remaining values in the the checkListArray will then be added to the CheckListFile.txt
+                                ///Once the user types STOP, the remaining values in the the checkListArray will then be added to the CheckListFile.txt
                                 using (StreamWriter copyLines= new StreamWriter("CheckListFile.txt"))
                                 {
                                     //Adding each value from the checkListArray into a line in the CheckListFile.txt
