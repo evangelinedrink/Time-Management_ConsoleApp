@@ -2049,6 +2049,23 @@ namespace Time_Management_Console_App
                             }
                             else if (deleteItemStringNoSpace == "STOP")
                             {
+                                //This will clear the CheckListFile.txt. 
+                                //File.WriteAllText() method will be used to delete the content within the text files.
+                                //String.Empty will remove all the strings within the file
+                                File.WriteAllText("CheckListFile.txt", String.Empty);
+
+                                //Once the user types STOP, the remaining values in the the checkListArray will then be added to the CheckListFile.txt
+                                using (StreamWriter copyLines= new StreamWriter("CheckListFile.txt"))
+                                {
+                                    //Adding each value from the checkListArray into a line in the CheckListFile.txt
+                                    for(int i=0; i< checkListArray.Count; i++)
+                                    {
+                                        //Each value in the checkListArray will be added to its own line in the CheckListFile.txt
+                                        //by using the WriteLine() method
+                                        copyLines.WriteLine(checkListArray[i]);
+                                    }
+                                    
+                                }
                                 break; //The computer will get out of this Do/While Loop
                             }
                             else
